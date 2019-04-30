@@ -1,0 +1,13 @@
+@mixin animation-fade-slide-top {
+  .fade-slide-top-enter {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  .fade-slide-top-enter-active {
+    transition: .3s ease-in-out;
+  }
+  .fade-slide-top-leave {
+  }
+  .fade-slide-top-leave-active {
+  }
+}

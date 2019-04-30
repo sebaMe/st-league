@@ -9,6 +9,12 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "firebase": "^5.10.1",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
+    "material-design-icons-iconfont": "^4.0.5",
+    "roboto-fontface": "^0.10.0",
+    "typeface-bangers": "0.0.72",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"

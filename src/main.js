@@ -1,12 +1,25 @@
+import "@babel/polyfill";
 import Vue from "vue";
+import "roboto-fontface/css/roboto/roboto-fontface.css";
+import "typeface-bangers";
+import "material-design-icons-iconfont/dist/material-design-icons.css";
+
 import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+import { store } from "./store/store";
+import { router } from "./router/router";
+
+// Authentication
+import { initFB } from "./firebase/db";
+import { initAuthRouteGuard } from "./firebase/auth";
 
 Vue.config.productionTip = false;
 
-new Vue({
+export const VueRootInstance = new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created() {
+    initFB();
+    /* initAuthRouteGuard(); */
+  }
 }).$mount("#app");
