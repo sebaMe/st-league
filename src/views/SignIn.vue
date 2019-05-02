@@ -1,35 +1,28 @@
 <template>
-  <div class="view__sign-in">
-    <vuc-frame>
-      <vuc-card class="sign-in-form">
-        <template slot="header">Sign in Boi!</template>
-        <input type="text" placeholder="Login">
-        <input type="text" placeholder="Password">
-      </vuc-card>
-    </vuc-frame>
-  </div>
+  <vuc-frame class="view__sign-in">
+    <template slot="header">
+      <v-icon color="primary" left>stars</v-icon>
+      <span class="view-title">Sign in</span>
+      <v-icon color="primary" right>stars</v-icon>
+    </template>
+    <sign-in-form></sign-in-form>
+  </vuc-frame>
 </template>
 
 <script>
 import VucFrame from "../components/VucFrame";
-import VucCard from "../components/VucCard";
+import SignInForm from "../components/SignInForm";
 
 export default {
   name: "SignIn",
   components: {
     VucFrame,
-    VucCard
+    SignInForm
   }
 };
 </script>
 
 <style lang="scss">
 .view__sign-in {
-  .sign-in-form {
-    position: relative;
-    margin: auto;
-    width: 300px;
-    height: 200px;
-  }
 }
 </style>

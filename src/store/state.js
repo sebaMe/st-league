@@ -1,6 +1,6 @@
 export const state = {
   user: {
-    id: undefined,
-    name: "nobody"
+    uid: undefined,
+    name: undefined
   }
 };

@@ -1,32 +1,47 @@
-import firebase from "firebase";
 import _get from "lodash.get";
 import { MUTATIONS } from "./mutations";
-import { signOutWithFB, getAuthedUserId } from "../firebase/auth";
-import { fetchDocument } from "../firebase/fetch";
+import { authWithFB, signOutWithFB, getCurrentUser } from "../firebase/auth";
 import { updateDocument } from "../firebase/update";
-import { storage } from "../firebase/db";
 
 export const actions = {
   // Authentication / Sign In / Sign Out
+  signIn: async function({ commit, getters }, { login, pw }) {
+    return authWithFB(login, pw);
+  },
   signOut() {
     signOutWithFB().catch(({ message }) => {
       console.error(message);
     });
   },
   // Vuex hydration
-  hydrateUserData: async function({ commit }) {
-    const { id, data } = await fetchDocument(`users/${getAuthedUserId()}`);
-    commit(MUTATIONS.SET_USER, { id, ...data });
+  hydrateUser({ commit }) {
+    const user = getCurrentUser();
+    if (user) {
+      const { uid, displayName } = user;
+      commit(MUTATIONS.SET_USER, { uid, name: displayName });
+    }
   },
 
   // Updating data
-  updateUser: async function({ commit, getters }, userObj) {
-    const userId = getters.user.id;
-    if (userId) {
-      await updateDocument(`users/${userId}`, userObj);
-      commit(MUTATIONS.SET_USER, { ...getters.user, ...userObj });
-      return;
+  updateUser: async function({ commit, getters }, { name }) {
+    const user = getCurrentUser();
+    const uid = _get(user, "uid");
+    const displayName =
+      typeof name === "string" && name.length >= 3
+        ? name
+        : "Musty McMusterface";
+
+    if (uid) {
+      try {
+        await user.updateProfile({
+          displayName
+        });
+        await updateDocument(`users/${uid}`, { name: displayName });
+        commit(MUTATIONS.SET_USER, { name: displayName });
+        return;
+      } catch (err) {
+        console.error(err);
+      }
     }
-    throw new Error("no user-id", getters.user);
   }
 };

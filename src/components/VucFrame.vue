@@ -29,5 +29,27 @@ export default {
 </script>
 
 <style lang="scss">
-.component__vuc-frame {}
+.component__vuc-frame {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  .vuc-frame_header {
+    display: flex;
+    flex: 0 0 30px;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    .view-title {
+      @include font-bangers;
+      display: flex;
+      color: $color-sec;
+    }
+  }
+  .vuc-frame_content {
+    margin-top: 10px;
+    flex: 1;
+  }
+}
 </style>

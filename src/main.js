@@ -4,6 +4,9 @@ import "roboto-fontface/css/roboto/roboto-fontface.css";
 import "typeface-bangers";
 import "material-design-icons-iconfont/dist/material-design-icons.css";
 
+import "./plugins/vuetify";
+import "./plugins/vue.notifications";
+
 import App from "./App.vue";
 import { store } from "./store/store";
 import { router } from "./router/router";
@@ -20,6 +23,6 @@ export const VueRootInstance = new Vue({
   render: h => h(App),
   created() {
     initFB();
-    /* initAuthRouteGuard(); */
+    initAuthRouteGuard();
   }
 }).$mount("#app");
