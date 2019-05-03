@@ -1,27 +1,19 @@
 import _get from "lodash.get";
+import firebase from "firebase";
+
 import { MUTATIONS } from "./mutations";
-import { authWithFB, signOutWithFB, getCurrentUser } from "../firebase/auth";
+import { getCurrentUser } from "../firebase/auth";
 import { updateDocument, mergeDocument } from "../firebase/update";
 import { fetchDocument, fetchCollection } from "../firebase/fetch";
 import { listenToDocument } from "../firebase/listen";
 
 export const actions = {
-  // Authentication / Sign In / Sign Out
-  signIn: async function({ commit, getters }, { login, pw }) {
-    return authWithFB(login, pw);
-  },
-  signOut() {
-    signOutWithFB().catch(({ message }) => {
-      console.error(message);
-    });
-  },
-
   // User
-  hydrateUser({ commit }) {
-    const user = getCurrentUser();
-    if (user) {
-      const { uid, displayName } = user;
-      commit(MUTATIONS.SET_USER, { uid, name: displayName });
+  setUserId({ commit }, userId) {
+    if (userId) {
+      commit(MUTATIONS.SET_USERID, userId);
+    } else {
+      commit(MUTATIONS.SET_USERID);
     }
   },
   updateUser: async function({ commit, getters }, { name }) {
@@ -38,7 +30,11 @@ export const actions = {
           displayName
         });
         await updateDocument(`users/${uid}`, { name: displayName });
-        commit(MUTATIONS.SET_USER, { name: displayName });
+        commit(MUTATIONS.SET_USERS_PROPERTY, {
+          id: uid,
+          key: "name",
+          value: displayName
+        });
         return;
       } catch (err) {
         console.error(err);
@@ -72,23 +68,35 @@ export const actions = {
       name,
       start,
       end,
-      players
+      players,
+      matches
     }) {
       commit(MUTATIONS.SET_DURAC_SEASON, {
         id: seasonId,
         name,
         start: start.toDate(),
         end: end.toDate(),
-        players
+        players,
+        matches: matches.map(ts => ts.toDate())
       });
     });
     return Promise.resolve(unsub);
   },
 
-  recruitDuracPlayer(context, { seasonId, playerId }) {
+  recruitDuracPlayer({ getters }, playerId) {
+    const seasonId = getters.currentDuracSeasonId;
     if (typeof seasonId === "string" && typeof playerId === "string") {
-      return mergeDocument(`games/durac/seasons/${seasonId}`, {
+      mergeDocument(`games/durac/seasons/${seasonId}`, {
         players: { [playerId]: { id: playerId, history: [] } }
+      });
+    }
+  },
+
+  addDuracMatch({ getters }) {
+    const seasonId = getters.currentDuracSeasonId;
+    if (typeof seasonId === "string") {
+      updateDocument(`games/durac/seasons/${seasonId}`, {
+        matches: firebase.firestore.FieldValue.arrayUnion(new Date())
       });
     }
   }

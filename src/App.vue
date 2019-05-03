@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app>
-      <v-navigation-drawer v-if="user.uid !== undefined" v-model="drawer" app>
+      <v-navigation-drawer v-if="userId !== undefined" v-model="drawer" app>
         <v-list>
           <v-list-tile v-for="item in navItems" :key="item.path" :to="item.path" ripple>
             <v-list-tile-action>
@@ -9,10 +9,16 @@
             </v-list-tile-action>
             <v-list-tile-title>{{item.name}}</v-list-tile-title>
           </v-list-tile>
+          <v-list-tile @click="signOut" ripple>
+            <v-list-tile-action>
+              <v-icon>{{$options.icons.LOGOUT}}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title>Sign Out</v-list-tile-title>
+          </v-list-tile>
         </v-list>
       </v-navigation-drawer>
 
-      <v-toolbar v-if="user.uid !== undefined" color="primary" dark fixed app dense>
+      <v-toolbar v-if="userId !== undefined" color="primary" dark fixed app dense>
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         <v-toolbar-title>
           <v-btn flat :to="navHome.path">
@@ -46,6 +52,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { signOutWithFB } from "./firebase/auth";
 import { ROUTES } from "./router/router";
 
 export default {
@@ -55,7 +62,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["user"]),
+    ...mapGetters(["userId", "userName"]),
     navHome() {
       return {
         name: ROUTES.HOME.name,
@@ -66,7 +73,7 @@ export default {
     navItems() {
       return [
         {
-          name: this.user.name || ROUTES.USER.name,
+          name: this.userName || ROUTES.USER.name,
           path: ROUTES.USER.path,
           icon: ROUTES.USER.icon
         }
@@ -74,7 +81,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["signOut"])
+    signOut() {
+      signOutWithFB();
+    }
   }
 };
 </script>

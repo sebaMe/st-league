@@ -45,14 +45,14 @@ export default {
     };
   },
   watch: {
-    user: {
-      handler({ name }) {
-        this.name = name || "";
+    userName: {
+      handler(val) {
+        this.name = val || "";
       },
       immediate: true
     }
   },
-  computed: mapGetters(["user"]),
+  computed: mapGetters(["userName"]),
   methods: {
     ...mapActions(["updateUser"]),
     submit() {

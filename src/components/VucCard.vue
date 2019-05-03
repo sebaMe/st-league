@@ -3,7 +3,10 @@
     <v-progress-linear v-if="loading" color="secondary" :indeterminate="true"></v-progress-linear>
   </div>
   <div v-else class="component__vuc-card">
-    <div v-if="topMsg.length > 0" class="top-left">{{topMsg}}</div>
+    <div v-if="bannerUrl.length > 0" class="vuc-card_banner" :style="bannerStyle">
+      <div v-if="topMsg.length > 0" class="top-left">{{topMsg}}</div>
+      <div v-if="bottomMsg.length > 0" class="bottom-right">{{bottomMsg}}</div>
+    </div>
     <header v-if="$slots.header !== undefined" class="vuc-card_header">
       <slot name="header"></slot>
     </header>
@@ -13,7 +16,6 @@
     <footer v-if="$slots.footer !== undefined" class="vuc-card_footer">
       <slot name="footer"></slot>
     </footer>
-    <div v-if="bottomMsg.length > 0" class="bottom-right">{{bottomMsg}}</div>
   </div>
 </template>
 
@@ -21,6 +23,10 @@
 export default {
   name: "VucCard",
   props: {
+    bannerUrl: {
+      type: String,
+      default: ""
+    },
     topMsg: {
       type: String,
       default: ""
@@ -33,6 +39,11 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  computed: {
+    bannerStyle() {
+      return { backgroundImage: `url(${this.bannerUrl})` };
+    }
   }
 };
 </script>
@@ -44,7 +55,7 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 20px 10px;
+  max-width: 600px;
   overflow: hidden;
   background-color: #fff;
 
@@ -56,21 +67,31 @@ export default {
     transform: skew(-15deg);
     font-size: 12px;
   }
-  .top-left {
-    left: -6px;
-    position: absolute;
-    top: -2px;
-  }
-  .bottom-right {
-    right: -6px;
-    position: absolute;
-    bottom: -2px;
+
+  .vuc-card_banner {
+    position: relative;
+    flex: 0 0 100px;
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid #000;
+    .top-left {
+      position: absolute;
+      top: -1px;
+      left: -4px;
+    }
+    .bottom-right {
+      position: absolute;
+      right: -4px;
+      bottom: -1px;
+    }
   }
 
   .vuc-card_header {
     @include font-bangers;
     display: flex;
     flex: 0 0 30px;
+    margin-top: 15px;
+    padding: 0 5px;
     font-size: 20px;
     align-items: center;
     justify-content: center;
@@ -78,12 +99,14 @@ export default {
   }
   .vuc-card_content {
     flex: 1;
-    margin: 5px 0;
+    padding: 0 5px;
+    margin-bottom: 10px;
   }
   .vuc-card_footer {
     display: flex;
     margin-top: 5px;
     justify-content: center;
+    margin-bottom: 10px;
   }
 }
 </style>

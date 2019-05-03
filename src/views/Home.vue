@@ -15,24 +15,7 @@ export default {
   components: {
     VucFrame,
     DuracCard
-  },
-  data() {
-    return {
-      unsubSeason: undefined
-    };
-  },
-  mounted() {
-    this.fetchUsers();
-    this.fetchDurac().then(() => {
-      this.subscribeDuracSeason().then(unsub => {
-        this.unsubSeason = unsub;
-      });
-    });
-  },
-  beforeDestroy() {
-    if (typeof this.unsubSeason === "function") this.unsubSeason();
-  },
-  methods: mapActions(["fetchUsers", "fetchDurac", "subscribeDuracSeason"])
+  }
 };
 </script>
 

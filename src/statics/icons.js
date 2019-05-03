@@ -6,5 +6,6 @@ export const icons = {
   LOGOUT: "exit_to_app",
   NEW: "new_releases",
   DURAC: "healing",
-  PLAYERS: "people"
+  PLAYERS: "people",
+  ADD_PLAYER: "person_add"
 };

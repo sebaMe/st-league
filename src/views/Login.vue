@@ -2,7 +2,7 @@
   <vuc-frame class="view__login">
     <template slot="header">
       <v-icon color="primary" left>{{$options.icons.MAIN}}</v-icon>
-      <span class="view-title">Sign In</span>
+      <span class="view-title">ST League</span>
       <v-icon color="primary" right>{{$options.icons.MAIN}}</v-icon>
     </template>
 
@@ -10,8 +10,9 @@
       class="sign-in-form"
       top-msg="Sign in, Maggot!"
       bottom-msg="Welcooome to the DANGER-Zone!"
+      banner-url="https://media.giphy.com/media/ueISkGMBeb5kI/giphy.gif"
     >
-      <template slot="header">ST League</template>
+      <template slot="header">Sign In</template>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
           v-model="login"
@@ -38,7 +39,10 @@
         :loading="loading"
         @click="submit"
         color="primary"
-      ><v-icon left>{{$options.icons.HOT}}</v-icon>Enter<v-icon right>{{$options.icons.HOT}}</v-icon></v-btn>
+      >
+        <v-icon left>{{$options.icons.HOT}}</v-icon>Enter
+        <v-icon right>{{$options.icons.HOT}}</v-icon>
+      </v-btn>
     </vuc-card>
   </vuc-frame>
 </template>
@@ -46,6 +50,7 @@
 <script>
 import { mapActions } from "vuex";
 import { notifyError } from "../plugins/vue.notifications";
+import { authWithFB } from "../firebase/auth";
 
 import VucFrame from "../components/VucFrame";
 import VucCard from "../components/VucCard";
@@ -70,11 +75,10 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["signIn"]),
     submit() {
       if (this.$refs.form.validate()) {
         this.loading = true;
-        this.signIn({ login: this.login, pw: this.pw })
+        authWithFB(this.login, this.pw)
           .then(() => {
             this.loading = false;
             this.$router.push("home");
@@ -93,7 +97,6 @@ export default {
 .view__login {
   .sign-in-form {
     margin: auto;
-    max-width: 400px;
   }
 }
 </style>

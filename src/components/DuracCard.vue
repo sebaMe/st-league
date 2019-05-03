@@ -3,6 +3,7 @@
     class="durac-card"
     top-msg="prepare yourselfs..."
     bottom-msg="...lunch is coming!"
+    banner-url="https://cdn.inquisitr.com/wp-content/uploads/2019/04/One-Punch-Man-S2E3-Recap.jpg"
     :loading="loadingDurac"
   >
     <template slot="header">
@@ -14,27 +15,30 @@
           <v-icon left>{{$options.icons.PLAYERS}}</v-icon>
           {{`Players (${playersAmount})`}}
         </v-btn>
-        <vuc-card class="player-recruiter" bottom-msg="mhmmm fresh meat...">
+        <vuc-card class="player-recruiter" top-msg="mhmmm fresh meat...">
           <template slot="header">Recruit new players!</template>
-          <div class="label">{{`Players (${playersAmount})`}}</div>
-          <div class="player-list">
-            <div v-for="player in players" :key="player.id" class="player">{{player.name}}</div>
-          </div>
-          <div class="label">{{`Scaredy Cats (${usersAmount})`}}</div>
           <div class="user-list">
+            <div class="label">{{`Scaredy Cats (${usersAmount})`}}</div>
             <v-btn
               v-for="user in usersList"
               :key="user.id"
-              class="user"
+              class="user-item"
               @click="recruitPlayer(user.id)"
               flat
-            >{{user.name}}</v-btn>
+            >
+              <v-icon left>{{$options.icons.ADD_PLAYER}}</v-icon>
+              {{user.name}}
+            </v-btn>
+          </div>
+          <div class="player-list">
+            <div class="label">{{`Players (${playersAmount})`}}</div>
+            <div v-for="player in players" :key="player.id" class="player-item">{{player.name}}</div>
           </div>
         </vuc-card>
       </vuc-overlay>
     </template>
 
-    <div class="current-season">
+    <section class="current-season">
       <div class="season-info">
         <div class="season-name">{{duracSeason.name}}</div>
         <div class="match-day">{{matchDay}}</div>
@@ -43,6 +47,14 @@
         <span class="label">Days left ...</span>
         <span class="days">{{daysLeft}}</span>
       </div>
+    </section>
+
+    <div class="arena">
+      <v-btn class="new-match" color="secondary" @click="addDuracMatch">
+        <v-icon left>{{$options.icons.NEW}}</v-icon>Start new match
+        <v-icon right>{{$options.icons.NEW}}</v-icon>
+      </v-btn>
+      <div v-for="ts in matchList" :key="ts" class="match-item">{{ts}}</div>
     </div>
   </vuc-card>
 </template>
@@ -64,12 +76,9 @@ export default {
     VucOverlay
   },
   methods: {
-    ...mapActions(["recruitDuracPlayer"]),
+    ...mapActions(["recruitDuracPlayer", "addDuracMatch"]),
     recruitPlayer(userId) {
-      this.recruitDuracPlayer({
-        seasonId: this.duracSeason.id,
-        playerId: userId
-      });
+      this.recruitDuracPlayer(userId);
     }
   },
   computed: {
@@ -110,6 +119,9 @@ export default {
     daysLeft() {
       const daysLeft = daysBetween(new Date(), this.duracSeason.end);
       return daysLeft;
+    },
+    matchList() {
+      return _get(this.duracSeason, "matches", []).map(ts => ts.getTime());
     }
   }
 };
@@ -117,7 +129,6 @@ export default {
 
 <style lang="scss">
 .durac-card {
-  width: 400px;
   margin: auto;
   .durac-title {
     flex: 1;
@@ -145,29 +156,55 @@ export default {
       color: $color-sec;
     }
   }
+
+  .arena {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    .new-match {
+      @include font-bangers;
+      font-size: 20px;
+    }
+    .match-item {
+      @include card-shadow-low;
+      margin-bottom: 4px;
+    }
+  }
 }
 .player-recruiter {
-  .label {
-    text-align: center;
-  }
-  .player-list,
-  .user-list {
+  .vuc-card_content {
     display: flex;
-    justify-content: center;
-  }
 
-  .player,
-  .user {
-    @include font-bangers;
-    @include border-comic;
-    flex: 0 0 auto;
-    padding: 3px;
-    margin: 3px 3px 0 0;
-  }
+    .label {
+      text-align: center;
+      color: $color-prim;
+    }
+    .player-list,
+    .user-list {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
 
-  .player {
-    color: $color-sec;
-    border-color: $color-prim;
+    .player-item,
+    .user-item {
+      @include font-bangers;
+      @include border-comic;
+      flex: 0 0 auto;
+      padding: 2px;
+      margin-bottom: 2px;
+      text-align: center;
+    }
+
+    .player-item {
+      color: $color-sec;
+      border-color: $color-prim;
+    }
+
+    .user-item {
+      border-color: #000;
+    }
   }
 }
 </style>

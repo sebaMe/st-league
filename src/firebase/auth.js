@@ -21,6 +21,7 @@ export async function signOutWithFB() {
 export const initAuthRouteGuard = () => {
   const { HOME } = ROUTES;
   const { LOGIN } = INTERNAL_ROUTES;
+  let unsubDuracSeason;
   // listens to route-changes
   // route-changes allowed if user is authed, else redirect to /sign-in page
   router.beforeEach(({ name }, from, next) => {
@@ -33,15 +34,24 @@ export const initAuthRouteGuard = () => {
   // listens to auth-state-changes
   // if auth-state changes user is redirected to /home (logged in) or /sign-in (logged out)
   // fetches data from firebase and sets initial vuex state
+  // subscribes relevant firebase documents
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      store.dispatch("hydrateUser");
+      store.dispatch("setUserId", user.uid);
+      store.dispatch("fetchUsers");
+      store.dispatch("fetchDurac").then(() => {
+        store.dispatch("subscribeDuracSeason").then(unsub => {
+          unsubDuracSeason = unsub;
+        });
+      });
+
       // only redirect to /home if user comes from /sign-in
       if (router.currentRoute.name === LOGIN.name) {
         router.push(HOME.path);
       }
     } else {
-      store.commit(MUTATIONS.RESET_USER);
+      store.dispatch("setUserId");
+      if (typeof unsubDuracSeason === "function") unsubDuracSeason();
       router.push(LOGIN.path);
     }
   });
