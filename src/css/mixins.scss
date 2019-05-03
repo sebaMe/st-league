@@ -15,7 +15,7 @@
 }
 
 @mixin border-comic {
-  border: solid $color-sec;
+  border: solid $color-prim;
   border-width: 4px 4px 3px 5px;
   border-radius: 95% 11% 96% 5%/4% 85% 6% 90%;
   transform: rotate(2deg);

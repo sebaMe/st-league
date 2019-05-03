@@ -1,5 +1,8 @@
 <template>
-  <div class="component__vuc-card">
+  <div v-if="loading" class="component__vuc-card">
+    <v-progress-linear v-if="loading" color="secondary" :indeterminate="true"></v-progress-linear>
+  </div>
+  <div v-else class="component__vuc-card">
     <div v-if="topMsg.length > 0" class="top-left">{{topMsg}}</div>
     <header v-if="$slots.header !== undefined" class="vuc-card_header">
       <slot name="header"></slot>
@@ -25,6 +28,10 @@ export default {
     bottomMsg: {
       type: String,
       default: ""
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   }
 };
@@ -65,15 +72,17 @@ export default {
     display: flex;
     flex: 0 0 30px;
     font-size: 20px;
+    align-items: center;
     justify-content: center;
     color: $color-sec;
   }
   .vuc-card_content {
     flex: 1;
-    overflow: auto;
+    margin: 5px 0;
   }
   .vuc-card_footer {
     display: flex;
+    margin-top: 5px;
     justify-content: center;
   }
 }
