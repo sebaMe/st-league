@@ -142,7 +142,7 @@ export default {
   margin: auto;
   .durac-title {
     flex: 1;
-    font-size: 20px;
+    font-size: 18px;
   }
   .contenders {
     font-size: 18px;

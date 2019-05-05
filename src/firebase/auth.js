@@ -1,9 +1,7 @@
 import firebase from "firebase/app";
-import "firebase/auth";
 
 import { router, ROUTES, INTERNAL_ROUTES } from "../router/router";
 import { store } from "../store/store";
-import { MUTATIONS } from "../store/mutations";
 
 export const getCurrentUser = () => {
   return firebase.auth().currentUser || undefined;

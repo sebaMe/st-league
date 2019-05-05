@@ -60,7 +60,7 @@ export default {
   border-color: $color-prim;
   background-color: #fff;
   color: $color-sec;
-  font-size: 22px;
+  font-size: 20px;
   height: fit-content;
   outline: none;
   cursor: pointer;
@@ -88,20 +88,12 @@ export default {
     pointer-events: none;
   }
 
-  &:hover:not(:active) {
+  &:active {
     background-color: $color-prim;
-    transition: background-color 0.2s ease;
     div,
     span {
-      color: #fff;
+      color: #fff !important;
     }
-  }
-
-  &:active {
-    background-color: #fff;
-    color: $color-sec;
-    border-color: $color-sec;
-    transition: none;
   }
 
   &.x--loading {
