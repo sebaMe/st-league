@@ -10,7 +10,7 @@
       class="sign-in-form"
       top-msg="Sign in, Maggot!"
       bottom-msg="Welcooome to the DANGER-Zone!"
-      banner-url="https://media.giphy.com/media/ueISkGMBeb5kI/giphy.gif"
+      banner-url="https://firebasestorage.googleapis.com/v0/b/st-league-x.appspot.com/o/banners%2Flogin.gif?alt=media&token=b3966378-48a1-48ff-aec1-f78f6b0ea7af"
     >
       <template slot="header">Sign In</template>
       <v-form ref="form" v-model="valid" lazy-validation>
@@ -33,16 +33,13 @@
           required
         ></v-text-field>
       </v-form>
-      <v-btn
+      <vuc-btn
         slot="footer"
+        :icon="$options.icons.HOT"
+        @click="submit"
         :disabled="!valid || loading"
         :loading="loading"
-        @click="submit"
-        color="primary"
-      >
-        <v-icon left>{{$options.icons.HOT}}</v-icon>Enter
-        <v-icon right>{{$options.icons.HOT}}</v-icon>
-      </v-btn>
+      >Enter</vuc-btn>
     </vuc-card>
   </vuc-frame>
 </template>
@@ -54,12 +51,14 @@ import { authWithFB } from "../firebase/auth";
 
 import VucFrame from "../components/VucFrame";
 import VucCard from "../components/VucCard";
+import VucBtn from "../components/VucBtn";
 
 export default {
   name: "Login",
   components: {
     VucFrame,
-    VucCard
+    VucCard,
+    VucBtn
   },
   data() {
     return {

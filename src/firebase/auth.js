@@ -21,6 +21,7 @@ export async function signOutWithFB() {
 export const initAuthRouteGuard = () => {
   const { HOME } = ROUTES;
   const { LOGIN } = INTERNAL_ROUTES;
+  let unsubUsers;
   let unsubDuracSeason;
   // listens to route-changes
   // route-changes allowed if user is authed, else redirect to /sign-in page
@@ -38,7 +39,9 @@ export const initAuthRouteGuard = () => {
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
       store.dispatch("setUserId", user.uid);
-      store.dispatch("fetchUsers");
+      store.dispatch("subscribeUsers").then(unsub => {
+        unsubUsers = unsub;
+      });
       store.dispatch("fetchDurac").then(() => {
         store.dispatch("subscribeDuracSeason").then(unsub => {
           unsubDuracSeason = unsub;
@@ -50,8 +53,18 @@ export const initAuthRouteGuard = () => {
         router.push(HOME.path);
       }
     } else {
-      store.dispatch("setUserId");
-      if (typeof unsubDuracSeason === "function") unsubDuracSeason();
+      store.dispatch("setUserId", undefined);
+
+      if (typeof unsubUsers === "function") {
+        unsubUsers();
+        unsubUsers = undefined;
+      }
+
+      if (typeof unsubDuracSeason === "function") {
+        unsubDuracSeason();
+        unsubDuracSeason = undefined;
+      }
+
       router.push(LOGIN.path);
     }
   });

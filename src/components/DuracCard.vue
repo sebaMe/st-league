@@ -3,37 +3,31 @@
     class="durac-card"
     top-msg="prepare yourselfs..."
     bottom-msg="...lunch is coming!"
-    banner-url="https://cdn.inquisitr.com/wp-content/uploads/2019/04/One-Punch-Man-S2E3-Recap.jpg"
+    :banner-url="bannerUrl"
     :loading="loadingDurac"
   >
     <template slot="header">
-      <v-icon color="primary" left>{{$options.icons.DURAC}}</v-icon>
+      <vuc-icon color="primary">{{$options.icons.DURAC}}</vuc-icon>
       <span class="durac-title">{{durac.name}}</span>
 
       <vuc-overlay>
-        <v-btn slot="activator" flat class="contenders" color="primary">
-          <v-icon left>{{$options.icons.PLAYERS}}</v-icon>
-          {{`Players (${playersAmount})`}}
-        </v-btn>
-        <vuc-card class="player-recruiter" top-msg="mhmmm fresh meat...">
+        <vuc-btn slot="activator" :icon="$options.icons.PLAYERS">{{`Players (${playersAmount})`}}</vuc-btn>
+        <vuc-card class="player-recruiter">
           <template slot="header">Recruit new players!</template>
-          <div class="user-list">
-            <div class="label">{{`Scaredy Cats (${usersAmount})`}}</div>
-            <v-btn
-              v-for="user in usersList"
+          <ul class="user-list">
+            <li class="label">{{`Noobs (${usersAmount})`}}</li>
+            <vuc-btn
+              v-for="user in userList"
               :key="user.id"
+              tag="li"
               class="user-item"
-              @click="recruitPlayer(user.id)"
-              flat
-            >
-              <v-icon left>{{$options.icons.ADD_PLAYER}}</v-icon>
-              {{user.name}}
-            </v-btn>
-          </div>
-          <div class="player-list">
-            <div class="label">{{`Players (${playersAmount})`}}</div>
-            <div v-for="player in players" :key="player.id" class="player-item">{{player.name}}</div>
-          </div>
+              @click="recruitDuracPlayer(user.id)"
+            >{{user.name}}</vuc-btn>
+          </ul>
+          <ul class="player-list">
+            <li class="label">{{`Players (${playersAmount})`}}</li>
+            <li v-for="player in playerList" :key="player.id" class="player-item">{{player.name}}</li>
+          </ul>
         </vuc-card>
       </vuc-overlay>
     </template>
@@ -41,7 +35,7 @@
     <section class="current-season">
       <div class="season-info">
         <div class="season-name">{{duracSeason.name}}</div>
-        <div class="match-day">{{matchDay}}</div>
+        <div class="match-day">{{seasonDay}}</div>
       </div>
       <div class="days-left">
         <span class="label">Days left ...</span>
@@ -49,13 +43,18 @@
       </div>
     </section>
 
-    <div class="arena">
-      <v-btn class="new-match" color="secondary" @click="addDuracMatch">
-        <v-icon left>{{$options.icons.NEW}}</v-icon>Start new match
-        <v-icon right>{{$options.icons.NEW}}</v-icon>
-      </v-btn>
-      <div v-for="ts in matchList" :key="ts" class="match-item">{{ts}}</div>
-    </div>
+    <section class="match-history">
+      <div class="match-menu">
+        <durac-match :playerList="playerList" :matchList="matchList"></durac-match>
+        <vuc-btn disabled :icon="$options.icons.MAIN">Rankings</vuc-btn>
+      </div>
+      <ul class="match-list">
+        <vuc-btn v-for="(ts, index) in matchList" :key="ts" tag="li" class="match-item">
+          <span class="match-number">{{getMatchNumber(index)}}</span>
+          <span>{{ts | fullDate}}</span>
+        </vuc-btn>
+      </ul>
+    </section>
   </vuc-card>
 </template>
 
@@ -66,6 +65,9 @@ import { mapActions, mapGetters } from "vuex";
 
 import VucCard from "../components/VucCard";
 import VucOverlay from "../components/VucOverlay";
+import VucBtn from "../components/VucBtn";
+import VucIcon from "../components/VucIcon";
+import DuracMatch from "../components/DuracMatch";
 
 import { daysBetween } from "../utils/date";
 
@@ -73,12 +75,16 @@ export default {
   name: "DuracCard",
   components: {
     VucCard,
-    VucOverlay
+    VucOverlay,
+    VucBtn,
+    VucIcon,
+    DuracMatch
   },
   methods: {
-    ...mapActions(["recruitDuracPlayer", "addDuracMatch"]),
-    recruitPlayer(userId) {
-      this.recruitDuracPlayer(userId);
+    ...mapActions(["recruitDuracPlayer"]),
+    getMatchNumber(index) {
+      const num = this.matchList.length - index;
+      return num < 10 ? "0" + num : num;
     }
   },
   computed: {
@@ -86,7 +92,10 @@ export default {
     loadingDurac() {
       return _get(this.duracSeason, "id") === undefined;
     },
-    usersList() {
+    bannerUrl() {
+      return _get(this.duracSeason, "bannerUrl", "");
+    },
+    userList() {
       const users = this.users || {};
       const players = _get(this.duracSeason, "players", {});
 
@@ -96,9 +105,9 @@ export default {
       return _orderBy(filteredUsers, "name", "asc");
     },
     usersAmount() {
-      return this.usersList.length;
+      return this.userList.length;
     },
-    players() {
+    playerList() {
       const players = _get(this.duracSeason, "players", {});
       const mappedPlayers = Object.values(players).map(({ id }) => {
         return { id, name: _get(this.users, `${id}.name`) };
@@ -106,22 +115,23 @@ export default {
       return _orderBy(mappedPlayers, "name", "asc");
     },
     playersAmount() {
-      return this.players.length;
+      return this.playerList.length;
     },
-    matchDay() {
-      const seasonDays = daysBetween(
-        this.duracSeason.start,
-        this.duracSeason.end
-      );
-      const daysPlayed = daysBetween(this.duracSeason.start, new Date());
-      return `Matchday ${daysPlayed} of ${seasonDays}`;
+    seasonDay() {
+      const { start, end } = this.duracSeason;
+
+      const seasonDays = daysBetween(start, end);
+      const daysPlayed = daysBetween(start, new Date());
+      return `Day of Season - ${daysPlayed} of ${seasonDays}`;
     },
     daysLeft() {
       const daysLeft = daysBetween(new Date(), this.duracSeason.end);
-      return daysLeft;
+      return daysLeft + 1;
     },
     matchList() {
-      return _get(this.duracSeason, "matches", []).map(ts => ts.getTime());
+      return _get(this.duracSeason, "matches", [])
+        .sort()
+        .reverse();
     }
   }
 };
@@ -132,6 +142,7 @@ export default {
   margin: auto;
   .durac-title {
     flex: 1;
+    font-size: 20px;
   }
   .contenders {
     font-size: 18px;
@@ -157,53 +168,47 @@ export default {
     }
   }
 
-  .arena {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    .new-match {
-      @include font-bangers;
-      font-size: 20px;
+  .match-history {
+    .match-menu {
+      display: flex;
+      justify-content: space-evenly;
     }
     .match-item {
       @include card-shadow-low;
-      margin-bottom: 4px;
+      border: none;
+      border-radius: 0;
+      margin-bottom: 10px;
+    }
+    .match-number {
+      margin-right: 10px;
+      color: $color-prim;
     }
   }
 }
 .player-recruiter {
   .vuc-card_content {
+    @include font-bangers;
     display: flex;
+    justify-content: space-evenly;
 
     .label {
       text-align: center;
       color: $color-prim;
     }
-    .player-list,
-    .user-list {
-      display: flex;
-      flex-direction: column;
+
+    .user-list,
+    .player-list {
       flex: 1;
     }
 
-    .player-item,
-    .user-item {
-      @include font-bangers;
-      @include border-comic;
-      flex: 0 0 auto;
-      padding: 2px;
-      margin-bottom: 2px;
-      text-align: center;
-    }
-
     .player-item {
-      color: $color-sec;
+      @include border-comic;
+      margin: 5px;
+      color: #fff;
       border-color: $color-prim;
-    }
-
-    .user-item {
-      border-color: #000;
+      background-color: $color-prim;
+      font-size: 18px;
+      text-align: center;
     }
   }
 }

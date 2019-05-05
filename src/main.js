@@ -13,12 +13,14 @@ import "./plugins/vuetify";
 import "./plugins/vue.notifications";
 
 // Mixins
-useIconsMixin(Vue);
+useIconsMixin();
+usefullDateFilter();
 
 // Authentication
 import { initFB } from "./firebase/db";
 import { initAuthRouteGuard } from "./firebase/auth";
 import { useIconsMixin } from "./utils/mixins";
+import { usefullDateFilter } from "./utils/filters";
 
 Vue.config.productionTip = false;
 

@@ -7,13 +7,7 @@
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field v-model="name" :rules="nameRules" counter="20" label="name" clearable></v-text-field>
       </v-form>
-      <v-btn
-        slot="footer"
-        :disabled="!valid || loading"
-        :loading="loading"
-        @click="submit"
-        color="primary"
-      >Submit</v-btn>
+      <vuc-btn slot="footer" @click="submit" :disabled="!valid || loading" :loading="loading">Submit</vuc-btn>
     </vuc-card>
   </vuc-frame>
 </template>
@@ -23,6 +17,7 @@ import { mapActions, mapGetters } from "vuex";
 
 import VucFrame from "../components/VucFrame";
 import VucCard from "../components/VucCard";
+import VucBtn from "../components/VucBtn";
 
 import { notifyError, notifyGeneral } from "../plugins/vue.notifications";
 
@@ -30,7 +25,8 @@ export default {
   name: "User",
   components: {
     VucFrame,
-    VucCard
+    VucCard,
+    VucBtn
   },
   data() {
     return {
@@ -61,9 +57,7 @@ export default {
         this.updateUser({ name: this.name })
           .then(() => {
             this.loading = false;
-            notifyGeneral(
-              `${this.name}..., what fuckin' stu... nning name!`
-            );
+            notifyGeneral(`${this.name}..., what fuckin' stu... nning name!`);
           })
           .catch(({ message }) => {
             notifyError(message);

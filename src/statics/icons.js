@@ -5,7 +5,14 @@ export const icons = {
   LOGIN: "star",
   LOGOUT: "exit_to_app",
   NEW: "new_releases",
-  DURAC: "healing",
+  DURAC: "local_dining",
   PLAYERS: "people",
-  ADD_PLAYER: "person_add"
+  ADD_PLAYER: "person_add",
+  CLOSE: "close",
+  HEART: "favorite",
+  ADD_SCORE: "control_point",
+  LOSER: "sentiment_very_dissatisfied",
+  WINNER: "sentiment_very_satisfied",
+  PARTICIPATED: "mood",
+  DNS: "close"
 };

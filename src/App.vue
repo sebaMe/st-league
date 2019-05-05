@@ -91,6 +91,18 @@ export default {
 <style lang="scss">
 #app {
   @include animation-fade-slide-top;
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  div,
+  button,
+  li,
+  span,
+  td,
+  th {
+    user-select: none;
+  }
   .home-title {
     @include font-bangers;
     font-size: 2em;

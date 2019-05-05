@@ -1,5 +1,5 @@
 <template>
-  <v-dialog class="component__vuc-overlay" :disabled="disabled" v-model="dialog" max-width="400" lazy>
+  <v-dialog class="component__vuc-overlay" :persistent="persistent" :disabled="disabled" v-model="dialog" max-width="400" lazy>
     <slot name="activator" slot="activator" :disabled="disabled"></slot>
     <slot></slot>
   </v-dialog>
@@ -10,6 +10,10 @@ export default {
   name: "VucOverlay",
   props: {
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    persistent: {
       type: Boolean,
       default: false
     }

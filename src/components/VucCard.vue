@@ -90,7 +90,7 @@ export default {
     @include font-bangers;
     display: flex;
     flex: 0 0 30px;
-    margin-top: 15px;
+    margin-top: 5px;
     padding: 0 5px;
     font-size: 20px;
     align-items: center;

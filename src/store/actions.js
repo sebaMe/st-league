@@ -4,18 +4,71 @@ import firebase from "firebase";
 import { MUTATIONS } from "./mutations";
 import { getCurrentUser } from "../firebase/auth";
 import { updateDocument, mergeDocument } from "../firebase/update";
-import { fetchDocument, fetchCollection } from "../firebase/fetch";
+import { fetchDocument } from "../firebase/fetch";
 import { listenToDocument } from "../firebase/listen";
+import { getSeasonBannerUrl } from "../firebase/storage";
 
 export const actions = {
-  // User
+  // General
+
   setUserId({ commit }, userId) {
     if (userId) {
       commit(MUTATIONS.SET_USERID, userId);
     } else {
-      commit(MUTATIONS.SET_USERID);
+      commit(MUTATIONS.SET_USERID, undefined);
     }
   },
+
+  // Fetches
+
+  fetchDurac: async function({ commit }) {
+    try {
+      const durac = await fetchDocument("games/durac");
+      commit(MUTATIONS.SET_DURAC, durac);
+      return;
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
+  fetchSeasonBanner(context, seasonId) {
+    return getSeasonBannerUrl(seasonId);
+  },
+
+  // Subscriptions
+
+  subscribeUsers({ commit, getters }) {
+    const unsub = listenToDocument("users/register1", function({ content }) {
+      commit(MUTATIONS.SET_USERS, content);
+    });
+    return Promise.resolve(unsub);
+  },
+
+  subscribeDuracSeason({ commit, getters }) {
+    const seasonId = getters.durac.season;
+    const unsub = listenToDocument(`games/durac/seasons/${seasonId}`, function({
+      name,
+      start,
+      end,
+      players,
+      matches,
+      bannerUrl
+    }) {
+      commit(MUTATIONS.SET_DURAC_SEASON, {
+        id: seasonId,
+        name,
+        start: start.toMillis(),
+        end: end.toMillis(),
+        players,
+        matches: matches.map(ts => ts.toMillis()),
+        bannerUrl
+      });
+    });
+    return Promise.resolve(unsub);
+  },
+
+  // Updates
+
   updateUser: async function({ commit, getters }, { name }) {
     const user = getCurrentUser();
     const uid = _get(user, "uid");
@@ -29,7 +82,9 @@ export const actions = {
         await user.updateProfile({
           displayName
         });
-        await updateDocument(`users/${uid}`, { name: displayName });
+        await mergeDocument("users/register1", {
+          content: { [uid]: { name: displayName } }
+        });
         commit(MUTATIONS.SET_USERS_PROPERTY, {
           id: uid,
           key: "name",
@@ -40,47 +95,6 @@ export const actions = {
         console.error(err);
       }
     }
-  },
-
-  fetchUsers({ commit, getters }) {
-    fetchCollection("users")
-      .then(users => {
-        commit(MUTATIONS.SET_USERS, users);
-      })
-      .catch(() => {
-        commit(MUTATIONS.SET_USERS);
-      });
-  },
-
-  fetchDurac: async function({ commit }) {
-    try {
-      const durac = await fetchDocument("games/durac");
-      commit(MUTATIONS.SET_DURAC, durac);
-      return;
-    } catch (err) {
-      console.error(err);
-    }
-  },
-
-  subscribeDuracSeason({ commit, getters }) {
-    const seasonId = getters.durac.season;
-    const unsub = listenToDocument(`games/durac/seasons/${seasonId}`, function({
-      name,
-      start,
-      end,
-      players,
-      matches
-    }) {
-      commit(MUTATIONS.SET_DURAC_SEASON, {
-        id: seasonId,
-        name,
-        start: start.toDate(),
-        end: end.toDate(),
-        players,
-        matches: matches.map(ts => ts.toDate())
-      });
-    });
-    return Promise.resolve(unsub);
   },
 
   recruitDuracPlayer({ getters }, playerId) {
