@@ -1,3 +1,8 @@
-$color-prim: #008F95;
-$color-sec: #E24E42;
-$color-acc: #E9B000;
+$color-prim: #008f95;
+$color-sec: #e24e42;
+$color-acc: #e9b000;
+
+$color-winner: $color-acc;
+$color-dns: grey;
+$color-loser: $color-sec;
+$color-participated: $color-prim;

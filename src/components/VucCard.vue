@@ -59,26 +59,28 @@ export default {
   overflow: hidden;
   background-color: #fff;
 
-  .top-left,
-  .bottom-right {
-    padding: 0 10px;
-    background-color: #fff;
-    border: 1px solid #000;
-    transform: skew(-15deg);
-    font-size: 12px;
-  }
-
   .vuc-card_banner {
     position: relative;
     flex: 0 0 100px;
     background-size: cover;
     background-position: center;
     border-bottom: 1px solid #000;
+
+    .top-left,
+    .bottom-right {
+      padding: 0 10px;
+      background-color: #fff;
+      border: 1px solid #000;
+      transform: skew(-15deg);
+      font-size: 12px;
+    }
+
     .top-left {
       position: absolute;
       top: -1px;
       left: -4px;
     }
+
     .bottom-right {
       position: absolute;
       right: -4px;
@@ -86,27 +88,30 @@ export default {
     }
   }
 
+  .vuc-card_header,
+  .vuc-card_content,
+  .vuc-card_footer {
+    padding: 0 5px;
+  }
+
   .vuc-card_header {
     @include font-bangers;
     display: flex;
-    flex: 0 0 30px;
-    margin-top: 5px;
-    padding: 0 5px;
     font-size: 20px;
     align-items: center;
     justify-content: center;
+    padding-top: 5px;
     color: $color-sec;
   }
   .vuc-card_content {
     flex: 1;
-    padding: 0 5px;
-    margin-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
   .vuc-card_footer {
     display: flex;
-    margin-top: 5px;
     justify-content: center;
-    margin-bottom: 10px;
+    padding-bottom: 5px;
   }
 }
 </style>

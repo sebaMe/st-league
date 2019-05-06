@@ -51,6 +51,7 @@ export default {
 .component__vuc-btn {
   @include font-bangers;
   @include border-comic;
+  @include card-shadow-low;
 
   position: relative;
   display: flex;
@@ -79,7 +80,6 @@ export default {
 
     i {
       margin-right: 5px;
-      font-size: inherit;
     }
   }
 

@@ -1,6 +1,5 @@
 <template>
   <vuc-frame class="view__home">
-    <span slot="header" class="view-title">ST League</span>
     <durac-card></durac-card>
   </vuc-frame>
 </template>

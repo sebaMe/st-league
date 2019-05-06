@@ -9,7 +9,7 @@
     <vuc-card
       class="sign-in-form"
       top-msg="Sign in, Maggot!"
-      bottom-msg="Welcooome to the DANGER-Zone!"
+      bottom-msg="Welcome to the DANGER-Zone..."
       banner-url="https://firebasestorage.googleapis.com/v0/b/st-league-x.appspot.com/o/banners%2Flogin.gif?alt=media&token=b3966378-48a1-48ff-aec1-f78f6b0ea7af"
     >
       <template slot="header">Sign In</template>

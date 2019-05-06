@@ -29,6 +29,7 @@ export default {
 .component__vuc-icon {
   margin-right: 10px;
   align-self: center;
+  font-size: inherit;
 
   &.x--primary {
     color: $color-prim;
