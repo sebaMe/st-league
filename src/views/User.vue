@@ -5,7 +5,7 @@
     </template>
     <vuc-card class="user-form" bottom-msg="This profile is a disgrace!">
       <v-form ref="form" v-model="valid" lazy-validation>
-        <v-text-field v-model="name" :rules="nameRules" counter="20" label="name" clearable></v-text-field>
+        <v-text-field v-model="name" :rules="nameRules" :counter="maxNameLength" label="name" clearable></v-text-field>
       </v-form>
       <vuc-btn slot="footer" @click="submit" :disabled="!valid || loading" :loading="loading">Submit</vuc-btn>
     </vuc-card>
@@ -33,10 +33,12 @@ export default {
       valid: true,
       name: "",
       loading: false,
+      minNameLength: 3,
+      maxNameLength: 20,
       nameRules: [
         v =>
-          (typeof v === "string" && v.length >= 3 && v.length <= 10) ||
-          "name doesnt match criteria"
+          (typeof v === "string" && v.length >= this.minNameLength && v.length <= this.maxNameLength) ||
+          `min. ${this.minNameLength} and max. ${this.maxNameLength} characters, deal with it!`
       ]
     };
   },

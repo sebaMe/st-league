@@ -19,16 +19,19 @@
     </template>
 
     <div class="durac-menu">
-      <durac-match :playerList="playerList" :matchList="matchList"></durac-match>
-      <vuc-btn disabled :icon="$options.icons.MAIN">Rankings</vuc-btn>
       <add-players :userList="userList" :playerList="playerList"></add-players>
+      <durac-match :disabled="!allowNewMatch" :playerList="playerList" :matchList="matchList"></durac-match>
+      <vuc-btn disabled :icon="$options.icons.MAIN">Rankings</vuc-btn>
     </div>
 
     <ul class="match-list">
-      <vuc-btn v-for="(ts, index) in matchList" :key="ts" tag="li" class="match-item">
-        <span class="match-number">{{getMatchNumber(index)}}</span>
-        <span>{{ts | fullDate}}</span>
-      </vuc-btn>
+      <li v-for="(ts, index) in matchList" :key="ts" class="match-item">
+        <vuc-btn class="match-button" @click="selectMatch(ts)">
+          <span class="match-number">{{getMatchNumber(index)}}</span>
+          <span>{{ts | fullDate}}</span>
+        </vuc-btn>
+        <durac-result v-if="isSelectedMatch(ts)" :matchId="ts" :playerList="playerList"></durac-result>
+      </li>
     </ul>
   </vuc-card>
 </template>
@@ -44,6 +47,7 @@ import VucBtn from "../components/VucBtn";
 import VucIcon from "../components/VucIcon";
 import DuracMatch from "../components/DuracMatch";
 import AddPlayers from "../components/AddPlayers";
+import DuracResult from "../components/DuracResult";
 
 import { daysBetween } from "../utils/date";
 
@@ -55,12 +59,28 @@ export default {
     VucBtn,
     VucIcon,
     DuracMatch,
-    AddPlayers
+    AddPlayers,
+    DuracResult
+  },
+  data() {
+    return {
+      selectedMatchId: undefined
+    };
   },
   methods: {
     getMatchNumber(index) {
       const num = this.matchList.length - index;
       return num < 10 ? "0" + num : num;
+    },
+    selectMatch(matchId) {
+      if (this.isSelectedMatch(matchId)) {
+        this.selectedMatchId = undefined;
+      } else {
+        this.selectedMatchId = matchId;
+      }
+    },
+    isSelectedMatch(matchId) {
+      return this.selectedMatchId === matchId;
     }
   },
   computed: {
@@ -70,6 +90,9 @@ export default {
     },
     bannerUrl() {
       return _get(this.duracSeason, "bannerUrl", "");
+    },
+    allowNewMatch() {
+      return this.daysLeft > 0 && this.matchList.length <= 100;
     },
     userList() {
       const users = this.users || {};
@@ -142,10 +165,17 @@ export default {
     justify-content: space-evenly;
   }
   .match-item {
-    @include card-shadow-low;
+    margin-top: 10px;
+    &:not(:last-child) {
+      border-bottom: 2px solid $color-prim;
+    }
+  }
+  .match-button {
+    width: 100%;
     border: none;
     border-radius: 0;
-    margin-bottom: 10px;
+    margin: 0;
+    box-shadow: none;
   }
   .match-number {
     margin-right: 10px;

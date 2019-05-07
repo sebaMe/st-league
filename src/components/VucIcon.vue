@@ -27,9 +27,9 @@ export default {
 
 <style lang="scss">
 .component__vuc-icon {
-  margin-right: 10px;
   align-self: center;
   font-size: inherit;
+  margin: 0 3px;
 
   &.x--primary {
     color: $color-prim;

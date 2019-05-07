@@ -1,5 +1,5 @@
 import _get from "lodash.get";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 import { MUTATIONS } from "./mutations";
 import { getCurrentUser } from "../firebase/auth";
@@ -7,6 +7,8 @@ import { updateDocument, mergeDocument } from "../firebase/update";
 import { fetchDocument } from "../firebase/fetch";
 import { listenToDocument } from "../firebase/listen";
 import { getSeasonBannerUrl } from "../firebase/storage";
+import { firestore } from "../firebase/db";
+import { cloneObject } from "../utils/commons";
 
 export const actions = {
   // General
@@ -106,12 +108,30 @@ export const actions = {
     }
   },
 
-  addDuracMatch({ getters }) {
+  uploadDuracMatch({ getters }, { time, playerResults }) {
     const seasonId = getters.currentDuracSeasonId;
-    if (typeof seasonId === "string") {
-      updateDocument(`games/durac/seasons/${seasonId}`, {
-        matches: firebase.firestore.FieldValue.arrayUnion(new Date())
+    const season = getters.duracSeason;
+    const playerIds = Object.keys(playerResults);
+
+    const docRef = firestore.doc(`games/durac/seasons/${seasonId}`);
+    const batch = firestore.batch();
+
+    playerIds.forEach(playerId => {
+      const playerPath = `players.${playerId}.history`;
+      const playerResult = playerResults[playerId];
+      const playerHistoryClone = cloneObject(_get(season, playerPath));
+
+      playerHistoryClone.push(playerResult);
+
+      batch.update(docRef, {
+        [playerPath]: playerHistoryClone
       });
-    }
+    });
+
+    batch.update(docRef, {
+      matches: firebase.firestore.FieldValue.arrayUnion(time)
+    });
+
+    return batch.commit();
   }
 };

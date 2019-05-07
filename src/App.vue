@@ -20,15 +20,13 @@
 
       <v-toolbar v-if="userId !== undefined" color="primary" dark fixed app dense>
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <v-toolbar-title>
-          <v-btn flat :to="navHome.path">
-            <v-icon left>{{navHome.icon}}</v-icon>
-            <span class="home-title">{{navHome.name}}</span>
-            <v-icon right>{{navHome.icon}}</v-icon>
-          </v-btn>
-        </v-toolbar-title>
+        <v-btn class="home-button" flat :to="navHome.path">
+          <v-icon left>{{navHome.icon}}</v-icon>
+          <span class="home-title">{{navHome.name}}</span>
+          <v-icon right>{{navHome.icon}}</v-icon>
+        </v-btn>
         <v-spacer></v-spacer>
-        <v-toolbar-items class="hidden-sm-and-down">
+        <v-toolbar-items class="toolbar-menu hidden-sm-and-down">
           <v-btn v-for="item in navItems" :key="item.path" flat :to="item.path">
             <v-icon left>{{item.icon}}</v-icon>
             {{item.name}}

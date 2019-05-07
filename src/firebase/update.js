@@ -1,7 +1,7 @@
 import { firestore } from "./db";
 
 export async function updateDocument(path, fieldObject) {
-  return await firestore
+  return firestore
     .doc(path)
     .update(fieldObject)
     .catch(err => {
@@ -11,7 +11,7 @@ export async function updateDocument(path, fieldObject) {
 }
 
 export async function mergeDocument(path, object = {}) {
-  return await firestore
+  return firestore
     .doc(path)
     .set(object, { merge: true })
     .catch(err => {

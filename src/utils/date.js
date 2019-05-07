@@ -80,15 +80,29 @@ export const getMonthName = (date, short = false) => {
   return undefined;
 };
 
+export const addLeadingZero = number => {
+  const parsedNumber = parseInt(number);
+  return isNaN(parsedNumber)
+    ? ""
+    : parsedNumber < 10
+    ? "0" + parsedNumber
+    : "" + parsedNumber;
+};
+
 export const getDay = date => {
   if (isValidDate(date)) {
     const day = date.getDate();
-    return day < 10 ? "0" + day : "" + day;
+    return addLeadingZero(day);
   }
-  return undefined;
+  return "";
 };
 
 export const getFullDate = ts => {
   const date = toDate(ts);
-  return `${getDayName(date, true)}, ${getDay(date)} ${getMonthName(date, true)} ${date.getFullYear()} - ${date.toLocaleTimeString()}`;
+  return `${getDayName(date, true)}, ${getDay(date)} ${getMonthName(
+    date,
+    true
+  )} ${date.getFullYear()} - ${addLeadingZero(
+    date.getHours()
+  )}:${addLeadingZero(date.getMinutes())}`;
 };

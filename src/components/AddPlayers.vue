@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" max-width="400" lazy>
     <vuc-btn slot="activator" :icon="$options.icons.PLAYERS">{{`Players (${playersAmount})`}}</vuc-btn>
 
-    <vuc-card class="add-players">
+    <vuc-card v-if="dialog === true" class="add-players">
       <template slot="header">Add new players!</template>
       <ul class="user-list">
         <li class="label">{{`Noobs (${usersAmount})`}}</li>

@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" :class="classes" :disabled="disabled" @click="$emit('click')">
+  <component :is="tag" :class="classes" :disabled="disabled" @click="emitClick">
     <v-progress-circular
       class="vuc-btn_spinner"
       v-if="loading"
@@ -7,8 +7,9 @@
       :indeterminate="true"
     ></v-progress-circular>
     <div class="vuc-btn_content">
-      <vuc-icon>{{icon}}</vuc-icon>
+      <vuc-icon v-if="icon.length > 0">{{icon}}</vuc-icon>
       <slot></slot>
+      <span  v-if="charge" class="charge-indicator">{{`${charged ? '!' : "?"}`}}</span>
     </div>
   </component>
 </template>
@@ -34,14 +35,37 @@ export default {
       type: Boolean,
       default: false
     },
+    charge: {
+      type: Boolean,
+      default: false
+    },
     disabled: {
       type: Boolean,
       default: false
     }
   },
+  data() {
+    return {
+      charged: false
+    };
+  },
+  methods: {
+    emitClick() {
+      if (this.charge === false || this.charged) {
+        this.charged = false;
+        this.$emit("click");
+      } else {
+        this.charged = true;
+      }
+    }
+  },
   computed: {
     classes() {
-      return ["component__vuc-btn", { "x--loading": this.loading }];
+      return [
+        "component__vuc-btn",
+        { "x--loading": this.loading },
+        { "x--charged": this.charged }
+      ];
     }
   }
 };
@@ -81,10 +105,16 @@ export default {
     i {
       margin-right: 5px;
     }
+
+    .charge-indicator {
+      margin-left: 5px;
+    }
   }
 
   &:disabled {
     opacity: 0.4;
+    color: grey;
+    border-color: grey;
     pointer-events: none;
   }
 
@@ -102,6 +132,12 @@ export default {
     .vuc-btn_content {
       visibility: hidden;
     }
+  }
+
+  &.x--charged {
+    color: #fff;
+    border-color: $color-sec;
+    background-color: $color-sec;
   }
 }
 </style>

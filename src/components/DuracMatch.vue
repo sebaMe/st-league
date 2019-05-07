@@ -1,8 +1,8 @@
 <template>
-  <v-dialog v-model="dialog" max-width="400" lazy persistent>
-    <vuc-btn slot="activator" :icon="$options.icons.NEW">New Match</vuc-btn>
+  <v-dialog :disabled="disabled" v-model="dialog" max-width="400" lazy persistent>
+    <vuc-btn slot="activator" :disabled="disabled" :icon="$options.icons.NEW">New Match</vuc-btn>
 
-    <vuc-card class="durac-match">
+    <vuc-card v-if="dialog === true" class="durac-match">
       <template slot="header">
         <span class="match-number">{{`Match - ${matchNumber}`}}</span>
         <vuc-btn :icon="$options.icons.CLOSE" @click="dialog = false"></vuc-btn>
@@ -24,9 +24,9 @@
           </vuc-btn>
           <vuc-btn
             class="player-score"
-            :icon="$options.icons.ADD_SCORE"
+            :icon="$options.icons.STROKE"
             @click="spinResultScore(player.id)"
-          >-{{getStrokeResult(player.id)}}</vuc-btn>
+          >+{{getStrokeResult(player.id)}}</vuc-btn>
           <vuc-btn
             class="player-hearts"
             :icon="$options.icons.HEART"
@@ -34,7 +34,13 @@
           >-{{getHeartResult(player.id)}}</vuc-btn>
         </li>
       </ul>
-      <vuc-btn slot="footer">Submit</vuc-btn>
+      <vuc-btn
+        charge
+        :disabled="playerList.length < 4"
+        :loading="submitting"
+        slot="footer"
+        @click="submitMatch"
+      >Submit</vuc-btn>
     </vuc-card>
   </v-dialog>
 </template>
@@ -49,6 +55,7 @@ import { resultTypes } from "../statics/enums";
 import VucCard from "../components/VucCard";
 import VucBtn from "../components/VucBtn";
 import VucIcon from "../components/VucIcon";
+import { notifyError, notifySuccess } from "../plugins/vue.notifications";
 
 export default {
   name: "DuracMatchCard",
@@ -65,13 +72,18 @@ export default {
     matchList: {
       type: Array,
       default: []
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       dialog: false,
+      submitting: false,
       time: undefined,
-      playerResults: undefined
+      playerResults: {}
     };
   },
   watch: {
@@ -84,8 +96,35 @@ export default {
       immediate: true
     }
   },
+  computed: {
+    matchNumber() {
+      const num = this.matchList.length + 1;
+      return num < 10 ? "0" + num : num;
+    },
+    hasLoser() {
+      return (
+        Object.values(this.playerResults).findIndex(result => {
+          return result[0] === resultTypes.LOSER;
+        }) !== -1
+      );
+    },
+    hasWinner() {
+      return (
+        Object.values(this.playerResults).findIndex(result => {
+          return result[0] === resultTypes.WINNER;
+        }) !== -1
+      );
+    },
+    isMostRecentMatch() {
+      const len = this.matchList.length;
+      if (len > 0) {
+        return this.time > this.matchList[0];
+      }
+      return true;
+    }
+  },
   methods: {
-    ...mapActions(["addDuracMatch"]),
+    ...mapActions(["uploadDuracMatch"]),
     initData() {
       this.time = new Date();
       this.playerResults = cloneObject(this.playerList).reduce((obj, item) => {
@@ -109,15 +148,25 @@ export default {
 
       switch (this.getResultType(playerId)) {
         case resultTypes.PARTICIPATED:
-          _set(this.playerResults, playerId, `${resultTypes.LOSER}10`);
+          if (this.hasLoser && !this.hasWinner) {
+            _set(this.playerResults, playerId, `${resultTypes.WINNER}00`);
+          } else if (this.hasLoser && this.hasWinner) {
+            _set(this.playerResults, playerId, `${resultTypes.ABSENT}01`);
+          } else {
+            _set(this.playerResults, playerId, `${resultTypes.LOSER}10`);
+          }
           break;
         case resultTypes.LOSER:
-          _set(this.playerResults, playerId, `${resultTypes.WINNER}00`);
+          if (this.hasWinner) {
+            _set(this.playerResults, playerId, `${resultTypes.ABSENT}01`);
+          } else {
+            _set(this.playerResults, playerId, `${resultTypes.WINNER}00`);
+          }
           break;
         case resultTypes.WINNER:
-          _set(this.playerResults, playerId, `${resultTypes.DNS}01`);
+          _set(this.playerResults, playerId, `${resultTypes.ABSENT}01`);
           break;
-        case resultTypes.DNS:
+        case resultTypes.ABSENT:
           _set(this.playerResults, playerId, `${resultTypes.PARTICIPATED}00`);
           break;
       }
@@ -125,7 +174,7 @@ export default {
     spinResultScore(playerId) {
       const playerResult = this.getPlayerResult(playerId);
       const strokeResult = parseInt(this.getStrokeResult(playerId));
-      const newResult = strokeResult >= 3 ? 0 : strokeResult + 1;
+      const newResult = strokeResult >= 4 ? 0 : strokeResult + 1;
 
       _set(
         this.playerResults,
@@ -136,7 +185,7 @@ export default {
     spinHeartScore(playerId) {
       const playerResult = this.getPlayerResult(playerId);
       const heartScore = parseInt(this.getHeartResult(playerId));
-      const newResult = heartScore >= 3 ? 0 : heartScore + 1;
+      const newResult = heartScore >= 4 ? 0 : heartScore + 1;
 
       _set(
         this.playerResults,
@@ -152,8 +201,8 @@ export default {
           return this.$options.icons.LOSER;
         case resultTypes.WINNER:
           return this.$options.icons.WINNER;
-        case resultTypes.DNS:
-          return this.$options.icons.DNS;
+        case resultTypes.ABSENT:
+          return this.$options.icons.ABSENT;
       }
     },
     getResultClass(playerId) {
@@ -164,16 +213,29 @@ export default {
           return "x--loser";
         case resultTypes.WINNER:
           return "x--winner";
-        case resultTypes.DNS:
-          return "x--dns";
+        case resultTypes.ABSENT:
+          return "x--absent";
       }
-    }
-  },
-  computed: {
-    ...mapGetters(["users", "durac", "duracSeason"]),
-    matchNumber() {
-      const num = this.matchList.length + 1;
-      return num < 10 ? "0" + num : num;
+    },
+    submitMatch() {
+      const results = cloneObject(this.playerResults);
+      if (this.isMostRecentMatch) {
+        this.submitting = true;
+        this.uploadDuracMatch({ time: this.time, playerResults: results }).then(
+          () => {
+            this.submitting = false;
+            this.dialog = false;
+            notifySuccess(
+              "Hooray! Match was submitted successfully..."
+            );
+          }
+        );
+      } else {
+        notifyError(
+          "There's a more recent game! Too slow buddy..."
+        );
+        this.dialog = false;
+      }
     }
   }
 };
@@ -217,7 +279,7 @@ export default {
       }
       .player-score,
       .player-hearts {
-        flex: 0 0 60px;
+        flex: 0 0 65px;
       }
       &.x--participated {
         .player-name,
@@ -252,15 +314,15 @@ export default {
           }
         }
       }
-      &.x--dns {
+      &.x--absent {
         opacity: 0.5;
         .player-name,
         .player-score,
         .player-hearts {
-          border-color: $color-dns;
-          color: $color-dns;
+          border-color: $color-absent;
+          color: $color-absent;
           &:active {
-            background-color: $color-dns;
+            background-color: $color-absent;
           }
         }
       }

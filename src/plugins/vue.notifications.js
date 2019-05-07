@@ -29,3 +29,13 @@ export const notifyGeneral = (title = "", text = "") => {
     duration: 3000
   });
 };
+
+export const notifySuccess = (title = "", text = "") => {
+  VueRootInstance.$notify({
+    group: "general",
+    type: "success",
+    title,
+    text,
+    duration: 3000
+  });
+};

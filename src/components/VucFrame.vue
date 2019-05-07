@@ -1,12 +1,12 @@
 <template>
   <div class="component__vuc-frame">
-    <header class="vuc-frame_header">
+    <header v-if="$slots.header !== undefined" class="vuc-frame_header">
       <slot name="header"></slot>
     </header>
-    <div class="vuc-frame_content">
+    <div v-if="$slots.default !== undefined" class="vuc-frame_content">
       <slot></slot>
     </div>
-    <footer class="vuc-frame_footer">
+    <footer v-if="$slots.footer !== undefined" class="vuc-frame_footer">
       <slot name="footer"></slot>
     </footer>
   </div>
@@ -30,16 +30,15 @@ export default {
 
 <style lang="scss">
 .component__vuc-frame {
-  display: flex;
-  flex-direction: column;
+  position: relativ;
   width: 100%;
   height: 100%;
-  padding: 10px;
+  padding: 20px 10px;
   .vuc-frame_header {
     display: flex;
-    flex: 0 0 30px;
     align-items: center;
     justify-content: center;
+    padding-bottom: 10px;
     font-size: 25px;
     .view-title {
       @include font-bangers;
@@ -48,7 +47,7 @@ export default {
     }
   }
   .vuc-frame_content {
-    margin-top: 10px;
+    padding-bottom: 10px;
     flex: 1;
   }
 }

@@ -67,10 +67,11 @@ export default {
       login: "",
       pw: "",
       loading: false,
+      loginLength: 10,
       loginRules: [
-        v => (typeof v === "string" && v.length === 10) || "is required"
+        v => (typeof v === "string" && v.length === this.loginLength) || `${this.loginLength} characters ... no more, no less!`
       ],
-      pwRules: [v => !!v || "is required"]
+      pwRules: [v => !!v || "no password ... no competition!"]
     };
   },
   methods: {

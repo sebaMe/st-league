@@ -61,7 +61,7 @@ export default {
 
   .vuc-card_banner {
     position: relative;
-    flex: 0 0 100px;
+    flex: 0 0 120px;
     background-size: cover;
     background-position: center;
     border-bottom: 1px solid #000;
