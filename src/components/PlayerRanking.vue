@@ -22,7 +22,7 @@
 
 <script>
 import _get from "lodash.get";
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 import VucIcon from "../components/VucIcon";
 

@@ -1,9 +1,10 @@
+import _set from "lodash.set";
 import _get from "lodash.get";
 import firebase from "firebase/app";
 
 import { MUTATIONS } from "./mutations";
 import { getCurrentUser } from "../firebase/auth";
-import { updateDocument, mergeDocument } from "../firebase/update";
+import { mergeDocument } from "../firebase/update";
 import { fetchDocument } from "../firebase/fetch";
 import { listenToDocument } from "../firebase/listen";
 import { getSeasonBannerUrl } from "../firebase/storage";
@@ -133,5 +134,22 @@ export const actions = {
     });
 
     return batch.commit();
+  },
+
+  createBackupJson({ getters }) {
+    const backupObj = {};
+    const season = getters.duracSeason;
+
+    _set(backupObj, "users.register1", getters.users);
+    _set(backupObj, "games.durac", getters.durac);
+    _set(backupObj, `games.durac.seasons.${season.id}`, season);
+
+    try {
+      return URL.createObjectURL(
+        new Blob([JSON.stringify(backupObj)], { type: "application/json" })
+      );
+    } catch (err) {
+      console.error(err);
+    }
   }
 };
