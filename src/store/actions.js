@@ -39,9 +39,9 @@ export const actions = {
 
   // Subscriptions
 
-  subscribeUsers({ commit, getters }) {
-    const unsub = listenToDocument("users/register1", function({ content }) {
-      commit(MUTATIONS.SET_USERS, content);
+  subscribeUsers({ commit }) {
+    const unsub = listenToDocument("users/register1", function(doc) {
+      commit(MUTATIONS.SET_USERS, doc);
     });
     return Promise.resolve(unsub);
   },
@@ -71,7 +71,7 @@ export const actions = {
 
   // Updates
 
-  updateUser: async function({ commit, getters }, { name }) {
+  updateUser: async function({ commit }, { name }) {
     const user = getCurrentUser();
     const uid = _get(user, "uid");
     const displayName =
@@ -85,7 +85,7 @@ export const actions = {
           displayName
         });
         await mergeDocument("users/register1", {
-          content: { [uid]: { name: displayName } }
+          [uid]: { name: displayName }
         });
         commit(MUTATIONS.SET_USERS_PROPERTY, {
           id: uid,

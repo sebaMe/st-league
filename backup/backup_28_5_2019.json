@@ -1,42 +1,40 @@
 {
   "users": {
     "register1": {
-      "content": {
-        "7gy6pvMbWsXYr7NSfWrIoa5n47q1": {
-          "id": "7gy6pvMbWsXYr7NSfWrIoa5n47q1",
-          "name": "Alex",
-          "seasonDurac": 0
-        },
-        "8d2dlID0ljTTAVAk4o9tsTNaiiH3": {
-          "id": "8d2dlID0ljTTAVAk4o9tsTNaiiH3",
-          "name": "Sven",
-          "seasonDurac": 0
-        },
-        "BRfXkSmR1hVK4JexpaFsAjN0mpw2": {
-          "id": "BRfXkSmR1hVK4JexpaFsAjN0mpw2",
-          "name": "Basti",
-          "seasonDurac": 0
-        },
-        "HIim3SMoYKcGFrHOP1gmQJdQX8L2": {
-          "id": "HIim3SMoYKcGFrHOP1gmQJdQX8L2",
-          "name": "Tilo",
-          "seasonDurac": 1
-        },
-        "OsYIYNr2ZxdxL8vBns0vR48PK1L2": {
-          "id": "OsYIYNr2ZxdxL8vBns0vR48PK1L2",
-          "name": "Jojo",
-          "seasonDurac": 0
-        },
-        "cr2tv7p7yicGmmAlSnRBPzswIhl2": {
-          "id": "cr2tv7p7yicGmmAlSnRBPzswIhl2",
-          "name": "Felix",
-          "seasonDurac": 0
-        },
-        "tEilET5F8JdBvkNVKtWejA1GRq53": {
-          "id": "tEilET5F8JdBvkNVKtWejA1GRq53",
-          "name": "Luder",
-          "seasonDurac": 2
-        }
+      "7gy6pvMbWsXYr7NSfWrIoa5n47q1": {
+        "id": "7gy6pvMbWsXYr7NSfWrIoa5n47q1",
+        "name": "Alex",
+        "seasonDurac": 0
+      },
+      "8d2dlID0ljTTAVAk4o9tsTNaiiH3": {
+        "id": "8d2dlID0ljTTAVAk4o9tsTNaiiH3",
+        "name": "Sven",
+        "seasonDurac": 0
+      },
+      "BRfXkSmR1hVK4JexpaFsAjN0mpw2": {
+        "id": "BRfXkSmR1hVK4JexpaFsAjN0mpw2",
+        "name": "Basti",
+        "seasonDurac": 0
+      },
+      "HIim3SMoYKcGFrHOP1gmQJdQX8L2": {
+        "id": "HIim3SMoYKcGFrHOP1gmQJdQX8L2",
+        "name": "Tilo",
+        "seasonDurac": 1
+      },
+      "OsYIYNr2ZxdxL8vBns0vR48PK1L2": {
+        "id": "OsYIYNr2ZxdxL8vBns0vR48PK1L2",
+        "name": "Jojo",
+        "seasonDurac": 0
+      },
+      "cr2tv7p7yicGmmAlSnRBPzswIhl2": {
+        "id": "cr2tv7p7yicGmmAlSnRBPzswIhl2",
+        "name": "Felix",
+        "seasonDurac": 0
+      },
+      "tEilET5F8JdBvkNVKtWejA1GRq53": {
+        "id": "tEilET5F8JdBvkNVKtWejA1GRq53",
+        "name": "Luder",
+        "seasonDurac": 2
       }
     }
   },
