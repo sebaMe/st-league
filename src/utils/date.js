@@ -32,7 +32,7 @@ export const getDayName = (date, short = false) => {
       case 2:
         return short ? "TUE" : "Tuesday";
       case 3:
-        return short ? "WEN" : "Wednesday";
+        return short ? "WED" : "Wednesday";
       case 4:
         return short ? "THU" : "Thursday";
       case 5:

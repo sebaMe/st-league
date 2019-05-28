@@ -30,6 +30,7 @@ export default {
 
 <style lang="scss">
 .component__vuc-frame {
+  @include animation-fade-slide-top;
   position: relativ;
   width: 100%;
   height: 100%;

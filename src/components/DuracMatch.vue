@@ -1,11 +1,11 @@
 <template>
   <v-dialog :disabled="disabled" v-model="dialog" max-width="400" lazy persistent>
-    <vuc-btn slot="activator" :disabled="disabled" :icon="$options.icons.NEW">New Match</vuc-btn>
+    <vuc-btn slot="activator" :disabled="disabled" :icon="$icons.NEW">New Match</vuc-btn>
 
     <vuc-card v-if="dialog === true" class="durac-match">
       <template slot="header">
         <span class="match-number">{{`Match - ${matchNumber}`}}</span>
-        <vuc-btn :icon="$options.icons.CLOSE" @click="dialog = false"></vuc-btn>
+        <vuc-btn :icon="$icons.CLOSE" @click="dialog = false"></vuc-btn>
       </template>
       <div class="match-time">{{time | fullDate}}</div>
       <ul class="player-list">
@@ -24,12 +24,12 @@
           </vuc-btn>
           <vuc-btn
             class="player-score"
-            :icon="$options.icons.STROKE"
+            :icon="$icons.STROKE"
             @click="spinResultScore(player.id)"
           >+{{getStrokeResult(player.id)}}</vuc-btn>
           <vuc-btn
             class="player-hearts"
-            :icon="$options.icons.HEART"
+            :icon="$icons.HEART"
             @click="spinHeartScore(player.id)"
           >-{{getHeartResult(player.id)}}</vuc-btn>
         </li>
@@ -196,13 +196,13 @@ export default {
     getResultIcon(playerId) {
       switch (this.getResultType(playerId)) {
         case resultTypes.PARTICIPATED:
-          return this.$options.icons.PARTICIPATED;
+          return this.$icons.PARTICIPATED;
         case resultTypes.LOSER:
-          return this.$options.icons.LOSER;
+          return this.$icons.LOSER;
         case resultTypes.WINNER:
-          return this.$options.icons.WINNER;
+          return this.$icons.WINNER;
         case resultTypes.ABSENT:
-          return this.$options.icons.ABSENT;
+          return this.$icons.ABSENT;
       }
     },
     getResultClass(playerId) {

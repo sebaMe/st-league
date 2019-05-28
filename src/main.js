@@ -12,15 +12,17 @@ import { router } from "./router/router";
 import "./plugins/vuetify";
 import "./plugins/vue.notifications";
 
-// Mixins
-useIconsMixin();
-usefullDateFilter();
-
 // Authentication
 import { initFB } from "./firebase/db";
 import { initAuthRouteGuard } from "./firebase/auth";
-import { useIconsMixin } from "./utils/mixins";
 import { usefullDateFilter } from "./utils/filters";
+import { injectIcons } from "./utils/prototypes";
+
+// Prototypes
+injectIcons();
+
+// Mixins
+usefullDateFilter();
 
 Vue.config.productionTip = false;
 

@@ -1,0 +1,241 @@
+{
+  "users": {
+    "register1": {
+      "content": {
+        "7gy6pvMbWsXYr7NSfWrIoa5n47q1": {
+          "id": "7gy6pvMbWsXYr7NSfWrIoa5n47q1",
+          "name": "Alex",
+          "seasonDurac": 0
+        },
+        "8d2dlID0ljTTAVAk4o9tsTNaiiH3": {
+          "id": "8d2dlID0ljTTAVAk4o9tsTNaiiH3",
+          "name": "Sven",
+          "seasonDurac": 0
+        },
+        "BRfXkSmR1hVK4JexpaFsAjN0mpw2": {
+          "id": "BRfXkSmR1hVK4JexpaFsAjN0mpw2",
+          "name": "Basti",
+          "seasonDurac": 0
+        },
+        "HIim3SMoYKcGFrHOP1gmQJdQX8L2": {
+          "id": "HIim3SMoYKcGFrHOP1gmQJdQX8L2",
+          "name": "Tilo",
+          "seasonDurac": 1
+        },
+        "OsYIYNr2ZxdxL8vBns0vR48PK1L2": {
+          "id": "OsYIYNr2ZxdxL8vBns0vR48PK1L2",
+          "name": "Jojo",
+          "seasonDurac": 0
+        },
+        "cr2tv7p7yicGmmAlSnRBPzswIhl2": {
+          "id": "cr2tv7p7yicGmmAlSnRBPzswIhl2",
+          "name": "Felix",
+          "seasonDurac": 0
+        },
+        "tEilET5F8JdBvkNVKtWejA1GRq53": {
+          "id": "tEilET5F8JdBvkNVKtWejA1GRq53",
+          "name": "Luder",
+          "seasonDurac": 2
+        }
+      }
+    }
+  },
+  "games": {
+    "durac": {
+      "name": "Durac Cantina Fight Club",
+      "rules": {
+        "double": 1,
+        "hearts": 4,
+        "quadruple": 15,
+        "quintuple": 30,
+        "single": 100,
+        "triple": 5
+      },
+      "season": "S73TAD5Sb6BFAdgSIu04",
+      "wildcards": [
+        {
+          "id": "no-trump",
+          "imgUrl": "",
+          "name": "Can't Stump with Trump",
+          "rule": "No trump cards."
+        }
+      ],
+      "seasons": {
+        "S73TAD5Sb6BFAdgSIu04": {
+          "id": "S73TAD5Sb6BFAdgSIu04",
+          "bannerUrl": "https://firebasestorage.googleapis.com/v0/b/st-league-x.appspot.com/o/banners%2Fseasons%2FS73TAD5Sb6BFAdgSIu04.jpg?alt=media&token=32c21d4f-b6bb-4920-bd12-e658b88ff716",
+          "end": { "seconds": 1561845600, "nanoseconds": 0 },
+          "matches": [
+            { "seconds": 1557308064, "nanoseconds": 898000000 },
+            { "seconds": 1557310318, "nanoseconds": 366000000 },
+            { "seconds": 1557397652, "nanoseconds": 121000000 },
+            { "seconds": 1557486604, "nanoseconds": 478000000 },
+            { "seconds": 1557743881, "nanoseconds": 384000000 },
+            { "seconds": 1557833168, "nanoseconds": 399000000 },
+            { "seconds": 1557916189, "nanoseconds": 251000000 },
+            { "seconds": 1558002617, "nanoseconds": 877000000 },
+            { "seconds": 1558091641, "nanoseconds": 190000000 },
+            { "seconds": 1558350346, "nanoseconds": 154000000 },
+            { "seconds": 1558434767, "nanoseconds": 217000000 },
+            { "seconds": 1558521061, "nanoseconds": 372000000 },
+            { "seconds": 1558624790, "nanoseconds": 32000000 },
+            { "seconds": 1558694313, "nanoseconds": 97000000 },
+            { "seconds": 1558953075, "nanoseconds": 66000000 },
+            { "seconds": 1559039379, "nanoseconds": 145000000 }
+          ],
+          "name": "Season Q2/2019",
+          "players": {
+            "7gy6pvMbWsXYr7NSfWrIoa5n47q1": {
+              "history": [
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01",
+                "X01"
+              ],
+              "id": "7gy6pvMbWsXYr7NSfWrIoa5n47q1"
+            },
+            "8d2dlID0ljTTAVAk4o9tsTNaiiH3": {
+              "history": [
+                "P00",
+                "P00",
+                "P00",
+                "P00",
+                "P00",
+                "P10",
+                "P00",
+                "P00",
+                "P00",
+                "W00",
+                "P00",
+                "P00",
+                "P00",
+                "L10",
+                "P00",
+                "P00"
+              ],
+              "id": "8d2dlID0ljTTAVAk4o9tsTNaiiH3"
+            },
+            "BRfXkSmR1hVK4JexpaFsAjN0mpw2": {
+              "history": [
+                "L10",
+                "L10",
+                "P00",
+                "L10",
+                "P00",
+                "P10",
+                "W00",
+                "W00",
+                "P00",
+                "P00",
+                "P00",
+                "L10",
+                "P00",
+                "P00",
+                "L10",
+                "L10"
+              ],
+              "id": "BRfXkSmR1hVK4JexpaFsAjN0mpw2"
+            },
+            "HIim3SMoYKcGFrHOP1gmQJdQX8L2": {
+              "history": [
+                "P00",
+                "P00",
+                "P00",
+                "P00",
+                "L10",
+                "W00",
+                "L10",
+                "P00",
+                "W00",
+                "X01",
+                "X01",
+                "P00",
+                "L10",
+                "P00",
+                "P00",
+                "P00"
+              ],
+              "id": "HIim3SMoYKcGFrHOP1gmQJdQX8L2"
+            },
+            "OsYIYNr2ZxdxL8vBns0vR48PK1L2": {
+              "history": [
+                "W00",
+                "W00",
+                "W00",
+                "W00",
+                "X01",
+                "P10",
+                "P00",
+                "L10",
+                "P00",
+                "L10",
+                "L10",
+                "P00",
+                "P00",
+                "X01",
+                "P00",
+                "P00"
+              ],
+              "id": "OsYIYNr2ZxdxL8vBns0vR48PK1L2"
+            },
+            "cr2tv7p7yicGmmAlSnRBPzswIhl2": {
+              "history": [
+                "X01",
+                "P00",
+                "L10",
+                "P00",
+                "W00",
+                "P10",
+                "P00",
+                "P00",
+                "L20",
+                "P00",
+                "P00",
+                "X01",
+                "P00",
+                "W00",
+                "X01",
+                "X01"
+              ],
+              "id": "cr2tv7p7yicGmmAlSnRBPzswIhl2"
+            },
+            "tEilET5F8JdBvkNVKtWejA1GRq53": {
+              "history": [
+                "X01",
+                "P00",
+                "P00",
+                "P00",
+                "X01",
+                "P10",
+                "P00",
+                "X01",
+                "X01",
+                "X01",
+                "W00",
+                "W00",
+                "W00",
+                "X01",
+                "W00",
+                "W00"
+              ],
+              "id": "tEilET5F8JdBvkNVKtWejA1GRq53"
+            }
+          },
+          "start": { "seconds": 1554069600, "nanoseconds": 0 }
+        }
+      }
+    }
+  }
+}

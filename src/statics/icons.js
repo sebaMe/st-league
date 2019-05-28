@@ -14,5 +14,7 @@ export const icons = {
   LOSER: "cancel",
   WINNER: "stars",
   PARTICIPATED: "radio_button_checked",
-  ABSENT: "block"
+  ABSENT: "block",
+  EXPAND: "expand_more",
+  COMPRESS: "expand_less"
 };

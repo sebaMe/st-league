@@ -1,13 +1,27 @@
 @mixin animation-fade-slide-top {
-  .fade-slide-top-enter {
+  &.fade-slide-top-enter {
     transform: translateY(10px);
     opacity: 0;
   }
-  .fade-slide-top-enter-active {
+  &.fade-slide-top-enter-active {
     transition: .3s ease-in-out;
   }
-  .fade-slide-top-leave {
+  &.fade-slide-top-leave {
   }
-  .fade-slide-top-leave-active {
+  &.fade-slide-top-leave-active {
+  }
+}
+
+@mixin animation-fade-slide-bottom {
+  &.fade-slide-bottom-enter {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  &.fade-slide-bottom-enter-active {
+    transition: .3s ease-in-out;
+  }
+  &.fade-slide-bottom-leave {
+  }
+  &.fade-slide-bottom-leave-active {
   }
 }

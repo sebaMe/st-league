@@ -1,9 +1,9 @@
 <template>
   <vuc-frame class="view__login">
     <template slot="header">
-      <v-icon color="primary" left>{{$options.icons.MAIN}}</v-icon>
+      <v-icon color="primary" left>{{$icons.MAIN}}</v-icon>
       <span class="view-title">ST League</span>
-      <v-icon color="primary" right>{{$options.icons.MAIN}}</v-icon>
+      <v-icon color="primary" right>{{$icons.MAIN}}</v-icon>
     </template>
 
     <vuc-card
@@ -35,7 +35,7 @@
       </v-form>
       <vuc-btn
         slot="footer"
-        :icon="$options.icons.HOT"
+        :icon="$icons.HOT"
         @click="submit"
         :disabled="!valid || loading"
         :loading="loading"
@@ -97,6 +97,9 @@ export default {
 .view__login {
   .sign-in-form {
     margin: auto;
+    .vuc-card_banner {
+      flex: 0 0 200px;
+    }
   }
 }
 </style>

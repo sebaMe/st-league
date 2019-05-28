@@ -11,7 +11,7 @@
           </v-list-tile>
           <v-list-tile @click="signOut" ripple>
             <v-list-tile-action>
-              <v-icon>{{$options.icons.LOGOUT}}</v-icon>
+              <v-icon>{{$icons.LOGOUT}}</v-icon>
             </v-list-tile-action>
             <v-list-tile-title>Sign Out</v-list-tile-title>
           </v-list-tile>
@@ -19,7 +19,7 @@
       </v-navigation-drawer>
 
       <v-toolbar v-if="userId !== undefined" color="primary" dark fixed app dense>
-        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <v-toolbar-side-icon @click.stop="drawer = !drawer" class="hidden-md-and-up"></v-toolbar-side-icon>
         <v-btn class="home-button" flat :to="navHome.path">
           <v-icon left>{{navHome.icon}}</v-icon>
           <span class="home-title">{{navHome.name}}</span>
@@ -32,7 +32,7 @@
             {{item.name}}
           </v-btn>
           <v-btn flat @click="signOut">
-            <v-icon left>{{$options.icons.LOGOUT}}</v-icon>Sign Out
+            <v-icon left>{{$icons.LOGOUT}}</v-icon>Sign Out
           </v-btn>
         </v-toolbar-items>
       </v-toolbar>
@@ -88,7 +88,6 @@ export default {
 
 <style lang="scss">
 #app {
-  @include animation-fade-slide-top;
   ul {
     list-style-type: none;
     padding: 0;

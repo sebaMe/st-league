@@ -12,12 +12,12 @@
       </div>
 
       <div class="player-score">
-        <vuc-icon>{{$options.icons.STROKE}}</vuc-icon>
+        <vuc-icon>{{$icons.STROKE}}</vuc-icon>
         +{{getStrokeResult(player.id)}}
       </div>
 
       <div class="player-hearts">
-        <vuc-icon>{{$options.icons.HEART}}</vuc-icon>
+        <vuc-icon>{{$icons.HEART}}</vuc-icon>
         -{{getHeartResult(player.id)}}
       </div>
     </li>
@@ -81,13 +81,13 @@ export default {
     getResultIcon(playerId) {
       switch (this.getResultType(playerId)) {
         case resultTypes.PARTICIPATED:
-          return this.$options.icons.PARTICIPATED;
+          return this.$icons.PARTICIPATED;
         case resultTypes.LOSER:
-          return this.$options.icons.LOSER;
+          return this.$icons.LOSER;
         case resultTypes.WINNER:
-          return this.$options.icons.WINNER;
+          return this.$icons.WINNER;
         case resultTypes.ABSENT:
-          return this.$options.icons.ABSENT;
+          return this.$icons.ABSENT;
       }
     },
     getResultClass(playerId) {
@@ -108,6 +108,7 @@ export default {
 
 <style lang="scss">
 .durac-result {
+  @include animation-fade-slide-bottom;
   @include font-bangers;
   position: relative;
   width: 100%;
@@ -145,9 +146,6 @@ export default {
       .player-hearts {
         color: $color-participated;
         border-color: $color-participated;
-        &:active {
-          background-color: $color-participated;
-        }
       }
     }
     &.x--loser {
@@ -156,9 +154,6 @@ export default {
       .player-hearts {
         color: $color-loser;
         border-color: $color-loser;
-        &:active {
-          background-color: $color-loser;
-        }
       }
     }
     &.x--winner {
@@ -167,9 +162,6 @@ export default {
       .player-hearts {
         color: $color-winner;
         border-color: $color-winner;
-        &:active {
-          background-color: $color-winner;
-        }
       }
     }
     &.x--absent {
@@ -179,9 +171,6 @@ export default {
       .player-hearts {
         border-color: $color-absent;
         color: $color-absent;
-        &:active {
-          background-color: $color-absent;
-        }
       }
     }
   }

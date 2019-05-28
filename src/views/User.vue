@@ -9,6 +9,7 @@
       </v-form>
       <vuc-btn slot="footer" @click="submit" :disabled="!valid || loading" :loading="loading">Submit</vuc-btn>
     </vuc-card>
+    <download-backup class="backup-link"></download-backup>
   </vuc-frame>
 </template>
 
@@ -18,6 +19,7 @@ import { mapActions, mapGetters } from "vuex";
 import VucFrame from "../components/VucFrame";
 import VucCard from "../components/VucCard";
 import VucBtn from "../components/VucBtn";
+import DownloadBackup from "../components/DownloadBackup";
 
 import { notifyError, notifyGeneral } from "../plugins/vue.notifications";
 
@@ -26,7 +28,8 @@ export default {
   components: {
     VucFrame,
     VucCard,
-    VucBtn
+    VucBtn,
+    DownloadBackup
   },
   data() {
     return {
@@ -75,6 +78,10 @@ export default {
   .user-form {
     margin: auto;
     max-width: 400px;
+  }
+  .backup-link {
+    margin: auto;
+    margin-top: 20px;
   }
 }
 </style>

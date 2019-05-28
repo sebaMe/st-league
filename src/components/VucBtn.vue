@@ -98,6 +98,7 @@ export default {
   .vuc-btn_content {
     position: relative;
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
     padding: 0 4px;
@@ -121,7 +122,8 @@ export default {
   &:active {
     background-color: $color-prim;
     div,
-    span {
+    span,
+    i {
       color: #fff !important;
     }
   }

@@ -8,7 +8,7 @@
   >
     <template slot="header">
       <div class="durac-title">
-        <vuc-icon color="primary">{{$options.icons.DURAC}}</vuc-icon>
+        <vuc-icon color="primary">{{$icons.DURAC}}</vuc-icon>
         <span>{{durac.name}}</span>
       </div>
       <div class="season-info">{{`${duracSeason.name} - ${seasonDay}`}}</div>
@@ -21,16 +21,19 @@
     <div class="durac-menu">
       <add-players :userList="userList" :playerList="playerList"></add-players>
       <durac-match :disabled="!allowNewMatch" :playerList="playerList" :matchList="matchList"></durac-match>
-      <vuc-btn disabled :icon="$options.icons.MAIN">Rankings</vuc-btn>
+      <durac-ranking></durac-ranking>
     </div>
 
     <ul class="match-list">
       <li v-for="(ts, index) in matchList" :key="ts" class="match-item">
         <vuc-btn class="match-button" @click="selectMatch(ts)">
           <span class="match-number">{{getMatchNumber(index)}}</span>
-          <span>{{ts | fullDate}}</span>
+          <span class="match-date">{{ts | fullDate}}</span>
+          <vuc-icon>{{isSelectedMatch(ts) ? $icons.COMPRESS : $icons.EXPAND}}</vuc-icon>
         </vuc-btn>
-        <durac-result v-if="isSelectedMatch(ts)" :matchId="ts" :playerList="playerList"></durac-result>
+        <transition name="fade-slide-bottom">
+          <durac-result v-if="isSelectedMatch(ts)" :matchId="ts" :playerList="playerList"></durac-result>
+        </transition>
       </li>
     </ul>
   </vuc-card>
@@ -48,8 +51,10 @@ import VucIcon from "../components/VucIcon";
 import DuracMatch from "../components/DuracMatch";
 import AddPlayers from "../components/AddPlayers";
 import DuracResult from "../components/DuracResult";
+import DuracRanking from "../components/DuracRanking";
 
 import { daysBetween } from "../utils/date";
+import { cloneObject } from "../utils/commons";
 
 export default {
   name: "DuracCard",
@@ -60,7 +65,8 @@ export default {
     VucIcon,
     DuracMatch,
     AddPlayers,
-    DuracResult
+    DuracResult,
+    DuracRanking
   },
   data() {
     return {
@@ -122,9 +128,7 @@ export default {
       return daysLeft + 1;
     },
     matchList() {
-      return _get(this.duracSeason, "matches", [])
-        .sort()
-        .reverse();
+      return cloneObject(_get(this.duracSeason, "matches", [])).reverse();
     }
   }
 };
@@ -176,10 +180,17 @@ export default {
     border-radius: 0;
     margin: 0;
     box-shadow: none;
-  }
-  .match-number {
-    margin-right: 10px;
-    color: $color-prim;
+    .match-number {
+      margin-right: 10px;
+      color: $color-prim;
+    }
+    .match-date {
+      flex: 1;
+    }
+    i {
+      color: $color-prim;
+      font-size: 30px;
+    }
   }
 }
 </style>
