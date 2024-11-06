@@ -3,24 +3,20 @@
     <div class="flex w-full">
       <!-- left -->
       <div class="flex flex-1 items-center">
-        <Button
-          class="border-2 border-dashed border-white text-xl"
-          @click="showCreatePlayer = true"
-        >
-          <BaseIcon icon="player_add" />
+        <BaseButton icon-left="player_add" @click="showCreatePlayer = true">
           <span>Create Player</span>
-        </Button>
+        </BaseButton>
         <PlayerEditor v-model:visible="showCreatePlayer" />
       </div>
       <!-- right -->
-      <div class="flex items-center font-header text-highlight">
+      <div class="flex items-center font-header text-primary">
         <span>{{ playersAmount }}</span>
         <BaseIcon class="ml-1" icon="party" />
       </div>
     </div>
     <TransitionGroup class="mt-2 w-full" name="list" tag="ul">
       <PlayerItem
-        v-for="player in playerList"
+        v-for="player in playerStore.orderedPlayersList"
         :key="player.id"
         :player="player"
       />
@@ -29,30 +25,24 @@
 </template>
 
 <script setup lang="ts">
-import { orderBy } from "lodash-es";
-import Button from "primevue/button";
 import { computed, onBeforeUnmount, ref } from "vue";
 
+import BaseButton from "../components/BaseButton.vue";
 import BaseClipCard from "../components/BaseClipCard.vue";
 import BaseIcon from "../components/BaseIcon.vue";
 import PlayerEditor from "../components/PlayerEditor.vue";
 import PlayerItem from "../components/PlayerItem.vue";
-import { useDataStore } from "../stores/data.store";
+import { usePlayersStore } from "../stores/players.store";
 
-const { usePlayersData } = useDataStore();
-
-const { subscribe, playersData } = usePlayersData();
-const unsub = subscribe();
+const playerStore = usePlayersStore();
+playerStore.subscribe();
 
 const showCreatePlayer = ref(false);
 
-const playerList = computed(() =>
-  orderBy(Object.values(playersData.value?.list ?? {}), (player) => player.tag)
-);
-const playersAmount = computed(() => playerList.value.length);
+const playersAmount = computed(() => playerStore.orderedPlayersList?.length);
 
 onBeforeUnmount(() => {
-  unsub();
+  playerStore.unsubscribe();
 });
 </script>
 

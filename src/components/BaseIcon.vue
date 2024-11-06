@@ -2,6 +2,27 @@
   <img v-if="icon" :src="iconPath" class="size-6 hover:scale-125" />
 </template>
 
+<script lang="ts">
+export type IconTypes =
+  | "music"
+  | "player"
+  | "lock"
+  | "eye_show"
+  | "eye_hide"
+  | "party"
+  | "swords"
+  | "arrow_up"
+  | "arrow_left"
+  | "arrow_right"
+  | "exit"
+  | "record_add"
+  | "player_add"
+  | "player_edit"
+  | "button_a"
+  | "check_mark"
+  | "x_mark"
+  | "hourglas";
+</script>
 <script setup lang="ts">
 import { computed } from "vue";
 
@@ -25,32 +46,14 @@ import iconRecordAdd from "../assets/img/icons/script_text_add.png";
 import iconSwords from "../assets/img/icons/swords.png";
 
 const props = defineProps<{
-  icon?:
-    | "music"
-    | "user"
-    | "lock"
-    | "eye_show"
-    | "eye_hide"
-    | "party"
-    | "swords"
-    | "arrow_up"
-    | "arrow_left"
-    | "arrow_right"
-    | "exit"
-    | "record_add"
-    | "player_add"
-    | "player_edit"
-    | "button_a"
-    | "check_mark"
-    | "x_mark"
-    | "hourglas";
+  icon?: IconTypes;
 }>();
 
 const iconPath = computed(() => {
   switch (props.icon) {
     case "music":
       return iconMusic;
-    case "user":
+    case "player":
       return iconCharacter;
     case "lock":
       return iconLock;

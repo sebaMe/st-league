@@ -2,24 +2,30 @@
   <audio ref="battleAudio">
     <source :src="battleTheme" type="audio/mp3" />
   </audio>
-  <Button v-if="minimal" class="h-full" text @click="playBattleTheme">
+  <BaseButton
+    v-if="minimal"
+    variant="plain"
+    class="h-full"
+    text
+    @click="playBattleTheme"
+  >
     <BaseIcon icon="music" :class="{ 'animate-bounce': isPlayingAudio }" />
-  </Button>
-  <Button
+  </BaseButton>
+  <BaseButton
     v-else
     class="h-full w-56 justify-evenly border-2 border-dashed border-white bg-highlight font-header text-xs text-white"
     @click="playBattleTheme"
   >
     <BaseIcon icon="music" :class="{ 'animate-bounce': isPlayingAudio }" />
-    Play Epic Battle-Theme!
-  </Button>
+    <span>Play Epic Battle-Theme!</span>
+  </BaseButton>
 </template>
 
 <script setup lang="ts">
-import Button from "primevue/button";
 import { ref, useTemplateRef } from "vue";
 
 import battleTheme from "../assets/audio/battle_theme.mp3";
+import BaseButton from "./BaseButton.vue";
 import BaseIcon from "./BaseIcon.vue";
 
 withDefaults(

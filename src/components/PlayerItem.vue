@@ -12,24 +12,27 @@
     <div class="flex items-center">
       <span class="mr-2">created:</span>
       <span>{{ formattedDate }}</span>
-      <Button class="ml-2 h-full" text @click="showCreatePlayer = true">
-        <BaseIcon icon="player_edit" />
-      </Button>
+      <BaseButton
+        class="ml-2 h-full"
+        variant="plain"
+        icon-left="player_edit"
+        @click="showCreatePlayer = true"
+      >
+      </BaseButton>
       <PlayerEditor v-model:visible="showCreatePlayer" :player="player" edit />
     </div>
   </li>
 </template>
 
 <script setup lang="ts">
-import Button from "primevue/button";
 import { ref } from "vue";
 
-import { IPlayer } from "../stores/data.store";
+import { IPlayer } from "../stores/players.store";
 import {
   DateFormats,
   getFormattedFirestoreDate
 } from "../utils/firestore.utils";
-import BaseIcon from "./BaseIcon.vue";
+import BaseButton from "./BaseButton.vue";
 import PlayerAvatar from "./PlayerAvatar.vue";
 import PlayerEditor from "./PlayerEditor.vue";
 

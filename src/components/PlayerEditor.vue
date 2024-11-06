@@ -13,86 +13,68 @@
     <template #closeicon>
       <BaseIcon icon="x_mark" />
     </template>
-    <InputGroup
-      class="mt-4 w-full border-2 border-dashed"
-      :class="
-        playerTag?.length === 3 ? 'border-highlight' : 'border-danger-500'
-      "
-    >
-      <InputGroupAddon class="border-0">
-        <BaseIcon icon="user" />
-      </InputGroupAddon>
-      <FloatLabel variant="on">
-        <InputMask
-          v-model="playerTag"
-          mask="aaa"
-          class="border-0 text-xl focus:outline-0"
-        />
-        <label class="text-xl">Player Tag</label>
-      </FloatLabel>
-    </InputGroup>
+    <BaseInput
+      v-model="playerTag"
+      :invalid="playerTag?.length !== 3"
+      label="Player Tag"
+      icon-left="player"
+      type="mask"
+      mask="aaa"
+    />
     <div class="mt-4 flex flex-col items-center">
-      <Button
-        class="border-2 border-dashed border-white text-xl"
+      <BaseButton
         :style="{ backgroundColor: playerColor }"
         fluid
         @click="cycleColors"
       >
         <span>Color</span><span>{{ currentColorPosition }}</span>
-      </Button>
+      </BaseButton>
 
-      <!-- <div
-        class="ml-4 flex min-w-14 items-end rounded-lg p-2 font-header text-white"
-        :style="{ backgroundColor: playerColor }"
-      >
-        {{ playerTag }}
-      </div> -->
       <div class="mt-4 font-header text-xs">
         {{ currentAvatarPosition }}
       </div>
       <div class="mb-4 flex">
-        <Button text @click="cycleAvatarsLeft">
-          <BaseIcon icon="arrow_left" />
-        </Button>
+        <BaseButton
+          icon-left="arrow_left"
+          variant="plain"
+          @click="cycleAvatarsLeft"
+        />
         <PlayerAvatar
           :avatar="playerAvatar"
           :color="playerColor"
           :tag="playerTagUpperCase"
         />
-        <Button text @click="cycleAvatarsRight">
-          <BaseIcon icon="arrow_right" />
-        </Button>
+        <BaseButton
+          icon-left="arrow_right"
+          variant="plain"
+          @click="cycleAvatarsRight"
+        />
       </div>
     </div>
     <template #footer>
-      <Button class="text-xl" text @click="isVisible = false">
-        <BaseIcon icon="x_mark" />
+      <BaseButton icon-left="x_mark" variant="plain" @click="isVisible = false">
         <span>Cancel</span>
-      </Button>
-      <Button
-        class="border-2 border-dashed border-white text-xl"
+      </BaseButton>
+      <BaseButton
         :class="{ 'animate-pulse': allowEditPlayer }"
+        icon-left="check_mark"
         :disabled="!allowEditPlayer"
         @click="submitPlayer"
       >
-        <BaseIcon icon="check_mark" />
         <span>{{ edit ? "Save" : "Create" }}</span>
-      </Button>
+      </BaseButton>
     </template>
   </Dialog>
 </template>
 
 <script setup lang="ts">
-import Button from "primevue/button";
 import Dialog from "primevue/dialog";
-import FloatLabel from "primevue/floatlabel";
-import InputGroup from "primevue/inputgroup";
-import InputGroupAddon from "primevue/inputgroupaddon";
-import InputMask from "primevue/inputmask";
 import { computed, ref, watch } from "vue";
 
-import { IPlayer, useDataStore } from "../stores/data.store";
+import { IPlayer, usePlayersStore } from "../stores/players.store";
+import BaseButton from "./BaseButton.vue";
 import BaseIcon from "./BaseIcon.vue";
+import BaseInput from "./BaseInput.vue";
 import PlayerAvatar from "./PlayerAvatar.vue";
 
 const props = withDefaults(
@@ -106,7 +88,7 @@ const props = withDefaults(
   }
 );
 
-const { createPlayer, editPlayer } = useDataStore();
+const { createPlayer, editPlayer } = usePlayersStore();
 
 const colorList = [
   "#b91c1c",

@@ -25,3 +25,8 @@ dist-ssr
 
 # private
 fbConfig.ts
+firebase.json
+.firebase/*
+.firebaserc
+
+

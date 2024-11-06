@@ -6,11 +6,13 @@ import {
   onSnapshot,
   serverTimestamp,
   setDoc,
-  Timestamp
+  Timestamp,
+  Unsubscribe
 } from "firebase/firestore";
+import { orderBy } from "lodash-es";
 import { nanoid } from "nanoid";
 import { defineStore } from "pinia";
-import { shallowRef } from "vue";
+import { computed, shallowRef } from "vue";
 
 import { useMainStore } from "./main.store";
 
@@ -27,16 +29,17 @@ export interface IPlayer extends ICreatePlayerPayload {
 
 interface IPlayersDoc {
   list: {
-    [key: string]: IPlayer;
+    [id: string]: IPlayer;
   };
 }
 
-export const useDataStore = defineStore("data", () => {
+export const usePlayersStore = defineStore("players", () => {
   const mainStore = useMainStore();
 
   const db = getFirestore(mainStore.app);
   const playersDoc = doc(db, "Data", "Players");
-  //const gamesDoc = doc(db, "Data", "Games1");
+  const data = shallowRef<IPlayersDoc>();
+  let unsub: Unsubscribe | undefined = undefined;
 
   const createPlayer = async (player: ICreatePlayerPayload) => {
     const id = nanoid();
@@ -86,39 +89,48 @@ export const useDataStore = defineStore("data", () => {
     );
   };
 
-  const usePlayersData = () => {
-    const playersData = shallowRef<IPlayersDoc>();
+  const update = async () => {
+    const doc = await getDoc(playersDoc);
+    if (doc.exists()) {
+      data.value = doc.data() as IPlayersDoc;
+    } else {
+      console.warn("No such document", playersDoc.path);
+    }
+  };
 
-    const execute = async () => {
-      const doc = await getDoc(playersDoc);
-      if (doc.exists()) {
-        playersData.value = doc.data() as IPlayersDoc;
-      } else {
-        console.warn("No such document", playersDoc.path);
-      }
-      return;
-    };
-
-    const subscribe = () => {
-      const unsubscribe = onSnapshot(
+  const subscribe = () => {
+    if (unsub === undefined) {
+      unsub = onSnapshot(
         playersDoc,
         (doc) => {
-          playersData.value = doc.data() as IPlayersDoc;
+          data.value = doc.data() as IPlayersDoc;
         },
         (error) => {
           console.error(error);
         }
       );
-
-      return unsubscribe;
-    };
-
-    return {
-      playersData,
-      execute,
-      subscribe
-    };
+    }
   };
 
-  return { createPlayer, editPlayer, deletePlayer, usePlayersData };
+  const unsubscribe = () => {
+    if (unsub) {
+      unsub();
+      unsub = undefined;
+    }
+  };
+
+  const orderedPlayersList = computed(() =>
+    orderBy(Object.values(data.value?.list ?? {}), (player) => player.tag)
+  );
+
+  return {
+    createPlayer,
+    editPlayer,
+    deletePlayer,
+    update,
+    subscribe,
+    unsubscribe,
+    data,
+    orderedPlayersList
+  };
 });
