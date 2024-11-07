@@ -1,5 +1,5 @@
 <template>
-  <li class="flex justify-between even:bg-primary-200">
+  <li class="flex justify-between even:bg-primary-100">
     <!-- left -->
     <div class="flex items-center">
       <PlayerAvatar
@@ -10,16 +10,18 @@
     </div>
     <!-- right -->
     <div class="flex items-center">
-      <span class="mr-2">created:</span>
-      <span>{{ formattedDate }}</span>
+      <div>
+        <div class="mr-2 text-primary">joined on</div>
+        <div class="whitespace-nowrap">{{ formattedDate }}</div>
+      </div>
       <BaseButton
         class="ml-2 h-full"
         variant="plain"
         icon-left="player_edit"
-        @click="showCreatePlayer = true"
+        @click="showEditPlayer = true"
       >
       </BaseButton>
-      <PlayerEditor v-model:visible="showCreatePlayer" :player="player" edit />
+      <PlayerEditor v-model:visible="showEditPlayer" :player="player" edit />
     </div>
   </li>
 </template>
@@ -43,7 +45,7 @@ const props = withDefaults(
   {}
 );
 
-const showCreatePlayer = ref(false);
+const showEditPlayer = ref(false);
 
 const formattedDate = getFormattedFirestoreDate(
   props.player.created,

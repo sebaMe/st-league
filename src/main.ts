@@ -1,4 +1,4 @@
-import "./style.css";
+import "./style.scss";
 
 import { definePreset } from "@primevue/themes";
 import Aura from "@primevue/themes/nora";

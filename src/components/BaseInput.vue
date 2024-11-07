@@ -13,7 +13,7 @@
       <InputText
         v-if="type === 'text' || type === 'password'"
         v-model="model"
-        :type
+        :type="isPasswordVisible ? 'text' : type"
         class="border-0 text-xl focus:outline-0"
       />
       <InputMask

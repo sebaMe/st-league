@@ -31,7 +31,7 @@
             }"
             @click="router.push(battlesRoute.path)"
           >
-            <span class="hidden text-xl sm:inline-flex">Battles</span>
+            <span class="hidden text-xl sm:inline-flex">Brawls</span>
           </BaseButton>
           <BaseButton
             class="h-full"

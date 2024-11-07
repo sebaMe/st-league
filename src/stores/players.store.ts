@@ -16,7 +16,7 @@ import { computed, shallowRef } from "vue";
 
 import { useMainStore } from "./main.store";
 
-interface ICreatePlayerPayload {
+export interface ICreatePlayerPayload {
   tag: string;
   color: string;
   avatar: string;

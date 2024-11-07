@@ -3,7 +3,7 @@
     <template #header>
       <div class="mr-4">
         <div class="font-header uppercase text-primary">
-          {{ edit ? "Edit Player" : "Create Player" }}
+          {{ `${edit ? "Edit" : "Create"} Player` }}
         </div>
         <div class="text-xl">
           {{ `${edit ? "Modify" : "Choose"} your Avatar!` }}
@@ -20,6 +20,7 @@
       icon-left="player"
       type="mask"
       mask="aaa"
+      class="w-full"
     />
     <div class="mt-4 flex flex-col items-center">
       <BaseButton
@@ -39,11 +40,15 @@
           variant="plain"
           @click="cycleAvatarsLeft"
         />
-        <PlayerAvatar
-          :avatar="playerAvatar"
-          :color="playerColor"
-          :tag="playerTagUpperCase"
-        />
+        <Transition name="slide-in-top" mode="out-in">
+          <PlayerAvatar
+            :key="playerAvatar"
+            :avatar="playerAvatar"
+            :color="playerColor"
+            :tag="playerTagUpperCase"
+          />
+        </Transition>
+
         <BaseButton
           icon-left="arrow_right"
           variant="plain"
@@ -56,9 +61,9 @@
         <span>Cancel</span>
       </BaseButton>
       <BaseButton
-        :class="{ 'animate-pulse': allowEditPlayer }"
+        :class="{ 'animate-pulse': allowSubmitPlayer }"
         icon-left="check_mark"
-        :disabled="!allowEditPlayer"
+        :disabled="!allowSubmitPlayer"
         @click="submitPlayer"
       >
         <span>{{ edit ? "Save" : "Create" }}</span>
@@ -91,15 +96,18 @@ const props = withDefaults(
 const { createPlayer, editPlayer } = usePlayersStore();
 
 const colorList = [
-  "#b91c1c",
-  "#b45309",
-  "#15803d",
-  "#0f766e",
+  "#020617",
+  "#475569",
+  "#991b1b",
+  "#f87171",
+  "#ea580c",
+  "#65a30d",
+  "#34d399",
+  "#06b6d4",
   "#0369a1",
-  "#1d4ed8",
-  "#6d28d9",
-  "#a21caf",
-  "#be185d"
+  "#6366f1",
+  "#581c87",
+  "#ec4899"
 ];
 
 const avatarList = [
@@ -124,7 +132,7 @@ const avatarList = [
   "av19"
 ];
 
-const allowEditPlayer = computed(
+const allowSubmitPlayer = computed(
   () => playerTag.value?.replace("_", "")?.length === 3
 );
 
@@ -163,7 +171,7 @@ const cycleAvatarsRight = () => {
 };
 
 const submitPlayer = () => {
-  if (allowEditPlayer.value) {
+  if (allowSubmitPlayer.value) {
     if (props.player && props.edit) {
       editPlayer({
         id: props.player?.id,

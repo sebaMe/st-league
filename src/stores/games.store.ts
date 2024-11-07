@@ -130,7 +130,11 @@ export const useGamesStore = defineStore("games", () => {
   };
 
   const orderedGamesList = computed(() =>
-    orderBy(Object.values(data.value?.list ?? {}), (game) => game.created)
+    orderBy(
+      Object.values(data.value?.list ?? {}),
+      (game) => game.created?.toMillis(),
+      "desc"
+    )
   );
 
   return {

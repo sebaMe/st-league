@@ -3,7 +3,7 @@
     <TheHeader />
     <div class="mx-auto max-w-screen-md pt-14">
       <router-view v-slot="{ Component }">
-        <transition name="slide-in" mode="out-in">
+        <transition name="slide-in-top" mode="out-in">
           <component :is="Component" />
         </transition>
       </router-view>

@@ -3,17 +3,28 @@
     <div class="flex w-full">
       <!-- left -->
       <div class="flex flex-1 items-center">
-        <BaseButton icon-left="record_add" @click="createGame">
-          <span>Record Battle</span>
+        <BaseButton icon-left="record_add" @click="showRecordBattle = true">
+          <span>Record Brawl</span>
         </BaseButton>
+        <GameEditor
+          v-model:visible="showRecordBattle"
+          :player-list="playerStore.orderedPlayersList"
+        />
       </div>
       <!-- right -->
-      <div class="flex items-center font-header text-primary">
+      <div class="ml-2 flex items-center font-header text-primary">
         <span>{{ battlesAmount }}</span>
-        <BaseIcon class="ml-1" icon="swords" />
+        <BaseIcon class="ml-2" icon="swords" />
       </div>
     </div>
     <TransitionGroup class="mt-2 w-full" name="list" tag="ul">
+      <GameItem
+        v-for="(game, index) in gamesStore.orderedGamesList"
+        :key="game.id"
+        :game="game"
+        :game-nr="battlesAmount - index"
+        :player-list="playerStore.orderedPlayersList"
+      />
     </TransitionGroup>
   </BaseClipCard>
 </template>
@@ -24,9 +35,11 @@ import { computed, ref } from "vue";
 import BaseButton from "../components/BaseButton.vue";
 import BaseClipCard from "../components/BaseClipCard.vue";
 import BaseIcon from "../components/BaseIcon.vue";
+import GameEditor from "../components/GameEditor.vue";
+import GameItem from "../components/GameItem.vue";
 import {
-  IPlayerResult,
-  ResultTypes,
+  // IPlayerResult,
+  // ResultTypes,
   useGamesStore
 } from "../stores/games.store";
 import { usePlayersStore } from "../stores/players.store";
@@ -39,20 +52,6 @@ playerStore.update();
 gamesStore.subscribe();
 
 const showRecordBattle = ref(false);
-
-const createGame = () => {
-  gamesStore.createGame({
-    players: playerStore.orderedPlayersList?.reduce<{
-      [id: string]: IPlayerResult;
-    }>((dict, player) => {
-      dict[player.id] = {
-        id: player.id,
-        result: ResultTypes.PARTICIPATED
-      };
-      return dict;
-    }, {})
-  });
-};
 
 const battlesAmount = computed(() => gamesStore.orderedGamesList?.length);
 </script>

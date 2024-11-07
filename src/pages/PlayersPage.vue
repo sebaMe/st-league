@@ -9,9 +9,9 @@
         <PlayerEditor v-model:visible="showCreatePlayer" />
       </div>
       <!-- right -->
-      <div class="flex items-center font-header text-primary">
+      <div class="ml-2 flex items-center font-header text-primary">
         <span>{{ playersAmount }}</span>
-        <BaseIcon class="ml-1" icon="party" />
+        <BaseIcon class="ml-2" icon="party" />
       </div>
     </div>
     <TransitionGroup class="mt-2 w-full" name="list" tag="ul">
