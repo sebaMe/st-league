@@ -18,10 +18,9 @@
     </td>
     <td class="p-1">
       <div class="text-right">
-        <div class="flex items-center text-primary">
+        <div class="flex items-center justify-end text-primary">
           <BaseIcon icon="player" />
-          <span class="mx-1">{{ participation }}</span>
-          <span>joined</span>
+          <span class="ml-1">{{ participation }}</span>
         </div>
         <div class="whitespace-nowrap">{{ formattedDate }}</div>
       </div>

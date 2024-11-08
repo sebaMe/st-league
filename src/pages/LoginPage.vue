@@ -35,6 +35,12 @@
       >
         <span>Press Start</span>
       </BaseButton>
+      <div class="mt-2 flex w-56 items-center justify-between">
+        <GithubLink />
+        <div class="text-left text-primary">
+          {{ `v${version}` }}
+        </div>
+      </div>
     </BaseClipCard>
   </div>
 </template>
@@ -43,10 +49,12 @@
 import { ref, useTemplateRef } from "vue";
 import { useRouter } from "vue-router";
 
+import { version } from "../../package.json";
 import battleGif from "../assets/img/battle.gif";
 import BaseButton from "../components/BaseButton.vue";
 import BaseClipCard from "../components/BaseClipCard.vue";
 import BaseInput from "../components/BaseInput.vue";
+import GithubLink from "../components/GithubLink.vue";
 import TheBattleThemePlayer from "../components/TheBattleThemePlayer.vue";
 import { useKeyStrokeNoFocus } from "../composables/input.composables";
 import { homeRoute } from "../router";
