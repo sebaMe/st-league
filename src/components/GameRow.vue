@@ -1,42 +1,41 @@
 <template>
-  <li class="flex justify-between overflow-x-auto even:bg-primary-200">
-    <!-- left -->
-    <div class="flex items-center">
-      <div
-        class="sticky left-0 z-20 flex h-full w-8 items-center justify-center bg-primary font-header text-white"
-      >
-        {{ gameNr }}
-      </div>
+  <tr class="even:bg-primary-200">
+    <td
+      class="sticky left-0 z-20 bg-primary p-1 text-center font-header text-white"
+    >
+      {{ gameNr.toFixed().padStart(2, "0") }}
+    </td>
+    <td class="w-full min-w-56 p-1">
       <PlayerAvatar
         v-for="player in participatedGamePlayers"
         :key="player.id"
-        :class="{ 'px-1': player.result === ResultTypes.PARTICIPATED }"
+        class="inline-flex"
         :avatar="player.avatar"
         :tag="player.tag"
         :color="player.color"
         :result="player.result"
       />
-    </div>
-    <!-- right -->
-    <div class="flex items-center">
-      <div>
-        <div class="mr-2 flex items-center text-primary">
-          <BaseIcon class="size-4 min-h-4 min-w-4" icon="player" />
+    </td>
+    <td class="p-1">
+      <div class="text-right">
+        <div class="flex items-center text-primary">
+          <BaseIcon icon="player" />
           <span class="mx-1">{{ participation }}</span>
-          <span>brawled</span>
+          <span>joined</span>
         </div>
         <div class="whitespace-nowrap">{{ formattedDate }}</div>
       </div>
+    </td>
+    <td class="p-1">
       <BaseButton
-        class="ml-2 h-full"
         variant="plain"
         icon-left="record_edit"
-        @click="showCreatePlayer = true"
+        @click="showEditBattle = true"
       >
       </BaseButton>
-      <!-- <PlayerEditor v-model:visible="showCreatePlayer" :player="player" edit /> -->
-    </div>
-  </li>
+      <GameEditor v-model:visible="showEditBattle" :player-list :game edit />
+    </td>
+  </tr>
 </template>
 
 <script setup lang="ts">
@@ -52,6 +51,7 @@ import {
 } from "../utils/firestore.utils";
 import BaseButton from "./BaseButton.vue";
 import BaseIcon from "./BaseIcon.vue";
+import GameEditor from "./GameEditor.vue";
 import PlayerAvatar from "./PlayerAvatar.vue";
 
 const props = withDefaults(
@@ -63,7 +63,7 @@ const props = withDefaults(
   {}
 );
 
-const showCreatePlayer = ref(false);
+const showEditBattle = ref(false);
 
 const formattedDate = getFormattedFirestoreDate(
   props.game.created,
@@ -78,11 +78,7 @@ const gamePlayers = useGamePlayerResults(
 const participatedGamePlayers = computed(() =>
   orderBy(
     gamePlayers.value?.filter((player) => player.result !== ResultTypes.MISSED),
-    [
-      (player) => player.result === ResultTypes.WON,
-      (player) => player.result === ResultTypes.LOST
-    ],
-    ["desc", "desc"]
+    (player) => player.tag
   )
 );
 

@@ -60,13 +60,13 @@ export const usePlayersStore = defineStore("players", () => {
     );
   };
 
-  const editPlayer = async (player: IPlayer) => {
+  const editPlayer = async (playerId: string, player: ICreatePlayerPayload) => {
     return setDoc(
       playersDoc,
       {
         list: {
-          [player.id]: {
-            id: player.id,
+          [playerId]: {
+            id: playerId,
             tag: player.tag,
             color: player.color,
             avatar: player.avatar ?? null

@@ -53,15 +53,31 @@
         <BaseButton
           class="h-full"
           variant="plain"
-          icon-left="player"
+          icon-left="gear"
           @click="userPop?.toggle"
         />
-        <Popover ref="userPop" class="rounded-md text-center font-content">
-          <div class="text-xl">{{ authStore.user?.email }}</div>
+        <Popover
+          ref="userPop"
+          class="rounded-md text-center font-content text-xl"
+        >
+          <div class="mb-2 text-left text-primary">
+            {{ `v${packageJson.version}` }}
+          </div>
+          <a
+            class="mb-4 flex items-center"
+            href="https://github.com/sebaMe/st-league"
+            target="_blank"
+            ><BaseIcon class="mr-2" icon="chest" />github</a
+          >
+          <div class="mb-2 flex items-center">
+            <BaseIcon class="mr-2" icon="user"></BaseIcon>
+            {{ authStore.user?.email }}
+          </div>
           <BaseButton
             font="header"
             :disabled="!authStore.user"
             icon-left="exit"
+            fluid
             @click="authStore.logout"
           >
             <span>Quit</span>
@@ -78,10 +94,12 @@ import Popover from "primevue/popover";
 import { useTemplateRef } from "vue";
 import { useRouter } from "vue-router";
 
+import packageJson from "../../package.json";
 import { battlesRoute, homeRoute, playersRoute } from "../router";
 import { useAuthStore } from "../stores/auth.store";
 import BaseButton from "./BaseButton.vue";
 import BaseClipCard from "./BaseClipCard.vue";
+import BaseIcon from "./BaseIcon.vue";
 import TheBattleThemePlayer from "./TheBattleThemePlayer.vue";
 
 const authStore = useAuthStore();

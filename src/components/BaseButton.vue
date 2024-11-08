@@ -13,9 +13,14 @@
     ]"
     :text="variant === 'plain'"
   >
-    <BaseIcon :icon="iconLeft" />
-    <slot></slot>
-    <BaseIcon :icon="iconRight" />
+    <template v-if="loading">
+      <BaseIcon icon="hourglas" class="animate-spin" />
+    </template>
+    <template v-else>
+      <BaseIcon :icon="iconLeft" />
+      <slot></slot>
+      <BaseIcon :icon="iconRight" />
+    </template>
   </Button>
 </template>
 
@@ -30,12 +35,14 @@ withDefaults(
     font?: "header" | "text";
     iconLeft?: IconTypes;
     iconRight?: IconTypes;
+    loading?: boolean;
   }>(),
   {
     font: "text",
     variant: "default",
     iconLeft: undefined,
-    iconRight: undefined
+    iconRight: undefined,
+    loading: false
   }
 );
 </script>

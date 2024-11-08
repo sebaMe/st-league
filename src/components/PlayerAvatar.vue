@@ -9,6 +9,10 @@
     <img
       :key="avatarSrc"
       class="size-6 drop-shadow-md hover:z-10 hover:scale-125"
+      :class="[
+        { 'animate-bounce': animate && result === ResultTypes.WON },
+        { 'animate-pulse': animate && result === ResultTypes.LOST }
+      ]"
       :src="avatarSrc"
     />
     <div
@@ -34,11 +38,13 @@ const props = withDefaults(
     color: string;
     tag: string;
     result?: ResultTypes | undefined;
+    animate?: boolean;
     bigResult?: boolean;
   }>(),
   {
     result: undefined,
-    bigResult: false
+    bigResult: false,
+    animate: false
   }
 );
 

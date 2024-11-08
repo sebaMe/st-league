@@ -37,12 +37,28 @@ body {
   }
 
   .slide-in-left-enter-active,
-  .slide-in-left-leave-active {
+  .slide-in-left-leave-active,
+  .slide-in-right-enter-active,
+  .slide-in-right-leave-active {
     transition: all 0.2s ease-in-out;
   }
 
-  .slide-in-left-enter-from,
+  .slide-in-left-enter-from {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+
   .slide-in-left-leave-to {
+    opacity: 0;
+    transform: translateX(5px);
+  }
+
+  .slide-in-right-enter-from {
+    opacity: 0;
+    transform: translateX(5px);
+  }
+
+  .slide-in-right-leave-to {
     opacity: 0;
     transform: translateX(-5px);
   }

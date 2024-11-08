@@ -22,6 +22,7 @@
       mask="aaa"
       class="w-full"
     />
+
     <div class="mt-4 flex flex-col items-center">
       <BaseButton
         :style="{ backgroundColor: playerColor }"
@@ -34,13 +35,13 @@
       <div class="mt-4 font-header text-xs">
         {{ currentAvatarPosition }}
       </div>
-      <div class="mb-4 flex">
+      <div class="flex">
         <BaseButton
           icon-left="arrow_left"
           variant="plain"
           @click="cycleAvatarsLeft"
         />
-        <Transition name="slide-in-top" mode="out-in">
+        <Transition :name="playerAvatarCycleAnimation" mode="out-in">
           <PlayerAvatar
             :key="playerAvatar"
             :avatar="playerAvatar"
@@ -61,9 +62,11 @@
         <span>Cancel</span>
       </BaseButton>
       <BaseButton
+        class="w-28"
         :class="{ 'animate-pulse': allowSubmitPlayer }"
         icon-left="check_mark"
         :disabled="!allowSubmitPlayer"
+        :loading="isSubmitting"
         @click="submitPlayer"
       >
         <span>{{ edit ? "Save" : "Create" }}</span>
@@ -137,6 +140,7 @@ const allowSubmitPlayer = computed(
 );
 
 const isVisible = defineModel<boolean>("visible", { default: false });
+const isSubmitting = ref(false);
 const playerTag = ref<string>("");
 const playerTagUpperCase = computed(() => playerTag.value?.toUpperCase());
 
@@ -156,44 +160,59 @@ const currentAvatarPosition = computed(
   () =>
     `${(playerAvatarIndex.value + 1)?.toString()?.padStart(2, "0")}/${avatarList.length}`
 );
+const playerAvatarCycleAnimation = ref<string>();
 
 const cycleAvatarsLeft = () => {
   playerAvatarIndex.value =
     playerAvatarIndex.value - 1 < 0
       ? avatarList?.length - 1
       : playerAvatarIndex.value - 1;
+
+  playerAvatarCycleAnimation.value = "slide-in-right";
 };
 const cycleAvatarsRight = () => {
   playerAvatarIndex.value =
     playerAvatarIndex.value + 1 > avatarList?.length - 1
       ? 0
       : playerAvatarIndex.value + 1;
+
+  playerAvatarCycleAnimation.value = "slide-in-left";
 };
 
 const submitPlayer = () => {
-  if (allowSubmitPlayer.value) {
+  if (allowSubmitPlayer.value && !isSubmitting.value) {
+    isSubmitting.value = true;
+
     if (props.player && props.edit) {
-      editPlayer({
-        id: props.player?.id,
-        created: props.player?.created,
+      editPlayer(props.player?.id, {
         avatar: playerAvatar.value,
         tag: playerTagUpperCase.value,
         color: playerColor.value
-      }).then(() => {
-        playerTag.value = "";
-        playerColor.value = colorList[0];
-        isVisible.value = false;
-      });
+      })
+        .then(() => {
+          isSubmitting.value = false;
+          playerTag.value = "";
+          playerColor.value = colorList[0];
+          isVisible.value = false;
+        })
+        .finally(() => {
+          isSubmitting.value = false;
+        });
     } else {
       createPlayer({
         avatar: playerAvatar.value,
         tag: playerTagUpperCase.value,
         color: playerColor.value
-      }).then(() => {
-        playerTag.value = "";
-        playerColor.value = colorList[0];
-        isVisible.value = false;
-      });
+      })
+        .then(() => {
+          isSubmitting.value = false;
+          playerTag.value = "";
+          playerColor.value = colorList[0];
+          isVisible.value = false;
+        })
+        .finally(() => {
+          isSubmitting.value = false;
+        });
     }
   }
 };

@@ -70,22 +70,20 @@ export const useGamesStore = defineStore("games", () => {
     );
   };
 
-  // const editPlayer = async (player: IPlayer) => {
-  //   return setDoc(
-  //     playersDoc,
-  //     {
-  //       list: {
-  //         [player.id]: {
-  //           id: player.id,
-  //           tag: player.tag,
-  //           color: player.color,
-  //           avatar: player.avatar ?? null
-  //         }
-  //       }
-  //     } as IPlayersDoc,
-  //     { merge: true }
-  //   );
-  // };
+  const editGame = async (gameId: string, game: ICreateGamePayload) => {
+    return setDoc(
+      gamesDoc,
+      {
+        list: {
+          [gameId]: {
+            id: gameId,
+            players: game.players
+          }
+        }
+      } as IGamesDoc,
+      { merge: true }
+    );
+  };
 
   const deleteGame = async (id: string) => {
     return setDoc(
@@ -139,6 +137,7 @@ export const useGamesStore = defineStore("games", () => {
 
   return {
     createGame,
+    editGame,
     deleteGame,
     update,
     subscribe,

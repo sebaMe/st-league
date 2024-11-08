@@ -1,29 +1,26 @@
 <template>
-  <li class="flex justify-between even:bg-primary-100">
-    <!-- left -->
-    <div class="flex items-center">
+  <tr class="even:bg-primary-100">
+    <td class="p-1">
       <PlayerAvatar
         :avatar="player.avatar"
         :tag="player.tag"
         :color="player.color"
       />
-    </div>
-    <!-- right -->
-    <div class="flex items-center">
-      <div>
-        <div class="mr-2 text-primary">joined on</div>
-        <div class="whitespace-nowrap">{{ formattedDate }}</div>
-      </div>
+    </td>
+    <td class="w-full p-1 text-right">
+      <div class="text-primary">joined on</div>
+      <div class="whitespace-nowrap">{{ formattedDate }}</div>
+    </td>
+    <td class="p-1">
       <BaseButton
-        class="ml-2 h-full"
         variant="plain"
         icon-left="player_edit"
         @click="showEditPlayer = true"
       >
       </BaseButton>
       <PlayerEditor v-model:visible="showEditPlayer" :player="player" edit />
-    </div>
-  </li>
+    </td>
+  </tr>
 </template>
 
 <script setup lang="ts">
