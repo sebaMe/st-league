@@ -39,7 +39,7 @@ export const usePlayersStore = defineStore("players", () => {
   const db = getFirestore(mainStore.app);
   const playersDoc = doc(db, "Data", "Players");
   const data = shallowRef<IPlayersDoc>();
-  let unsub: Unsubscribe | undefined = undefined;
+  let _unsubscribe: Unsubscribe | undefined = undefined;
 
   const createPlayer = async (player: ICreatePlayerPayload) => {
     const id = nanoid();
@@ -99,8 +99,8 @@ export const usePlayersStore = defineStore("players", () => {
   };
 
   const subscribe = () => {
-    if (unsub === undefined) {
-      unsub = onSnapshot(
+    if (_unsubscribe === undefined) {
+      _unsubscribe = onSnapshot(
         playersDoc,
         (doc) => {
           data.value = doc.data() as IPlayersDoc;
@@ -113,9 +113,9 @@ export const usePlayersStore = defineStore("players", () => {
   };
 
   const unsubscribe = () => {
-    if (unsub) {
-      unsub();
-      unsub = undefined;
+    if (_unsubscribe) {
+      _unsubscribe();
+      _unsubscribe = undefined;
     }
   };
 

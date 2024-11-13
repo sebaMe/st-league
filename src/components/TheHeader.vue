@@ -53,7 +53,7 @@
         <BaseButton
           class="h-full"
           variant="plain"
-          icon-left="gear"
+          icon-left="arrow_lower"
           @click="userPop?.toggle"
         />
         <Popover

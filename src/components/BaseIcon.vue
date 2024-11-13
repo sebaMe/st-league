@@ -18,6 +18,7 @@ export type IconTypes =
   | "arrow_up"
   | "arrow_left"
   | "arrow_right"
+  | "arrow_lower"
   | "exit"
   | "record_add"
   | "record_edit"
@@ -41,6 +42,7 @@ export type IconTypes =
 import { computed } from "vue";
 
 import iconArrowLeft from "../assets/img/icons/arrow_left.png";
+import iconArrowLower from "../assets/img/icons/arrow_lower.png";
 import iconArrowRight from "../assets/img/icons/arrow_right.png";
 import iconArrowUp from "../assets/img/icons/arrow_up.png";
 import iconButtonA from "../assets/img/icons/button_a.png";
@@ -97,6 +99,8 @@ const iconPath = computed(() => {
       return iconArrowLeft;
     case "arrow_right":
       return iconArrowRight;
+    case "arrow_lower":
+      return iconArrowLower;
     case "exit":
       return iconExit;
     case "button_a":

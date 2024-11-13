@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onBeforeUnmount, ref } from "vue";
 
 import BaseButton from "../components/BaseButton.vue";
 import BaseClipCard from "../components/BaseClipCard.vue";
@@ -49,6 +49,10 @@ gamesStore.subscribe();
 const showRecordBattle = ref(false);
 
 const battlesAmount = computed(() => gamesStore.orderedGamesList?.length);
+
+onBeforeUnmount(() => {
+  gamesStore.unsubscribe();
+});
 </script>
 
 <style></style>

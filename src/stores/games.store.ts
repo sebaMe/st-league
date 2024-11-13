@@ -51,7 +51,7 @@ export const useGamesStore = defineStore("games", () => {
   const db = getFirestore(mainStore.app);
   const gamesDoc = doc(db, "Data", "Games1");
   const data = shallowRef<IGamesDoc>();
-  let unsub: Unsubscribe | undefined = undefined;
+  let _unsubscribe: Unsubscribe | undefined = undefined;
 
   const createGame = async (game: ICreateGamePayload) => {
     const id = nanoid();
@@ -107,8 +107,8 @@ export const useGamesStore = defineStore("games", () => {
   };
 
   const subscribe = () => {
-    if (unsub === undefined) {
-      unsub = onSnapshot(
+    if (_unsubscribe === undefined) {
+      _unsubscribe = onSnapshot(
         gamesDoc,
         (doc) => {
           data.value = doc.data() as IGamesDoc;
@@ -121,9 +121,9 @@ export const useGamesStore = defineStore("games", () => {
   };
 
   const unsubscribe = () => {
-    if (unsub) {
-      unsubscribe();
-      unsub = undefined;
+    if (_unsubscribe) {
+      _unsubscribe();
+      _unsubscribe = undefined;
     }
   };
 

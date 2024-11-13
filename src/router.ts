@@ -58,4 +58,8 @@ router.beforeEach(async (to) => {
   if (!to.meta.requiresAuth && to.path !== loginRoute.path) {
     return to;
   }
+
+  if (to.path === loginRoute.path && authStore.user) {
+    return homeRoute.path;
+  }
 });
