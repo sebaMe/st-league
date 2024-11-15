@@ -6,19 +6,51 @@
         :value="totalResult.lost"
         icon="skull"
         :max="maxGames"
-        :percentage="lostPercentage"
+        :prominent="`${lostPercentage}%`"
       />
+      <PlayerResultStat
+        v-if="totalResult.lostStreaks.lost2 > 0"
+        class="!bg-rare-200"
+        :prominent="totalResult.lostStreaks.lost2"
+        icon="skull"
+        :pt="{ prominent: 'bg-rare-600' }"
+      />
+      <PlayerResultStat
+        v-if="totalResult.lostStreaks.lost3 > 0"
+        class="!bg-legendary-200"
+        :prominent="totalResult.lostStreaks.lost3"
+        icon="skull"
+        :pt="{ prominent: 'bg-legendary-600' }"
+      />
+      <PlayerResultStat
+        v-if="totalResult.lostStreaks.lostX > 0"
+        class="!bg-unique-200"
+        :prominent="totalResult.lostStreaks.lostX"
+        icon="skull"
+        :pt="{ prominent: 'bg-unique-600' }"
+      />
+      <PlayerResultStat
+        v-if="lostFromHearts > 0"
+        :prominent="lostFromHearts"
+        class="!bg-gray-200"
+        :pt="{ prominent: 'bg-gray-600' }"
+      >
+        <template #icon>
+          <BaseIcon class="mx-1" icon="skull" />
+          <BaseIcon class="mr-1" icon="heart_empty" size="sm" />
+        </template>
+      </PlayerResultStat>
       <PlayerResultStat
         :value="totalResult.won"
         icon="crown"
         :max="maxGames"
-        :percentage="wonPercentage"
+        :prominent="`${wonPercentage}%`"
       />
       <PlayerResultStat
         :value="participatedGames"
         icon="check_mark"
         :max="maxGames"
-        :percentage="participatedPercentage"
+        :prominent="`${participatedPercentage}%`"
       />
     </div>
     <!-- right -->
@@ -29,9 +61,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import { MAX_HEARTS_AMOUNT } from "../constants/game.constants";
 import { IPlayerTotalResult } from "../pages/LeaderboardPage.vue";
 import { calculatePercentage } from "../utils/result.utils";
-import PlayerResultStat from "./elements/PlayerResultStat.vue";
+import BaseIcon from "./BaseIcon.vue";
+import PlayerResultStat from "./elements/PlayerStat.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -55,6 +89,10 @@ const lostPercentage = computed(() =>
 );
 const wonPercentage = computed(() =>
   calculatePercentage(props.totalResult.won, maxGames.value)
+);
+
+const lostFromHearts = computed(() =>
+  Math.floor(props.totalResult.missed / MAX_HEARTS_AMOUNT)
 );
 </script>
 

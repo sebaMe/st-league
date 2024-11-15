@@ -1,26 +1,30 @@
 <template>
-  <tr class="even:bg-primary-100">
+  <tr
+    class="border-b-2 border-b-primary-900 last:border-b-0 even:bg-primary-50"
+  >
     <td class="pl-2 text-center font-header text-primary">
       {{ gameNr.toFixed().padStart(2, "0") }}
     </td>
-    <td class="w-full min-w-56 p-1">
-      <PlayerAvatar
-        v-for="player in participatedGamePlayers"
-        :key="player.id"
-        class="inline-flex px-1"
-        :avatar="player.avatar"
-        :tag="player.tag"
-        :color="player.color"
-        :result="player.result"
-      />
+    <td class="w-full min-w-[160px] p-1">
+      <div class="inline-flex flex-wrap gap-0.5">
+        <PlayerAvatar
+          v-for="player in participatedGamePlayers"
+          :key="player.id"
+          :avatar="player.avatar"
+          :tag="player.tag"
+          :color="player.color"
+          :result="player.result"
+        />
+      </div>
     </td>
-    <td class="p-1">
+    <td class="p-1 leading-tight">
       <div class="text-right">
         <div class="flex items-center justify-end text-primary">
-          <BaseIcon icon="player" />
+          <BaseIcon icon="player" size="sm" />
           <span class="ml-1">{{ participation }}</span>
         </div>
-        <div class="whitespace-nowrap">{{ formattedDate }}</div>
+        <div>{{ formattedDate }}</div>
+        <div>{{ formattedTime }}</div>
       </div>
     </td>
     <td class="p-1">
@@ -64,7 +68,11 @@ const showEditBattle = ref(false);
 
 const formattedDate = getFormattedFirestoreDate(
   props.game.created,
-  DateFormats.DATE_TIME
+  DateFormats.DATE
+);
+const formattedTime = getFormattedFirestoreDate(
+  props.game.created,
+  DateFormats.TIME
 );
 
 const gamePlayers = useGamePlayerResults(

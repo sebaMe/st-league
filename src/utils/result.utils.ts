@@ -25,7 +25,7 @@ export const mapResultToIcon = (
 export const calculatePercentage = (value: number, max: number) =>
   Math.round((value / max) * 100);
 
-interface ILostStreaks {
+export interface ILostStreaks {
   lost1: number;
   lost2: number;
   lost3: number;

@@ -35,12 +35,10 @@
         <AccordionPanel
           v-for="(result, index) in orderedResultList"
           :key="result.id"
-          class="min-w-96 border-x-0 border-b-2 border-t-0 border-b-primary-900 last:border-b-0 even:bg-primary-100"
+          class="min-w-[320px] border-x-0 border-b-2 border-t-0 border-b-primary-900 last:border-b-0 even:bg-primary-50"
           :value="result.id"
         >
-          <AccordionHeader
-            class="border-none bg-transparent p-2 hover:bg-primary-50"
-          >
+          <AccordionHeader class="border-none bg-transparent p-2">
             <LeaderboardRowHeader :total-result="result" :index />
           </AccordionHeader>
           <AccordionContent :pt="{ content: 'border-none p-2 bg-transparent' }">
@@ -60,6 +58,7 @@ export interface IPlayerTotalResult extends IPlayer {
   participated: number;
   missed: number;
   history: ResultTypes[];
+  lostStreaks: ILostStreaks;
 }
 </script>
 <script setup lang="ts">
@@ -82,6 +81,7 @@ import { IPlayer, usePlayersStore } from "../stores/players.store";
 import {
   calculateLostScore,
   calculateLostStreaks,
+  ILostStreaks,
   mapResultToIcon
 } from "../utils/result.utils";
 
@@ -139,7 +139,8 @@ const resultList = computed<IPlayerTotalResult[]>(() =>
       won,
       missed,
       score,
-      history: playerGameHistory
+      history: playerGameHistory,
+      lostStreaks
     };
   })
 );

@@ -6,6 +6,9 @@
           variant === 'default'
       },
       {
+        'border-none': variant === 'plain'
+      },
+      {
         'text-xl': font === 'text'
       },
       {

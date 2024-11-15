@@ -10,7 +10,7 @@
       <!-- avatar and hearts -->
       <div>
         <PlayerAvatar
-          class="px-2"
+          class="pl-2"
           :avatar="totalResult.avatar"
           :tag="totalResult.tag"
           :color="totalResult.color"
@@ -27,7 +27,7 @@
         </div>
       </div>
       <!-- game history -->
-      <div class="ml-2 flex min-w-32 flex-wrap items-center justify-start">
+      <div class="ml-2 flex min-w-[100px] flex-wrap items-center justify-start">
         <BaseIcon
           v-for="(result, n) in latestResultsHistory"
           :key="n"
@@ -62,7 +62,7 @@ const props = withDefaults(
 );
 
 const latestResultsHistory = computed(() =>
-  props.totalResult.history.slice(-10)
+  props.totalResult.history.slice(-8)
 );
 const currentHearts = computed(
   () => MAX_HEARTS_AMOUNT - (props.totalResult.missed % MAX_HEARTS_AMOUNT)

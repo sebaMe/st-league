@@ -1,5 +1,7 @@
 <template>
-  <tr class="even:bg-primary-100">
+  <tr
+    class="border-b-2 border-b-primary-900 last:border-b-0 even:bg-primary-50"
+  >
     <td class="p-1">
       <PlayerAvatar
         :avatar="player.avatar"

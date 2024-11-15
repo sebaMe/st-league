@@ -25,7 +25,11 @@ export default {
         danger: colors.red,
         success: colors.green,
         warn: colors.yellow,
-        info: colors.blue
+        info: colors.blue,
+        rare: colors.blue,
+        epic: colors.violet,
+        legendary: colors.orange,
+        unique: colors.pink
       },
       screens: {
         "2xs": "380px",
