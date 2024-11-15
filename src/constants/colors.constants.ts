@@ -14,16 +14,16 @@ export const primaryOrange = {
 };
 
 export const primaryPurple = {
-    DEFAULT: "#613fd1",
-    50: "#edefff",
-    100: "#dfe1ff",
-    200: "#c5c8ff",
-    300: "#a2a3ff",
-    400: "#877efc",
-    500: "#745ff5",
-    600: "#6641ea",
-    700: "#613fd1",
-    800: "#472da6",
-    900: "#3d2c83",
-    950: "#251a4c"
-  };
+  DEFAULT: "#613fd1",
+  50: "#edefff",
+  100: "#dfe1ff",
+  200: "#c5c8ff",
+  300: "#a2a3ff",
+  400: "#877efc",
+  500: "#745ff5",
+  600: "#6641ea",
+  700: "#613fd1",
+  800: "#472da6",
+  900: "#3d2c83",
+  950: "#251a4c"
+};

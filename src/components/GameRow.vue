@@ -1,15 +1,13 @@
 <template>
-  <tr class="even:bg-primary-200">
-    <td
-      class="sticky left-0 z-20 bg-primary p-1 text-center font-header text-white"
-    >
+  <tr class="even:bg-primary-100">
+    <td class="pl-2 text-center font-header text-primary">
       {{ gameNr.toFixed().padStart(2, "0") }}
     </td>
     <td class="w-full min-w-56 p-1">
       <PlayerAvatar
         v-for="player in participatedGamePlayers"
         :key="player.id"
-        class="inline-flex"
+        class="inline-flex px-1"
         :avatar="player.avatar"
         :tag="player.tag"
         :color="player.color"

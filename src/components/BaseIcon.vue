@@ -31,8 +31,11 @@ export type IconTypes =
   | "gear"
   | "chest"
   | "x_mark"
-  | "trophy"
+  | "expand"
+  | "collapse"
+  | "star"
   | "heart"
+  | "heart_empty"
   | "skull"
   | "undo"
   | "crown"
@@ -52,13 +55,16 @@ import iconCharacterAdd from "../assets/img/icons/character_add.png";
 import iconCharacterEdit from "../assets/img/icons/character_edit.png";
 import iconCheckMark from "../assets/img/icons/checkmark.png";
 import iconChest from "../assets/img/icons/chest.png";
+import iconCollapse from "../assets/img/icons/collapse.png";
 import iconCrown from "../assets/img/icons/crown.png";
 import iconXMark from "../assets/img/icons/delete.png";
 import iconExit from "../assets/img/icons/exit.png";
+import iconExpand from "../assets/img/icons/expand.png";
 import iconEyeHide from "../assets/img/icons/eye_hide.png";
 import iconEyeShow from "../assets/img/icons/eye_show.png";
 import iconGear from "../assets/img/icons/gear.png";
 import iconHeart from "../assets/img/icons/heart.png";
+import iconHeartEmpty from "../assets/img/icons/heart_empty.png";
 import iconHourglass from "../assets/img/icons/hourglass.png";
 import iconLock from "../assets/img/icons/lock.png";
 import iconMusic from "../assets/img/icons/music.png";
@@ -66,8 +72,8 @@ import iconParty from "../assets/img/icons/party.png";
 import iconRecordAdd from "../assets/img/icons/script_add.png";
 import iconRecordEdit from "../assets/img/icons/script_edit.png";
 import iconSkull from "../assets/img/icons/skull.png";
+import iconStar from "../assets/img/icons/star.png";
 import iconSwords from "../assets/img/icons/swords.png";
-import iconTrophy from "../assets/img/icons/trophy.png";
 import iconUndo from "../assets/img/icons/undo.png";
 import iconUser from "../assets/img/icons/user.png";
 
@@ -117,10 +123,12 @@ const iconPath = computed(() => {
       return iconCharacterEdit;
     case "check_mark":
       return iconCheckMark;
-    case "trophy":
-      return iconTrophy;
+    case "star":
+      return iconStar;
     case "heart":
       return iconHeart;
+    case "heart_empty":
+      return iconHeartEmpty;
     case "undo":
       return iconUndo;
     case "user":
@@ -135,6 +143,10 @@ const iconPath = computed(() => {
       return iconSkull;
     case "x_mark":
       return iconXMark;
+    case "expand":
+      return iconExpand;
+    case "collapse":
+      return iconCollapse;
     default:
       return undefined;
   }

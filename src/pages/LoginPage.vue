@@ -15,7 +15,7 @@
         <span class="text-highlight">T</span><span>errific League</span>
       </div>
 
-      <TheBattleThemePlayer />
+      <BattleThemePlayer />
 
       <div ref="inputGroup">
         <BaseInput v-model="email" icon-left="player" label="Email" />
@@ -54,8 +54,8 @@ import battleGif from "../assets/img/battle.gif";
 import BaseButton from "../components/BaseButton.vue";
 import BaseClipCard from "../components/BaseClipCard.vue";
 import BaseInput from "../components/BaseInput.vue";
+import BattleThemePlayer from "../components/BattleThemePlayer.vue";
 import GithubLink from "../components/GithubLink.vue";
-import TheBattleThemePlayer from "../components/TheBattleThemePlayer.vue";
 import { useKeyStrokeNoFocus } from "../composables/input.composables";
 import { homeRoute } from "../router";
 import { useAuthStore } from "../stores/auth.store";

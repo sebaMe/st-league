@@ -1,22 +1,36 @@
 <template>
-  <div class="relative flex h-14 flex-col items-center justify-end px-2">
-    <BaseIcon
-      v-if="result"
-      class="absolute"
-      :class="bigResult ? 'size-6 -top-3' : 'top-0 z-10 size-4'"
-      :icon="mapResultToIcon(result)"
-    />
-    <img
-      :key="avatarSrc"
-      class="size-6 drop-shadow-md hover:z-10 hover:scale-125"
-      :class="[
-        { 'animate-bounce': animate && result === ResultTypes.WON },
-        { 'animate-pulse': animate && result === ResultTypes.LOST }
-      ]"
-      :src="avatarSrc"
-    />
+  <div
+    class="relative flex items-center justify-end"
+    :class="[
+      { 'h-14 flex-col': variant !== 'inline' },
+      { 'h-8': variant === 'inline' }
+    ]"
+  >
+    <div>
+      <BaseIcon
+        v-if="result"
+        class="absolute"
+        :class="
+          variant === 'big-result' ? 'size-6 -top-3' : 'top-0 z-10 size-4'
+        "
+        :icon="mapResultToIcon(result)"
+      />
+      <img
+        :key="avatarSrc"
+        class="size-6 min-w-6 drop-shadow-md hover:z-10 hover:scale-125"
+        :class="[
+          { 'animate-bounce': animate && result === ResultTypes.WON },
+          { 'animate-pulse': animate && result === ResultTypes.LOST }
+        ]"
+        :src="avatarSrc"
+      />
+    </div>
     <div
-      class="h-4 font-header text-xs"
+      class="h-4 font-header"
+      :class="[
+        { 'text-xs': variant !== 'inline' },
+        { 'ml-2 text-sm': variant === 'inline' }
+      ]"
       :style="{
         color
       }"
@@ -30,7 +44,8 @@
 import { computed } from "vue";
 
 import { ResultTypes } from "../stores/games.store";
-import BaseIcon, { IconTypes } from "./BaseIcon.vue";
+import { mapResultToIcon } from "../utils/result.utils";
+import BaseIcon from "./BaseIcon.vue";
 
 const props = withDefaults(
   defineProps<{
@@ -39,31 +54,16 @@ const props = withDefaults(
     tag: string;
     result?: ResultTypes | undefined;
     animate?: boolean;
-    bigResult?: boolean;
+    variant?: "big-result" | "inline";
   }>(),
   {
     result: undefined,
-    bigResult: false,
-    animate: false
+    animate: false,
+    variant: undefined
   }
 );
 
 const avatarSrc = computed(() => `img/avatars/${props.avatar}.png`);
-
-const mapResultToIcon = (result?: ResultTypes): IconTypes | undefined => {
-  switch (result) {
-    case ResultTypes.MISSED:
-      return "x_mark";
-    case ResultTypes.PARTICIPATED:
-      return "check_mark";
-    case ResultTypes.WON:
-      return "crown";
-    case ResultTypes.LOST:
-      return "skull";
-    default:
-      return undefined;
-  }
-};
 </script>
 
 <style></style>

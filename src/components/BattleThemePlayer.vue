@@ -13,7 +13,7 @@
   </BaseButton>
   <BaseButton
     v-else
-    class="h-full w-56 justify-evenly border-2 border-dashed border-white bg-highlight font-header text-xs text-white"
+    class="h-full w-56 justify-evenly font-header text-xs text-white"
     @click="playBattleTheme"
   >
     <BaseIcon icon="music" :class="{ 'animate-bounce': isPlayingAudio }" />

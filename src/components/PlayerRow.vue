@@ -5,6 +5,8 @@
         :avatar="player.avatar"
         :tag="player.tag"
         :color="player.color"
+        class="px-2"
+        variant="inline"
       />
     </td>
     <td class="w-full p-1 text-right">

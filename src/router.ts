@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 
 import BattlesPage from "./pages/BattlesPage.vue";
 import HomePage from "./pages/HomePage.vue";
+import LeaderboardPage from "./pages/LeaderboardPage.vue";
 import LoginPage from "./pages/LoginPage.vue";
 import PlayersPage from "./pages/PlayersPage.vue";
 import { useAuthStore } from "./stores/auth.store";
@@ -30,13 +31,22 @@ export const battlesRoute: RouteRecordRaw = {
   }
 };
 
+export const leaderboardRoute: RouteRecordRaw = {
+  path: "/leaderboard",
+  component: LeaderboardPage,
+  meta: {
+    requiresAuth: true
+  }
+};
+
 export const homeRoute: RouteRecordRaw = {
   path: "/",
   component: HomePage,
   meta: {
     requiresAuth: true
   },
-  children: [playersRoute, battlesRoute]
+  redirect: leaderboardRoute,
+  children: [playersRoute, battlesRoute, leaderboardRoute]
 };
 
 const routes: RouteRecordRaw[] = [homeRoute, loginRoute];

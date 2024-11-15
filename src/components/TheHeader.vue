@@ -14,8 +14,8 @@
           variant="plain"
           @click="router.push(homeRoute.path)"
         >
-          <span class="text-primary">ST</span>
-          <span class="text-highlight">L</span>
+          <span class="text-highlight">ST</span>
+          <span class="text-primary">L</span>
         </BaseButton>
       </div>
       <!-- center -->
@@ -24,11 +24,17 @@
           <BaseButton
             class="h-full"
             variant="plain"
+            icon-left="star"
+            :active="router.currentRoute.value.path === leaderboardRoute.path"
+            @click="router.push(leaderboardRoute.path)"
+          >
+            <span class="hidden text-xl sm:inline-flex">Leaderboard</span>
+          </BaseButton>
+          <BaseButton
+            class="h-full"
+            variant="plain"
             icon-left="swords"
-            :class="{
-              'bg-primary-200':
-                router.currentRoute.value.path === battlesRoute.path
-            }"
+            :active="router.currentRoute.value.path === battlesRoute.path"
             @click="router.push(battlesRoute.path)"
           >
             <span class="hidden text-xl sm:inline-flex">Brawls</span>
@@ -37,10 +43,7 @@
             class="h-full"
             variant="plain"
             icon-left="party"
-            :class="{
-              'bg-primary-200':
-                router.currentRoute.value.path === playersRoute.path
-            }"
+            :active="router.currentRoute.value.path === playersRoute.path"
             @click="router.push(playersRoute.path)"
           >
             <span class="hidden text-xl sm:inline-flex">Players</span>
@@ -49,7 +52,7 @@
       </div>
       <!-- end -->
       <div class="h-full">
-        <TheBattleThemePlayer minimal />
+        <BattleThemePlayer minimal />
         <BaseButton
           class="h-full"
           variant="plain"
@@ -90,13 +93,18 @@ import { useTemplateRef } from "vue";
 import { useRouter } from "vue-router";
 
 import { version } from "../../package.json";
-import { battlesRoute, homeRoute, playersRoute } from "../router";
+import {
+  battlesRoute,
+  homeRoute,
+  leaderboardRoute,
+  playersRoute
+} from "../router";
 import { useAuthStore } from "../stores/auth.store";
 import BaseButton from "./BaseButton.vue";
 import BaseClipCard from "./BaseClipCard.vue";
 import BaseIcon from "./BaseIcon.vue";
+import BattleThemePlayer from "./BattleThemePlayer.vue";
 import GithubLink from "./GithubLink.vue";
-import TheBattleThemePlayer from "./TheBattleThemePlayer.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();

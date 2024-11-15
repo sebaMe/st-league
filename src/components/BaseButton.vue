@@ -2,13 +2,17 @@
   <Button
     :class="[
       {
-        'rounded-lg border-2 border-dashed border-white': variant === 'default'
+        'rounded-none border-2 border-b-primary-900 border-l-primary-400 border-r-primary-900 border-t-primary-400':
+          variant === 'default'
       },
       {
         'text-xl': font === 'text'
       },
       {
         'font-header text-sm': font === 'header'
+      },
+      {
+        'bg-primary-200': active
       }
     ]"
     :text="variant === 'plain'"
@@ -36,13 +40,15 @@ withDefaults(
     iconLeft?: IconTypes;
     iconRight?: IconTypes;
     loading?: boolean;
+    active?: boolean;
   }>(),
   {
     font: "text",
     variant: "default",
     iconLeft: undefined,
     iconRight: undefined,
-    loading: false
+    loading: false,
+    active: false
   }
 );
 </script>

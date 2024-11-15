@@ -8,7 +8,7 @@
       <slot></slot>
     </div>
     <div
-      class="absolute left-1 top-1 -z-10 size-full bg-slate-900"
+      class="absolute left-1 top-1 -z-10 size-full bg-primary-900"
       :style="clipPathStyle"
     ></div>
   </div>

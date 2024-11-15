@@ -42,9 +42,8 @@ import { usePlayersStore } from "../stores/players.store";
 const gamesStore = useGamesStore();
 const playerStore = usePlayersStore();
 
-playerStore.update();
-
 gamesStore.subscribe();
+playerStore.update();
 
 const showRecordBattle = ref(false);
 

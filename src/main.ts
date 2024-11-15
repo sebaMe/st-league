@@ -8,7 +8,7 @@ import ToastService from "primevue/toastservice";
 import { createApp } from "vue";
 
 import App from "./App.vue";
-import { primaryPurple } from "./constants/colors";
+import { primaryPurple } from "./constants/colors.constants";
 import { router } from "./router";
 
 const stLeague = definePreset(Aura, {

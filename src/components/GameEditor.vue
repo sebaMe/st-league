@@ -48,7 +48,7 @@
           :color="player.color"
           :tag="player.tag"
           :result="getPlayerResult(player.id)"
-          big-result
+          variant="big-result"
           animate
           class="z-10"
         />
