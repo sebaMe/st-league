@@ -1,6 +1,6 @@
 import colors from "tailwindcss/colors";
 
-import { primaryPurple } from "./src/constants/colors.ts";
+import { primaryPurple } from "./src/constants/colors.constants";
 
 /** @type {import('tailwindcss').Config} */
 
