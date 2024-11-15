@@ -17,8 +17,8 @@ import { computed, shallowRef } from "vue";
 import { useMainStore } from "./main.store";
 
 export enum ResultTypes {
-  WON = "w",
   LOST = "l",
+  WON = "w",
   PARTICIPATED = "o",
   MISSED = "x"
 }

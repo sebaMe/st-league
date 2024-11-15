@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-1 items-center justify-between">
+  <div class="flex w-full items-center justify-between">
     <!-- left -->
     <div class="flex items-center">
       <div
@@ -20,16 +20,16 @@
           <BaseIcon
             v-for="n in MAX_HEARTS_AMOUNT"
             :key="n"
-            class="!size-3 !min-h-3 !min-w-3"
+            size="sm"
             :class="{ 'animate-pulse': n === 1 && currentHearts === 1 }"
             :icon="n > currentHearts ? 'heart_empty' : 'heart'"
           />
         </div>
       </div>
       <!-- game history -->
-      <div class="ml-2 flex min-w-20 flex-wrap items-center justify-center">
+      <div class="ml-2 flex min-w-32 flex-wrap items-center justify-start">
         <BaseIcon
-          v-for="(result, n) in last5Results"
+          v-for="(result, n) in latestResultsHistory"
           :key="n"
           :icon="mapResultToIcon(result)"
         />
@@ -61,7 +61,9 @@ const props = withDefaults(
   {}
 );
 
-const last5Results = computed(() => props.totalResult.history.slice(-5));
+const latestResultsHistory = computed(() =>
+  props.totalResult.history.slice(-10)
+);
 const currentHearts = computed(
   () => MAX_HEARTS_AMOUNT - (props.totalResult.missed % MAX_HEARTS_AMOUNT)
 );

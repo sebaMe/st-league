@@ -2,7 +2,12 @@
   <img
     v-if="icon"
     :src="iconPath"
-    class="size-6 min-h-6 min-w-6 hover:z-10 hover:scale-110"
+    class="hover:z-10 hover:scale-110"
+    :class="[
+      { 'size-8 min-h-8 min-w-8': size === 'lg' },
+      { 'size-6 min-h-6 min-w-6': size === 'md' },
+      { 'size-4 min-h-4 min-w-4': size === 'sm' }
+    ]"
   />
 </template>
 
@@ -77,9 +82,16 @@ import iconSwords from "../assets/img/icons/swords.png";
 import iconUndo from "../assets/img/icons/undo.png";
 import iconUser from "../assets/img/icons/user.png";
 
-const props = defineProps<{
-  icon?: IconTypes;
-}>();
+const props = withDefaults(
+  defineProps<{
+    icon?: IconTypes;
+    size?: "md" | "sm" | "lg";
+  }>(),
+  {
+    icon: undefined,
+    size: "md"
+  }
+);
 
 const iconPath = computed(() => {
   switch (props.icon) {
