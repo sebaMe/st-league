@@ -19,6 +19,7 @@
 
 ## Major Updates after 1.0.0
 - wildcards (mutations)
+- emoji bubbles for avatars
 - achievements?
 - exp- / skill-system?
 - seasons?
