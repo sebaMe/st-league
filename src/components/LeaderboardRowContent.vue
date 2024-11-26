@@ -9,6 +9,17 @@
         :prominent="`${lostPercentage}%`"
       />
       <PlayerResultStat
+        v-if="lostFromHearts > 0"
+        :prominent="lostFromHearts"
+        class="!bg-gray-200"
+        :pt="{ prominent: 'bg-gray-600' }"
+      >
+        <template #icon>
+          <BaseIcon class="mx-1" icon="skull" />
+          <BaseIcon class="mr-1" icon="heart_empty" size="sm" />
+        </template>
+      </PlayerResultStat>
+      <PlayerResultStat
         v-if="totalResult.lostStreaks.lost2 > 0"
         class="!bg-rare-200"
         :prominent="totalResult.lostStreaks.lost2"
@@ -29,17 +40,6 @@
         icon="skull"
         :pt="{ prominent: 'bg-unique-600' }"
       />
-      <PlayerResultStat
-        v-if="lostFromHearts > 0"
-        :prominent="lostFromHearts"
-        class="!bg-gray-200"
-        :pt="{ prominent: 'bg-gray-600' }"
-      >
-        <template #icon>
-          <BaseIcon class="mx-1" icon="skull" />
-          <BaseIcon class="mr-1" icon="heart_empty" size="sm" />
-        </template>
-      </PlayerResultStat>
       <PlayerResultStat
         :value="totalResult.won"
         icon="crown"
