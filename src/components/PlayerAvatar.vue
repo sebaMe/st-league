@@ -49,14 +49,17 @@ import BaseIcon from "./BaseIcon.vue";
 
 const props = withDefaults(
   defineProps<{
-    avatar: string;
-    color: string;
-    tag: string;
+    avatar?: string;
+    color?: string;
+    tag?: string;
     result?: ResultTypes | undefined;
     animate?: boolean;
     variant?: "big-result" | "inline";
   }>(),
   {
+    avatar: undefined,
+    color: undefined,
+    tag: undefined,
     result: undefined,
     animate: false,
     variant: undefined

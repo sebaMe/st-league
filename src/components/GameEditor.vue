@@ -1,18 +1,20 @@
 <template>
-  <Dialog v-model:visible="isVisible" modal class="font-content">
-    <template #header>
-      <div class="mr-4">
-        <div class="font-header uppercase text-primary">
-          {{ `${edit ? "Edit" : "Record"} Brawl` }}
-        </div>
-        <div class="text-xl">
-          {{ `${edit ? "Modify" : "Enter"} the Result!` }}
-        </div>
-      </div>
-    </template>
-    <template #closeicon>
-      <BaseIcon icon="x_mark" />
-    </template>
+  <BaseButton
+    :icon-left="edit ? 'record_edit' : 'record_add'"
+    :variant="edit ? 'plain' : 'default'"
+    @click="isVisible = true"
+  >
+    <span v-if="!edit">Record Brawl</span>
+  </BaseButton>
+  <BaseDialog
+    v-model:visible="isVisible"
+    :title="`${edit ? 'Edit' : 'Record'} Brawl`"
+    :subtitle="`${edit ? 'Modify' : 'Enter'} the Result!`"
+    :allow-confirm="allowSubmitGame"
+    :busy-confirm="isSubmitting"
+    label-confirm="Save"
+    @confirm="submitGame"
+  >
     <BaseButton
       icon-left="undo"
       fluid
@@ -54,27 +56,11 @@
         />
       </div>
     </div>
-    <template #footer>
-      <BaseButton icon-left="x_mark" variant="plain" @click="isVisible = false">
-        <span>Cancel</span>
-      </BaseButton>
-      <BaseButton
-        :class="{ 'animate-pulse': allowSubmitGame }"
-        class="w-28"
-        icon-left="check_mark"
-        :disabled="!allowSubmitGame"
-        :loading="isSubmitting"
-        @click="submitGame"
-      >
-        <span>{{ edit ? "Save" : "Record" }}</span>
-      </BaseButton>
-    </template>
-  </Dialog>
+  </BaseDialog>
 </template>
 
 <script setup lang="ts">
 import { cloneDeep } from "lodash-es";
-import Dialog from "primevue/dialog";
 import { computed, ref, watch } from "vue";
 
 import {
@@ -86,7 +72,7 @@ import {
 } from "../stores/games.store";
 import { IPlayer } from "../stores/players.store";
 import BaseButton from "./BaseButton.vue";
-import BaseIcon from "./BaseIcon.vue";
+import BaseDialog from "./BaseDialog.vue";
 import PlayerAvatar from "./PlayerAvatar.vue";
 
 const props = withDefaults(
@@ -104,7 +90,7 @@ const props = withDefaults(
 
 const gamesStore = useGamesStore();
 
-const isVisible = defineModel<boolean>("visible", { default: false });
+const isVisible = ref<boolean>(false);
 
 const gameSnapshot = ref<ICreateGamePayload>();
 

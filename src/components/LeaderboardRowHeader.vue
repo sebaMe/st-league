@@ -62,7 +62,7 @@ const props = withDefaults(
 );
 
 const latestResultsHistory = computed(() =>
-  props.totalResult.history.slice(-8)
+  props.totalResult.history.slice(0, 8)
 );
 const currentHearts = computed(
   () => MAX_HEARTS_AMOUNT - (props.totalResult.missed % MAX_HEARTS_AMOUNT)

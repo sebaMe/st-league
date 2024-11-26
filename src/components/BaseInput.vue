@@ -1,6 +1,6 @@
 <template>
   <InputGroup
-    class="relative mt-4 w-56 border-2 border-dashed"
+    class="relative mt-4 min-w-56 border-2 border-dashed"
     :class="invalid ? 'border-danger-500' : 'border-primary'"
   >
     <InputGroupAddon
@@ -14,13 +14,13 @@
         v-if="type === 'text' || type === 'password'"
         v-model="model"
         :type="isPasswordVisible ? 'text' : type"
-        class="border-0 text-xl focus:outline-0"
+        class="border-0 text-xl outline-0"
       />
       <InputMask
         v-if="type === 'mask'"
         v-model="model"
         mask="aaa"
-        class="border-0 text-xl focus:outline-0"
+        class="border-0 text-xl outline-0"
       />
       <label class="text-xl">{{ label }}</label>
     </FloatLabel>

@@ -1,16 +1,17 @@
 # Roadmap
 
 ## Fixes
-- fix game-history for player on leaderboard
-- relate player-stats to participated games
+- ~~fix game-history for player on leaderboard~~
+- ~~relate player-stats to participated games~~
 
 ## Features
 - review authentication and user-rules
-- use dropdown for leaderboard sortings
+- ~~use dropdown for leaderboard sortings~~
 - add placeholder for empty pages
 - use sticky header?
 - add scoring-rules information
-- handle late joining players
+- add graph visualizing game-history of all players 
+- ~~handle late joining players~~
 - review hearts-feature
 - add complete player game-history
 - add time-selector to only respect games within a defined timeframe

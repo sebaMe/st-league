@@ -1,4 +1,4 @@
-export const MAX_HEARTS_AMOUNT = 4;
+export const MAX_HEARTS_AMOUNT = 5;
 
 export enum ScoringValues {
   WON = -1,

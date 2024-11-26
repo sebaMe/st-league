@@ -127,6 +127,7 @@ export const useGamesStore = defineStore("games", () => {
     }
   };
 
+  // latest games first
   const orderedGamesList = computed(() =>
     orderBy(
       Object.values(data.value?.list ?? {}),

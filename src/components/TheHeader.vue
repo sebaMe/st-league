@@ -53,16 +53,15 @@
       <!-- end -->
       <div class="h-full">
         <BattleThemePlayer minimal />
-        <BaseButton
-          class="h-full"
-          variant="plain"
-          icon-left="arrow_lower"
-          @click="userPop?.toggle"
-        />
-        <Popover
-          ref="userPop"
-          class="rounded-md text-center font-content text-xl"
-        >
+        <BasePopover>
+          <template #actor="{ toggle }">
+            <BaseButton
+              class="h-full"
+              variant="plain"
+              icon-left="gear"
+              @click="toggle"
+            />
+          </template>
           <div class="mb-2 text-left text-primary">
             {{ `v${version}` }}
           </div>
@@ -80,7 +79,7 @@
           >
             <span>Quit</span>
           </BaseButton>
-        </Popover>
+        </BasePopover>
       </div>
     </BaseClipCard>
   </header>
@@ -88,8 +87,6 @@
 
 <script setup lang="ts">
 import ButtonGroup from "primevue/buttongroup";
-import Popover from "primevue/popover";
-import { useTemplateRef } from "vue";
 import { useRouter } from "vue-router";
 
 import { version } from "../../package.json";
@@ -103,13 +100,12 @@ import { useAuthStore } from "../stores/auth.store";
 import BaseButton from "./BaseButton.vue";
 import BaseClipCard from "./BaseClipCard.vue";
 import BaseIcon from "./BaseIcon.vue";
+import BasePopover from "./BasePopover.vue";
 import BattleThemePlayer from "./BattleThemePlayer.vue";
 import GithubLink from "./GithubLink.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
-
-const userPop = useTemplateRef("userPop");
 </script>
 
 <style></style>

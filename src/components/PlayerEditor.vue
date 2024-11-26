@@ -1,18 +1,20 @@
 <template>
-  <Dialog v-model:visible="isVisible" modal class="font-content">
-    <template #header>
-      <div class="mr-4">
-        <div class="font-header uppercase text-primary">
-          {{ `${edit ? "Edit" : "Create"} Player` }}
-        </div>
-        <div class="text-xl">
-          {{ `${edit ? "Modify" : "Choose"} your Avatar!` }}
-        </div>
-      </div>
-    </template>
-    <template #closeicon>
-      <BaseIcon icon="x_mark" />
-    </template>
+  <BaseButton
+    :icon-left="edit ? 'player_edit' : 'player_add'"
+    :variant="edit ? 'plain' : 'default'"
+    @click="isVisible = true"
+  >
+    <span v-if="!edit">Create Player</span>
+  </BaseButton>
+  <BaseDialog
+    v-model:visible="isVisible"
+    :title="`${edit ? 'Edit' : 'Create'} Player`"
+    :subtitle="`${edit ? 'Modify' : 'Choose'} your Avatar!`"
+    :allow-confirm="allowSubmitPlayer"
+    :busy-confirm="isSubmitting"
+    label-confirm="Save"
+    @confirm="submitPlayer"
+  >
     <BaseInput
       v-model="playerTag"
       :invalid="playerTag?.length !== 3"
@@ -57,31 +59,15 @@
         />
       </div>
     </div>
-    <template #footer>
-      <BaseButton icon-left="x_mark" variant="plain" @click="isVisible = false">
-        <span>Cancel</span>
-      </BaseButton>
-      <BaseButton
-        class="w-28"
-        :class="{ 'animate-pulse': allowSubmitPlayer }"
-        icon-left="check_mark"
-        :disabled="!allowSubmitPlayer"
-        :loading="isSubmitting"
-        @click="submitPlayer"
-      >
-        <span>{{ edit ? "Save" : "Create" }}</span>
-      </BaseButton>
-    </template>
-  </Dialog>
+  </BaseDialog>
 </template>
 
 <script setup lang="ts">
-import Dialog from "primevue/dialog";
 import { computed, ref, watch } from "vue";
 
 import { IPlayer, usePlayersStore } from "../stores/players.store";
 import BaseButton from "./BaseButton.vue";
-import BaseIcon from "./BaseIcon.vue";
+import BaseDialog from "./BaseDialog.vue";
 import BaseInput from "./BaseInput.vue";
 import PlayerAvatar from "./PlayerAvatar.vue";
 

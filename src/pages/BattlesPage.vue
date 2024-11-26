@@ -2,17 +2,7 @@
   <BaseClipCard class="mt-2" tr="5" :pt="{ content: 'flex-col p-2' }">
     <div class="flex w-full">
       <div class="flex flex-1 items-center justify-center">
-        <BaseButton
-          :disabled="playerStore.orderedPlayersList?.length < 3"
-          icon-left="record_add"
-          @click="showRecordBattle = true"
-        >
-          <span>Record Brawl</span>
-        </BaseButton>
-        <GameEditor
-          v-model:visible="showRecordBattle"
-          :player-list="playerStore.orderedPlayersList"
-        />
+        <GameEditor :player-list="playerStore.orderedPlayersList" />
       </div>
     </div>
     <table class="mt-4 block w-full overflow-x-auto">
@@ -30,9 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from "vue";
+import { computed, onBeforeUnmount } from "vue";
 
-import BaseButton from "../components/BaseButton.vue";
 import BaseClipCard from "../components/BaseClipCard.vue";
 import GameEditor from "../components/GameEditor.vue";
 import GameRow from "../components/GameRow.vue";
@@ -44,8 +33,6 @@ const playerStore = usePlayersStore();
 
 gamesStore.subscribe();
 playerStore.update();
-
-const showRecordBattle = ref(false);
 
 const battlesAmount = computed(() => gamesStore.orderedGamesList?.length);
 

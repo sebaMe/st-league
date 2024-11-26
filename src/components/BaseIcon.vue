@@ -37,6 +37,7 @@ export type IconTypes =
   | "chest"
   | "x_mark"
   | "expand"
+  | "info"
   | "collapse"
   | "star"
   | "heart"
@@ -71,6 +72,7 @@ import iconGear from "../assets/img/icons/gear.png";
 import iconHeart from "../assets/img/icons/heart.png";
 import iconHeartEmpty from "../assets/img/icons/heart_empty.png";
 import iconHourglass from "../assets/img/icons/hourglass.png";
+import iconInfo from "../assets/img/icons/information.png";
 import iconLock from "../assets/img/icons/lock.png";
 import iconMusic from "../assets/img/icons/music.png";
 import iconParty from "../assets/img/icons/party.png";
@@ -143,6 +145,8 @@ const iconPath = computed(() => {
       return iconHeartEmpty;
     case "undo":
       return iconUndo;
+    case "info":
+      return iconInfo;
     case "user":
       return iconUser;
     case "gear":

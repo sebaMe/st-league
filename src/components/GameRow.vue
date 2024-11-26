@@ -28,20 +28,14 @@
       </div>
     </td>
     <td class="p-1">
-      <BaseButton
-        variant="plain"
-        icon-left="record_edit"
-        @click="showEditBattle = true"
-      >
-      </BaseButton>
-      <GameEditor v-model:visible="showEditBattle" :player-list :game edit />
+      <GameEditor :player-list :game edit />
     </td>
   </tr>
 </template>
 
 <script setup lang="ts">
 import { orderBy } from "lodash-es";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
 import { useGamePlayerResults } from "../composables/game.composables";
 import { IGame, ResultTypes } from "../stores/games.store";
@@ -50,7 +44,6 @@ import {
   DateFormats,
   getFormattedFirestoreDate
 } from "../utils/firestore.utils";
-import BaseButton from "./BaseButton.vue";
 import BaseIcon from "./BaseIcon.vue";
 import GameEditor from "./GameEditor.vue";
 import PlayerAvatar from "./PlayerAvatar.vue";
@@ -63,8 +56,6 @@ const props = withDefaults(
   }>(),
   {}
 );
-
-const showEditBattle = ref(false);
 
 const formattedDate = getFormattedFirestoreDate(
   props.game.created,
