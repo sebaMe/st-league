@@ -58,7 +58,7 @@
             <BaseButton
               class="h-full"
               variant="plain"
-              icon-left="gear"
+              icon-left="bag"
               @click="toggle"
             />
           </template>

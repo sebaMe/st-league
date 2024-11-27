@@ -34,46 +34,48 @@ export interface ILostStreaks {
 export const calculateLostStreaks = (playerGameHistory: ResultTypes[]) => {
   let lostStreak = 0;
 
-  return playerGameHistory.reduce<ILostStreaks>(
-    (obj, game, index, list) => {
-      const isLastGame = index >= list.length - 1;
-      const incrementLostStreaks = () => {
-        switch (lostStreak) {
-          case 0:
-            break;
-          case 1:
-            obj.lost1++;
-            break;
-          case 2:
-            obj.lost2++;
-            break;
-          case 3:
-            obj.lost3++;
-            break;
-          default:
-            obj.lostX++;
-            break;
-        }
-        lostStreak = 0;
-      };
+  return playerGameHistory
+    .filter((resultType) => resultType !== ResultTypes.MISSED)
+    .reduce<ILostStreaks>(
+      (obj, resultType, index, list) => {
+        const isLastGame = index >= list.length - 1;
+        const incrementLostStreaks = () => {
+          switch (lostStreak) {
+            case 0:
+              break;
+            case 1:
+              obj.lost1++;
+              break;
+            case 2:
+              obj.lost2++;
+              break;
+            case 3:
+              obj.lost3++;
+              break;
+            default:
+              obj.lostX++;
+              break;
+          }
+          lostStreak = 0;
+        };
 
-      if (game === ResultTypes.LOST) {
-        lostStreak++;
-        if (isLastGame) {
+        if (resultType === ResultTypes.LOST) {
+          lostStreak++;
+          if (isLastGame) {
+            incrementLostStreaks();
+          }
+        } else {
           incrementLostStreaks();
         }
-      } else {
-        incrementLostStreaks();
+        return obj;
+      },
+      {
+        lost1: 0,
+        lost2: 0,
+        lost3: 0,
+        lostX: 0
       }
-      return obj;
-    },
-    {
-      lost1: 0,
-      lost2: 0,
-      lost3: 0,
-      lostX: 0
-    }
-  );
+    );
 };
 
 export const calculateLostScore = (lostStreaks: ILostStreaks) => {

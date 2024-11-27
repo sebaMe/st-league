@@ -2,7 +2,8 @@
   <Dialog
     v-model:visible="isVisible"
     modal
-    class="font-content"
+    :position="breakpoints.isSmallerOrEqual('xs') ? 'bottom' : 'center'"
+    class="m-0 w-full max-w-[50rem] font-content xs:w-auto"
     :closable
     :pt="{ footer: onlyConfirm ? 'justify-center' : '' }"
   >
@@ -43,8 +44,10 @@
 </template>
 
 <script setup lang="ts">
+import { useBreakpoints } from "@vueuse/core";
 import Dialog from "primevue/dialog";
 
+import { screenBreakpoints } from "../constants/breakpoints.constants";
 import BaseButton from "./BaseButton.vue";
 import BaseIcon from "./BaseIcon.vue";
 
@@ -70,6 +73,7 @@ withDefaults(
   }
 );
 
+const breakpoints = useBreakpoints(screenBreakpoints);
 const isVisible = defineModel<boolean>("visible", { default: false });
 
 const onConfirm = () => {

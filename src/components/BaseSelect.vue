@@ -1,6 +1,7 @@
 <template>
   <FloatLabel
-    class="relative mt-4 w-44 border-2 border-dashed border-primary"
+    class="relative w-auto border-2 border-dashed border-primary"
+    :class="{ 'mt-4': label }"
     variant="on"
   >
     <Select
@@ -13,12 +14,12 @@
       }"
     >
       <template #dropdownicon>
-        <BaseIcon icon="arrow_lower" />
+        <BaseIcon icon="arrow_lower" size="sm" />
       </template>
       <template #value>
-        <div class="flex pt-2">
+        <div class="flex items-center">
           <BaseIcon v-if="model?.icon" class="mr-2" :icon="model?.icon" />
-          <span class="font-content text-xl">{{ model?.label }}</span>
+          <div class="font-content text-xl">{{ model?.label }}</div>
         </div>
       </template>
       <template #option="{ option }">
@@ -26,7 +27,7 @@
         <span>{{ option?.label }}</span>
       </template>
     </Select>
-    <label class="text-xl">{{ label }}</label>
+    <label v-if="label" class="text-xl">{{ label }}</label>
   </FloatLabel>
 </template>
 
@@ -45,10 +46,11 @@ import BaseIcon, { IconTypes } from "./BaseIcon.vue";
 
 withDefaults(
   defineProps<{
-    label: string;
+    label?: string;
     options: IBaseSelectOption[];
   }>(),
   {
+    label: undefined,
     options: () => []
   }
 );

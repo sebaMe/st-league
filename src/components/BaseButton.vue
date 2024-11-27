@@ -2,7 +2,7 @@
   <Button
     :class="[
       {
-        'rounded-none border-2 border-b-black border-l-primary-400 border-r-black border-t-primary-400':
+        'rounded-none border-2 border-b-black border-l-gray-300 border-r-black border-t-gray-300':
           variant === 'default'
       },
       {

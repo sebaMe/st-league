@@ -26,15 +26,18 @@ export type IconTypes =
   | "arrow_lower"
   | "exit"
   | "record_add"
+  | "bag"
   | "record_edit"
   | "player_add"
   | "player_edit"
   | "button_a"
   | "button_b"
   | "check_mark"
+  | "warn"
   | "user"
   | "gear"
   | "chest"
+  | "book"
   | "x_mark"
   | "expand"
   | "info"
@@ -42,6 +45,7 @@ export type IconTypes =
   | "star"
   | "heart"
   | "heart_empty"
+  | "edit"
   | "skull"
   | "undo"
   | "crown"
@@ -54,6 +58,7 @@ import iconArrowLeft from "../assets/img/icons/arrow_left.png";
 import iconArrowLower from "../assets/img/icons/arrow_lower.png";
 import iconArrowRight from "../assets/img/icons/arrow_right.png";
 import iconArrowUp from "../assets/img/icons/arrow_up.png";
+import iconBook from "../assets/img/icons/book.png";
 import iconButtonA from "../assets/img/icons/button_a.png";
 import iconButtonB from "../assets/img/icons/button_b.png";
 import iconCharacter from "../assets/img/icons/character.png";
@@ -73,9 +78,11 @@ import iconHeart from "../assets/img/icons/heart.png";
 import iconHeartEmpty from "../assets/img/icons/heart_empty.png";
 import iconHourglass from "../assets/img/icons/hourglass.png";
 import iconInfo from "../assets/img/icons/information.png";
+import iconBag from "../assets/img/icons/inventory.png";
 import iconLock from "../assets/img/icons/lock.png";
 import iconMusic from "../assets/img/icons/music.png";
 import iconParty from "../assets/img/icons/party.png";
+import iconEdit from "../assets/img/icons/pencil.png";
 import iconRecordAdd from "../assets/img/icons/script_add.png";
 import iconRecordEdit from "../assets/img/icons/script_edit.png";
 import iconSkull from "../assets/img/icons/skull.png";
@@ -83,6 +90,7 @@ import iconStar from "../assets/img/icons/star.png";
 import iconSwords from "../assets/img/icons/swords.png";
 import iconUndo from "../assets/img/icons/undo.png";
 import iconUser from "../assets/img/icons/user.png";
+import iconWarning from "../assets/img/icons/warning.png";
 
 const props = withDefaults(
   defineProps<{
@@ -125,10 +133,18 @@ const iconPath = computed(() => {
       return iconExit;
     case "button_a":
       return iconButtonA;
+    case "bag":
+      return iconBag;
     case "button_b":
       return iconButtonB;
     case "record_add":
       return iconRecordAdd;
+    case "book":
+      return iconBook;
+    case "warn":
+      return iconWarning;
+    case "edit":
+      return iconEdit;
     case "record_edit":
       return iconRecordEdit;
     case "player_add":

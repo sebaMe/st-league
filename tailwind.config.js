@@ -1,5 +1,6 @@
 import colors from "tailwindcss/colors";
 
+import { screenBreakpoints } from "./src/constants/breakpoints.constants";
 import { primaryPurple } from "./src/constants/colors.constants";
 
 /** @type {import('tailwindcss').Config} */
@@ -31,10 +32,7 @@ export default {
         legendary: colors.orange,
         unique: colors.pink
       },
-      screens: {
-        "2xs": "380px",
-        xs: "480px"
-      }
+      screens: screenBreakpoints
     }
   },
   plugins: [import("tailwindcss-primeui")]

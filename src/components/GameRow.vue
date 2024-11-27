@@ -2,7 +2,9 @@
   <tr
     class="border-b-2 border-b-primary-900 last:border-b-0 even:bg-primary-50"
   >
-    <td class="pl-2 text-center font-header text-primary">
+    <td
+      class="pl-2 text-center align-top font-header text-primary xs:align-middle"
+    >
       {{ gameNr.toFixed().padStart(2, "0") }}
     </td>
     <td class="w-full min-w-[160px] p-1">
@@ -17,7 +19,7 @@
         />
       </div>
     </td>
-    <td class="p-1 leading-tight">
+    <td class="px-1 align-top leading-tight">
       <div class="text-right">
         <div class="flex items-center justify-end text-primary">
           <BaseIcon icon="player" size="sm" />
@@ -27,7 +29,7 @@
         <div>{{ formattedTime }}</div>
       </div>
     </td>
-    <td class="p-1">
+    <td class="px-1 align-top xs:align-middle">
       <GameEditor :player-list :game edit />
     </td>
   </tr>
