@@ -28,5 +28,6 @@ fbConfig.ts
 firebase.json
 .firebase/*
 .firebaserc
+tsconfig.tsbuildinfo
 
 
