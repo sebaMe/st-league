@@ -52,7 +52,7 @@
       </div>
       <!-- end -->
       <div class="flex h-full">
-        <GithubLink class="hidden sm:flex" />
+        <GithubLink class="hidden sm:flex" :label="false" />
         <BattleThemePlayer minimal />
         <BaseButton
           font="header"
@@ -70,6 +70,7 @@
         />
         <Drawer
           v-model:visible="showDrawer"
+          block-scroll
           position="right"
           class="font-content"
           :pt="{
@@ -77,7 +78,7 @@
           }"
         >
           <template #header>
-            <div class="flex-col">
+            <div>
               <div class="flex flex-wrap">
                 <BaseIcon class="mr-2" icon="logo" />
                 <span class="font-header text-highlight">S</span
@@ -89,14 +90,62 @@
                   {{ `v${version}` }}
                 </span>
               </div>
-
-              <GithubLink class="mt-2" />
+              <div class="inline-flex">
+                <GithubLink class="mt-2" />
+              </div>
             </div>
           </template>
           <template #closeicon>
             <BaseIcon icon="x_mark" />
           </template>
-          MORE COMING SOON(ISH)
+          <div class="flex-col">
+            <BaseButton
+              class="justify-start"
+              variant="plain"
+              fluid
+              icon-left="star"
+              :active="router.currentRoute.value.path === leaderboardRoute.path"
+              @click="
+                () => {
+                  router.push(leaderboardRoute.path);
+                  showDrawer = false;
+                }
+              "
+            >
+              <span class="text-xl">Leaderboard</span>
+            </BaseButton>
+            <BaseButton
+              class="justify-start"
+              variant="plain"
+              fluid
+              icon-left="swords"
+              :active="router.currentRoute.value.path === battlesRoute.path"
+              @click="
+                () => {
+                  router.push(battlesRoute.path);
+                  showDrawer = false;
+                }
+              "
+            >
+              <span class="text-xl">Brawls</span>
+            </BaseButton>
+            <BaseButton
+              class="justify-start"
+              variant="plain"
+              fluid
+              icon-left="party"
+              :active="router.currentRoute.value.path === playersRoute.path"
+              @click="
+                () => {
+                  router.push(playersRoute.path);
+                  showDrawer = false;
+                }
+              "
+            >
+              <span class="text-xl">Players</span>
+            </BaseButton>
+          </div>
+
           <template #footer>
             <div class="flex items-center justify-evenly">
               <div class="flex items-center text-xl">
@@ -107,6 +156,7 @@
                 font="header"
                 :disabled="!authStore.user"
                 icon-left="exit"
+                variant="plain"
                 @click="authStore.logout"
               >
                 <span>Quit</span>

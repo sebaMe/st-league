@@ -20,23 +20,23 @@
         </template>
       </PlayerStat>
       <PlayerStat
-        v-if="totalResult.lostStreaks.lost2 > 0"
+        v-if="totalResult.lostStreaks.streak2 > 0"
         class="!bg-rare-200"
-        :prominent="totalResult.lostStreaks.lost2"
+        :prominent="totalResult.lostStreaks.streak2"
         icon="skull"
         :pt="{ prominent: 'bg-rare-600' }"
       />
       <PlayerStat
-        v-if="totalResult.lostStreaks.lost3 > 0"
+        v-if="totalResult.lostStreaks.streak3 > 0"
         class="!bg-legendary-200"
-        :prominent="totalResult.lostStreaks.lost3"
+        :prominent="totalResult.lostStreaks.streak3"
         icon="skull"
         :pt="{ prominent: 'bg-legendary-600' }"
       />
       <PlayerStat
-        v-if="totalResult.lostStreaks.lostX > 0"
+        v-if="totalResult.lostStreaks.streakX > 0"
         class="!bg-unique-200"
-        :prominent="totalResult.lostStreaks.lostX"
+        :prominent="totalResult.lostStreaks.streakX"
         icon="skull"
         :pt="{ prominent: 'bg-unique-600' }"
       />
@@ -45,6 +45,27 @@
         icon="crown"
         :max="participatedGames"
         :prominent="`${wonPercentage ?? '0'}%`"
+      />
+      <PlayerStat
+        v-if="totalResult.winStreaks.streak2 > 0"
+        class="!bg-rare-200"
+        :prominent="totalResult.winStreaks.streak2"
+        icon="crown"
+        :pt="{ prominent: 'bg-rare-600' }"
+      />
+      <PlayerStat
+        v-if="totalResult.winStreaks.streak3 > 0"
+        class="!bg-legendary-200"
+        :prominent="totalResult.winStreaks.streak3"
+        icon="crown"
+        :pt="{ prominent: 'bg-legendary-600' }"
+      />
+      <PlayerStat
+        v-if="totalResult.winStreaks.streakX > 0"
+        class="!bg-unique-200"
+        :prominent="totalResult.winStreaks.streakX"
+        icon="crown"
+        :pt="{ prominent: 'bg-unique-600' }"
       />
       <PlayerStat
         :value="participatedGames"

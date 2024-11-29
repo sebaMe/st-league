@@ -21,6 +21,7 @@ export type IconTypes =
   | "party"
   | "swords"
   | "arrow_up"
+  | "help"
   | "world"
   | "add"
   | "arrow_left"
@@ -28,6 +29,7 @@ export type IconTypes =
   | "arrow_lower"
   | "exit"
   | "record_add"
+  | "github"
   | "bag"
   | "record_edit"
   | "player_add"
@@ -78,8 +80,10 @@ import iconExpand from "../assets/img/icons/expand.png";
 import iconEyeHide from "../assets/img/icons/eye_hide.png";
 import iconEyeShow from "../assets/img/icons/eye_show.png";
 import iconGear from "../assets/img/icons/gear.png";
+import iconGitHub from "../assets/img/icons/github.png";
 import iconHeart from "../assets/img/icons/heart.png";
 import iconHeartEmpty from "../assets/img/icons/heart_empty.png";
+import iconHelp from "../assets/img/icons/help.png";
 import iconHourglass from "../assets/img/icons/hourglass.png";
 import iconInfo from "../assets/img/icons/information.png";
 import iconBag from "../assets/img/icons/inventory.png";
@@ -117,6 +121,8 @@ const iconPath = computed(() => {
       return iconCharacter;
     case "lock":
       return iconLock;
+    case "github":
+      return iconGitHub;
     case "eye_show":
       return iconEyeShow;
     case "eye_hide":
@@ -127,6 +133,8 @@ const iconPath = computed(() => {
       return iconParty;
     case "swords":
       return iconSwords;
+    case "help":
+      return iconHelp;
     case "arrow_up":
       return iconArrowUp;
     case "arrow_left":

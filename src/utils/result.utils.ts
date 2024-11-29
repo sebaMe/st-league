@@ -23,77 +23,71 @@ export const calculatePercentage = (value: number, max: number) => {
   return value > 0 && max > 0 ? Math.round((value / max) * 100) : 0;
 };
 
-export interface ILostStreaks {
-  lost1: number;
-  lost2: number;
-  lost3: number;
-  lostX: number;
+export interface IStreaks {
+  streak2: number;
+  streak3: number;
+  streakX: number;
 }
-export const calculateLostStreaks = (playerGameHistory: ResultTypes[]) => {
-  let lostStreak = 0;
+export const calculateStreaks = (
+  playerGameHistory: ResultTypes[],
+  streakType: ResultTypes
+) => {
+  let streak = 0;
 
-  return playerGameHistory
-    .filter((resultType) => resultType !== ResultTypes.MISSED)
-    .reduce<ILostStreaks>(
-      (obj, resultType, index, list) => {
-        const isLastGame = index >= list.length - 1;
-        const incrementLostStreaks = () => {
-          switch (lostStreak) {
-            case 0:
-              break;
-            case 1:
-              obj.lost1++;
-              break;
-            case 2:
-              obj.lost2++;
-              break;
-            case 3:
-              obj.lost3++;
-              break;
-            default:
-              obj.lostX++;
-              break;
-          }
-          lostStreak = 0;
-        };
+  return (
+    playerGameHistory
+      // filter out missed games, because they should not break a streak
+      .filter((resultType) => resultType !== ResultTypes.MISSED)
+      .reduce<IStreaks>(
+        (obj, resultType, index, list) => {
+          const isLastGame = index >= list.length - 1;
+          const incrementStreaks = () => {
+            switch (streak) {
+              case 0:
+              case 1:
+                break;
+              case 2:
+                obj.streak2++;
+                break;
+              case 3:
+                obj.streak3++;
+                break;
+              default:
+                obj.streakX++;
+                break;
+            }
+            streak = 0;
+          };
 
-        if (resultType === ResultTypes.LOST) {
-          lostStreak++;
-          if (isLastGame) {
-            incrementLostStreaks();
+          if (resultType === streakType) {
+            streak++;
+            if (isLastGame) {
+              incrementStreaks();
+            }
+          } else {
+            incrementStreaks();
           }
-        } else {
-          incrementLostStreaks();
+          return obj;
+        },
+        {
+          streak2: 0,
+          streak3: 0,
+          streakX: 0
         }
-        return obj;
-      },
-      {
-        lost1: 0,
-        lost2: 0,
-        lost3: 0,
-        lostX: 0
-      }
-    );
+      )
+  );
 };
 
-export const calculateLostScore = (
-  lostStreaks: ILostStreaks,
+export const calculateLostStreakScore = (
+  lostStreaks: IStreaks,
   scoringValues: IScoringValues
 ) => {
-  const lost1Score =
-    lostStreaks.lost1 > 0 ? lostStreaks.lost1 * scoringValues.lost : 0;
-  const lost2Score =
-    lostStreaks.lost2 > 0
-      ? lostStreaks.lost2 * scoringValues.lost * 2 + scoringValues.streak2
-      : 0;
-  const lost3Score =
-    lostStreaks.lost3 > 0
-      ? lostStreaks.lost3 * scoringValues.lost * 3 + scoringValues.streak3
-      : 0;
-  const lostXScore =
-    lostStreaks.lostX > 0
-      ? lostStreaks.lostX * scoringValues.lost * 3 + scoringValues.streakX
-      : 0;
+  const lostStreak2Score =
+    lostStreaks.streak2 > 0 ? lostStreaks.streak2 * scoringValues.streak2 : 0;
+  const lostStreak3Score =
+    lostStreaks.streak3 > 0 ? lostStreaks.streak3 * scoringValues.streak3 : 0;
+  const lostStreakXScore =
+    lostStreaks.streakX > 0 ? lostStreaks.streakX * scoringValues.streakX : 0;
 
-  return lost1Score + lost2Score + lost3Score + lostXScore;
+  return lostStreak2Score + lostStreak3Score + lostStreakXScore;
 };

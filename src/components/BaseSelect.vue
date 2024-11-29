@@ -18,10 +18,12 @@
         <BaseIcon icon="arrow_lower" size="sm" />
       </template>
       <template #value>
-        <div class="flex items-center">
-          <BaseIcon v-if="model?.icon" class="mr-2" :icon="model?.icon" />
-          <div class="font-content text-xl">{{ model?.label }}</div>
-        </div>
+        <slot name="value">
+          <div class="flex items-center">
+            <BaseIcon v-if="model?.icon" class="mr-2" :icon="model?.icon" />
+            <div class="font-content text-xl">{{ model?.label }}</div>
+          </div>
+        </slot>
       </template>
       <template #option="{ option }">
         <BaseIcon v-if="option?.icon" class="mr-2" :icon="option?.icon" />

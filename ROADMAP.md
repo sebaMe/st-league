@@ -7,14 +7,14 @@
 ## Features
 - review authentication and user-rules
 - ~~use dropdown for leaderboard sortings~~
-- add seasons
-- add placeholder for empty pages
+- ~~add seasons~~
 - ~~add scoring-rules information~~
-- add graph visualizing game-history of all players 
 - ~~handle late joining players~~
 - ~~review data-subscription, central managed subscriptions?~~
 
 ## Minor Updates after 1.0.0
+- add placeholder for empty pages
+- add graph visualizing game-history of all players
 - smooth out transitions / loading-times by using animations and spinner-overlays
 - add time-selector to only respect games within a defined timeframe
 - add complete player game-history
@@ -25,6 +25,7 @@
 - emoji bubbles for avatars?
 - achievements?
 - exp- / skill-system?
+- dark-mode?
 
 ## Major Updates after 1.0.0
 - push notifications?

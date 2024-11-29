@@ -19,7 +19,7 @@
       <BaseIcon icon="x_mark" />
     </template>
     <slot></slot>
-    <template #footer>
+    <template v-if="footer" #footer>
       <slot name="footer">
         <BaseButton
           v-if="!onlyConfirm"
@@ -53,7 +53,7 @@ import BaseIcon from "./BaseIcon.vue";
 
 withDefaults(
   defineProps<{
-    title: string;
+    title?: string;
     subtitle?: string;
     labelConfirm?: string;
     allowConfirm?: boolean;
@@ -61,15 +61,18 @@ withDefaults(
     labelCancel?: string;
     onlyConfirm?: boolean;
     closable?: boolean;
+    footer?: boolean;
   }>(),
   {
+    title: undefined,
     subtitle: undefined,
     labelConfirm: "Ok",
     labelCancel: "Cancel",
     allowConfirm: true,
     busyConfirm: false,
     onlyConfirm: false,
-    closable: true
+    closable: true,
+    footer: true
   }
 );
 

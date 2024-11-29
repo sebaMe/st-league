@@ -1,6 +1,6 @@
 <template>
   <BaseButton
-    icon-right="info"
+    icon-right="help"
     class="px-2"
     variant="plain"
     @click="show = true"
@@ -64,11 +64,13 @@
         Rule #2 - Winning
         <BaseIcon class="inline" size="sm" icon="crown" />
       </h1>
-      Winning a games will
+      Winning a game will
       <span class="text-primary"
         >substract {{ Math.abs(configStore.data.scoring.won) }} point</span
       >
-      from the score of the winning player.<br /><br />
+      from the score of the winning player.<br /><br />Winning games in a row
+      will be displayed as a statistic but
+      <span class="text-primary">will not affect the score</span>.<br /><br />
       <h1 class="font-header text-sm text-primary">
         Rule #3 - Missing
         <BaseIcon class="inline" size="sm" icon="x_mark" />

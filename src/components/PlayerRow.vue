@@ -22,8 +22,10 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+
 import { IPlayer } from "../stores/players.store";
-import { DateFormats, getFormattedFirestoreDate } from "../utils/date.utils";
+import { DateFormats, getFormattedDate } from "../utils/date.utils";
 import PlayerAvatar from "./PlayerAvatar.vue";
 import PlayerEditor from "./PlayerEditor.vue";
 
@@ -34,8 +36,8 @@ const props = withDefaults(
   {}
 );
 
-const formattedDate = getFormattedFirestoreDate(
-  props.player.created,
+const formattedDate = getFormattedDate(
+  computed(() => props.player.created?.toDate()),
   DateFormats.FULL_DATE
 );
 </script>

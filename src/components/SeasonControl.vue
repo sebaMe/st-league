@@ -1,25 +1,70 @@
 <template>
   <div class="flex items-center">
     <BaseSelect
-      v-model="selectedSeason"
+      v-model="selectedSeasonOption"
       :options="seasonOptions"
       empty-message="no available seasons"
     >
+      <template #value>
+        <div class="flex items-center">
+          <BaseIcon class="mr-2" :icon="selectedSeasonOption?.icon" />
+          <div class="font-content text-xl">
+            {{ selectedSeasonOption?.label }}
+          </div>
+        </div>
+        <ProgressBar
+          v-if="
+            !selectedSeasonInfo.seasonEnded.value && selectedSeasonOption?.value
+          "
+          class="h-2"
+          :value="selectedSeasonInfo.seasonProgress.value"
+          :show-value="false"
+        />
+      </template>
       <template #footer>
         <BaseButton
           icon-left="add"
           class="h-full justify-start pl-3"
           variant="plain"
           fluid
-          @click="isVisible = true"
+          @click="showSeasonEditor = true"
         >
           <span class="font-content">New Season</span>
         </BaseButton>
       </template>
     </BaseSelect>
-
+    <BaseButton
+      v-if="selectedSeason"
+      class="h-full"
+      icon-right="info"
+      variant="plain"
+      @click="showSeasonInfo = true"
+    />
     <BaseDialog
-      v-model:visible="isVisible"
+      v-model:visible="showSeasonInfo"
+      :title="selectedSeasonOption?.label"
+      :footer="false"
+    >
+      <span v-if="selectedSeasonInfo.seasonEnded.value" class="text-xl"
+        >{{ selectedSeasonOption?.label }} ended
+        <span class="text-primary">{{ formattedSelectedSeasonEndDate }}</span>
+        and lasted
+        <span class="text-primary"
+          >{{ selectedSeasonInfo.seasonDays.value }} day(s)</span
+        >.
+      </span>
+      <span v-else class="text-xl"
+        >{{ selectedSeasonOption?.label }} started
+        <span class="text-primary">{{ formattedSelectedSeasonStartDate }}</span>
+        and will end
+        <span class="text-primary">{{ formattedSelectedSeasonEndDate }}</span>
+        with
+        <span class="text-primary">{{ selectedSeasonDaysLeft }} day(s)</span>
+        left in this season.
+      </span>
+    </BaseDialog>
+    <BaseDialog
+      v-model:visible="showSeasonEditor"
       title="Create New Season"
       label-confirm="Create"
       :allow-confirm="seasonRangeIsValid"
@@ -27,10 +72,10 @@
     >
       <div class="flex-col">
         <div class="text-xl">
-          The selected season lasts
-          <span class="text-primary">{{ seasonDays }} days</span>, will start on
-          <span class="text-primary">{{ seasonStartInfo }}</span> and end on
-          <span class="text-primary">{{ seasonEndInfo }}</span
+          The new season will last
+          <span class="text-primary">{{ seasonDays ?? "??" }} days</span>,
+          starts on <span class="text-primary">{{ seasonStartInfo }}</span> and
+          will end on <span class="text-primary">{{ seasonEndInfo }}</span
           >.
         </div>
         <DatePicker
@@ -59,9 +104,11 @@
 <script setup lang="ts">
 import { Timestamp } from "firebase/firestore";
 import DatePicker, { DatePickerDateSlotOptions } from "primevue/datepicker";
+import ProgressBar from "primevue/progressbar";
 import { computed, ref, watch } from "vue";
 
-import { useConfigStore } from "../stores/config.store";
+import { useSeasonDateInfo } from "../composables/date.composables";
+import { ISeason, useConfigStore } from "../stores/config.store";
 import {
   DateFormats,
   getDaysInBetween,
@@ -70,11 +117,14 @@ import {
 } from "../utils/date.utils";
 import BaseButton from "./BaseButton.vue";
 import BaseDialog from "./BaseDialog.vue";
+import BaseIcon from "./BaseIcon.vue";
 import BaseSelect, { IBaseSelectOption } from "./BaseSelect.vue";
 
 const configStore = useConfigStore();
 
-const isVisible = ref(false);
+const showSeasonEditor = ref(false);
+const showSeasonInfo = ref(false);
+
 const dates = ref<Date[]>([]);
 
 const seasonsAmount = computed(
@@ -94,14 +144,36 @@ const seasonOptions = computed(() => [
   } as IBaseSelectOption
 ]);
 
-const selectedSeason = ref<IBaseSelectOption>();
+const selectedSeasonOption = ref<IBaseSelectOption>();
+const selectedSeason = computed(() =>
+  configStore.orderedSeasonList.find(
+    (season) => season.id === selectedSeasonOption.value?.value
+  )
+);
 
+// Selected Season
+const selectedSeasonInfo = useSeasonDateInfo(selectedSeason);
+const formattedSelectedSeasonStartDate = getFormattedDate(
+  selectedSeasonInfo.seasonStartDate,
+  DateFormats.DATE
+);
+const formattedSelectedSeasonEndDate = getFormattedDate(
+  selectedSeasonInfo.seasonEndDate,
+  DateFormats.DATE_TIME
+);
+const selectedSeasonDaysLeft = computed(() =>
+  selectedSeasonInfo.seasonEndDate.value
+    ? getDaysInBetween(new Date(), selectedSeasonInfo.seasonEndDate.value)
+    : undefined
+);
+
+// Season Editor
 const seasonStartDate = computed(() => dates.value[0]);
 const seasonEndDate = computed(() => dates.value[1]);
 
 const formattedSeasonStartDate = getFormattedDate(
   seasonStartDate,
-  DateFormats.DATE
+  DateFormats.DATE_TIME
 );
 const seasonStartInfo = computed(() =>
   seasonStartDate.value ? formattedSeasonStartDate.value : "??"
@@ -109,7 +181,7 @@ const seasonStartInfo = computed(() =>
 
 const formattedSeasonEndDate = getFormattedDate(
   seasonEndDate,
-  DateFormats.DATE
+  DateFormats.DATE_TIME
 );
 const seasonEndInfo = computed(() =>
   seasonEndDate.value ? formattedSeasonEndDate.value : "??"
@@ -120,8 +192,8 @@ const minSeasonStartDate = computed(() => getPrevOrFutureDate(-7));
 const seasonRangeIsValid = computed(
   () => seasonStartDate.value < seasonEndDate.value
 );
-const seasonDays = computed(
-  () => getDaysInBetween(seasonStartDate.value, seasonEndDate.value) ?? "??"
+const seasonDays = computed(() =>
+  getDaysInBetween(seasonStartDate.value, seasonEndDate.value)
 );
 
 const isDateInSelectedRange = (date: DatePickerDateSlotOptions) => {
@@ -139,10 +211,10 @@ const createSeason = () => {
 };
 
 const emit = defineEmits<{
-  (e: "select", selectedSeasonId: string | undefined): void;
+  (e: "select", selectedSeason: ISeason | undefined): void;
 }>();
 
-watch(isVisible, (visible) => {
+watch(showSeasonEditor, (visible) => {
   if (visible) {
     dates.value = [new Date()];
   }
@@ -151,7 +223,7 @@ watch(isVisible, (visible) => {
 watch(
   selectedSeason,
   (season) => {
-    emit("select", season?.value);
+    emit("select", season);
   },
   { immediate: true }
 );
@@ -159,8 +231,8 @@ watch(
 watch(
   seasonOptions,
   (options) => {
-    if (!selectedSeason.value) {
-      selectedSeason.value = options[0];
+    if (!selectedSeasonOption.value) {
+      selectedSeasonOption.value = options[0];
     }
   },
   { immediate: true }

@@ -1,6 +1,5 @@
 import { DateLike, useDateFormat } from "@vueuse/core";
-import { Timestamp } from "firebase/firestore";
-import { computed, MaybeRef } from "vue";
+import { Ref } from "vue";
 
 export enum DateFormats {
   TIME = "HH:mm",
@@ -11,18 +10,9 @@ export enum DateFormats {
 }
 
 export const getFormattedDate = (
-  date: MaybeRef<DateLike>,
+  date: Ref<DateLike>,
   format = DateFormats.DATE
 ) => useDateFormat(date, format);
-
-export const getFormattedFirestoreDate = (
-  firestoreTs: Timestamp,
-  format = DateFormats.DATE
-) =>
-  getFormattedDate(
-    computed(() => firestoreTs?.toDate()),
-    format
-  );
 
 export const getPrevOrFutureDate = (
   daysBeforeOrAfter: number,

@@ -12,6 +12,8 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeUnmount, onMounted } from "vue";
+
 import TheHeader from "../components/TheHeader.vue";
 import { useConfigStore } from "../stores/config.store";
 import { useGamesStore } from "../stores/games.store";
@@ -21,10 +23,19 @@ const configStore = useConfigStore();
 const playersStore = usePlayersStore();
 const gamesStore = useGamesStore();
 
-// subscribe to all relevant docs
-configStore.subscribe();
-playersStore.subscribe();
-gamesStore.subscribe();
+onMounted(() => {
+  // subscribe to all relevant docs
+  configStore.subscribe();
+  playersStore.subscribe();
+  gamesStore.subscribe();
+});
+
+onBeforeUnmount(() => {
+  // unsubscribe to all relevant docs
+  configStore.unsubscribe();
+  playersStore.unsubscribe();
+  gamesStore.unsubscribe();
+});
 </script>
 
 <style lang="scss"></style>

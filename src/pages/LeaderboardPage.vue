@@ -1,7 +1,7 @@
 <template>
   <BaseClipCard class="mt-2" tl="12" tr="5" :pt="{ content: 'flex-col p-2' }">
     <div class="my-2 flex w-full justify-between">
-      <SeasonEditor @select="onSelectSeason" />
+      <SeasonControl @select="selectedSeason = $event" />
       <RuleBook />
     </div>
     <div class="my-2 flex w-full justify-between">
@@ -62,7 +62,8 @@ export interface IPlayerTotalResult extends IPlayer {
   participated: number;
   missed: number;
   history: ResultTypes[];
-  lostStreaks: ILostStreaks;
+  lostStreaks: IStreaks;
+  winStreaks: IStreaks;
 }
 </script>
 <script setup lang="ts">
@@ -72,7 +73,7 @@ import AccordionContent from "primevue/accordioncontent";
 import AccordionHeader from "primevue/accordionheader";
 import AccordionPanel from "primevue/accordionpanel";
 import ButtonGroup from "primevue/buttongroup";
-import { computed, onBeforeUnmount, ref } from "vue";
+import { computed, ref } from "vue";
 
 import BaseButton from "../components/BaseButton.vue";
 import BaseClipCard from "../components/BaseClipCard.vue";
@@ -80,14 +81,14 @@ import BaseIcon from "../components/BaseIcon.vue";
 import LeaderboardRowContent from "../components/LeaderboardRowContent.vue";
 import LeaderboardRowHeader from "../components/LeaderboardRowHeader.vue";
 import RuleBook from "../components/RuleInfo.vue";
-import SeasonEditor from "../components/SeasonEditor.vue";
+import SeasonControl from "../components/SeasonControl.vue";
 import { ISeason, useConfigStore } from "../stores/config.store";
 import { ResultTypes, useGamesStore } from "../stores/games.store";
 import { IPlayer, usePlayersStore } from "../stores/players.store";
 import {
-  calculateLostScore,
-  calculateLostStreaks,
-  ILostStreaks,
+  calculateLostStreakScore,
+  calculateStreaks,
+  IStreaks,
   mapResultToIcon
 } from "../utils/result.utils";
 
@@ -106,8 +107,8 @@ const filteredGameList = computed(() =>
       return true;
     }
     return (
-      game.created.toDate() < selectedSeason.value.end.toDate() &&
-      game.created.toDate() > selectedSeason.value.start.toDate()
+      game.created.toDate() <= selectedSeason.value.end.toDate() &&
+      game.created.toDate() >= selectedSeason.value.start.toDate()
     );
   })
 );
@@ -141,8 +142,14 @@ const resultList = computed<IPlayerTotalResult[]>(() =>
 
     // calculate score
     // The score here is calculated based on losses NOT wins.
-    const lostStreaks = calculateLostStreaks(playerGameHistory);
-    const lostScore = calculateLostScore(lostStreaks, configStore.data.scoring);
+    const lostScore = lost * configStore.data.scoring.lost;
+
+    // calculate the points added by streaks to the score
+    const lostStreaks = calculateStreaks(playerGameHistory, ResultTypes.LOST);
+    const lostStreaksScore = calculateLostStreakScore(
+      lostStreaks,
+      configStore.data.scoring
+    );
 
     const wonScore = won * configStore.data.scoring.won;
 
@@ -150,7 +157,7 @@ const resultList = computed<IPlayerTotalResult[]>(() =>
       Math.floor(missed / configStore.data.maxLives) *
       configStore.data.scoring.lost;
 
-    const score = wonScore + lostScore + heartScore;
+    const score = wonScore + lostScore + lostStreaksScore + heartScore;
 
     return {
       ...player,
@@ -160,7 +167,8 @@ const resultList = computed<IPlayerTotalResult[]>(() =>
       missed,
       score,
       history: playerGameHistory,
-      lostStreaks
+      lostStreaks,
+      winStreaks: calculateStreaks(playerGameHistory, ResultTypes.WON)
     };
   })
 );
@@ -188,12 +196,6 @@ const orderedResultList = computed(() =>
 
 const selectedSeason = ref<ISeason>();
 
-const onSelectSeason = (selectedSeasonId?: string) => {
-  selectedSeason.value = selectedSeasonId
-    ? configStore.data.seasons[selectedSeasonId]
-    : undefined;
-};
-
 const toggleAllPanels = () => {
   if (openPanels.value?.length > 0) {
     openPanels.value = [];
@@ -203,10 +205,6 @@ const toggleAllPanels = () => {
     );
   }
 };
-
-onBeforeUnmount(() => {
-  gamesStore.unsubscribe();
-});
 </script>
 
 <style></style>
