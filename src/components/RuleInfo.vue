@@ -1,6 +1,6 @@
 <template>
   <BaseButton
-    icon-right="help"
+    icon-right="book"
     class="px-2"
     variant="plain"
     @click="show = true"

@@ -3,9 +3,10 @@
     v-model:visible="isVisible"
     modal
     :position="breakpoints.isSmallerOrEqual('xs') ? 'bottom' : 'center'"
-    class="m-0 w-full max-w-[50rem] font-content xs:w-auto"
+    class="m-0 w-full max-w-[40rem] font-content xs:w-auto"
     :closable
     :pt="{ footer: onlyConfirm ? 'justify-center' : '' }"
+    :dismissable-mask
   >
     <template #header>
       <slot name="header">
@@ -60,6 +61,7 @@ withDefaults(
     busyConfirm?: boolean;
     labelCancel?: string;
     onlyConfirm?: boolean;
+    dismissableMask?: boolean;
     closable?: boolean;
     footer?: boolean;
   }>(),
@@ -72,7 +74,8 @@ withDefaults(
     busyConfirm: false,
     onlyConfirm: false,
     closable: true,
-    footer: true
+    footer: true,
+    dismissableMask: true
   }
 );
 

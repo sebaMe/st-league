@@ -29,7 +29,7 @@
           fluid
           @click="showSeasonEditor = true"
         >
-          <span class="font-content">New Season</span>
+          <span class="font-content text-black">Create Season</span>
         </BaseButton>
       </template>
     </BaseSelect>
@@ -81,8 +81,10 @@
         <DatePicker
           v-model="dates"
           inline
-          size="small"
           selection-mode="multiple"
+          :pt="{
+            panel: 'border-0'
+          }"
           fluid
           :max-date-count="3"
           :min-date="minSeasonStartDate"
@@ -138,9 +140,9 @@ const seasonOptions = computed(() => [
     icon: season.end.toDate() < new Date() ? "lock" : "logo"
   })),
   {
-    label: "All Games",
+    label: "Overall",
     value: undefined,
-    icon: "book"
+    icon: "world"
   } as IBaseSelectOption
 ]);
 

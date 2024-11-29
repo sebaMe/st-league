@@ -74,7 +74,8 @@
           position="right"
           class="font-content"
           :pt="{
-            header: 'items-start'
+            header: 'items-start',
+            pcCloseButton: { root: '!pt-0' }
           }"
         >
           <template #header>
@@ -91,7 +92,7 @@
                 </span>
               </div>
               <div class="inline-flex">
-                <GithubLink class="mt-2" />
+                <GithubLink class="mt-2 !pl-0" />
               </div>
             </div>
           </template>

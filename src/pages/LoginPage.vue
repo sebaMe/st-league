@@ -36,7 +36,7 @@
         <span>Press Start</span>
       </BaseButton>
       <div class="mt-2 flex w-56 items-center justify-between">
-        <GithubLink />
+        <GithubLink class="!pl-0" />
         <div class="text-left text-primary">
           {{ `v${version}` }}
         </div>
