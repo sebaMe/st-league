@@ -18,7 +18,7 @@
         />
         <div class="flex pl-2">
           <BaseIcon
-            v-for="n in MAX_HEARTS_AMOUNT"
+            v-for="n in configStore.data.maxLives"
             :key="n"
             size="sm"
             :class="{ 'animate-pulse': n === 1 && currentHearts === 1 }"
@@ -47,8 +47,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { MAX_HEARTS_AMOUNT } from "../constants/game.constants";
 import { IPlayerTotalResult } from "../pages/LeaderboardPage.vue";
+import { useConfigStore } from "../stores/config.store";
 import { mapResultToIcon } from "../utils/result.utils";
 import BaseIcon from "./BaseIcon.vue";
 import PlayerAvatar from "./PlayerAvatar.vue";
@@ -61,11 +61,16 @@ const props = withDefaults(
   {}
 );
 
+const configStore = useConfigStore();
+
 const latestResultsHistory = computed(() =>
   props.totalResult.history.slice(0, 8)
 );
+
 const currentHearts = computed(
-  () => MAX_HEARTS_AMOUNT - (props.totalResult.missed % MAX_HEARTS_AMOUNT)
+  () =>
+    configStore.data.maxLives -
+    (props.totalResult.missed % configStore.data.maxLives)
 );
 </script>
 

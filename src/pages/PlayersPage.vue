@@ -18,19 +18,12 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount } from "vue";
-
 import BaseClipCard from "../components/BaseClipCard.vue";
 import PlayerEditor from "../components/PlayerEditor.vue";
 import PlayerRow from "../components/PlayerRow.vue";
 import { usePlayersStore } from "../stores/players.store";
 
 const playerStore = usePlayersStore();
-playerStore.subscribe();
-
-onBeforeUnmount(() => {
-  playerStore.unsubscribe();
-});
 </script>
 
 <style></style>

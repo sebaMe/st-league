@@ -1,7 +1,7 @@
 import {
   deleteField,
   doc,
-  getDoc,
+  DocumentReference,
   getFirestore,
   onSnapshot,
   serverTimestamp,
@@ -12,7 +12,7 @@ import {
 import { orderBy } from "lodash-es";
 import { nanoid } from "nanoid";
 import { defineStore } from "pinia";
-import { computed, shallowRef } from "vue";
+import { computed, ref, shallowRef } from "vue";
 
 import { useMainStore } from "./main.store";
 
@@ -40,7 +40,7 @@ export interface IGame extends ICreateGamePayload {
 }
 
 interface IGamesDoc {
-  list: {
+  list?: {
     [id: string]: IGame;
   };
 }
@@ -49,8 +49,13 @@ export const useGamesStore = defineStore("games", () => {
   const mainStore = useMainStore();
 
   const db = getFirestore(mainStore.app);
-  const gamesDoc = doc(db, "Data", "Games1");
+  const gamesDoc: DocumentReference<IGamesDoc, IGamesDoc> = doc(
+    db,
+    "Data",
+    "Games1"
+  );
   const data = shallowRef<IGamesDoc>();
+  const isSubscribed = ref(false);
   let _unsubscribe: Unsubscribe | undefined = undefined;
 
   const createGame = async (game: ICreateGamePayload) => {
@@ -61,11 +66,11 @@ export const useGamesStore = defineStore("games", () => {
         list: {
           [id]: {
             id,
-            created: serverTimestamp() as unknown,
+            created: serverTimestamp(),
             players: game.players
           }
         }
-      } as IGamesDoc,
+      },
       { merge: true }
     );
   };
@@ -80,7 +85,7 @@ export const useGamesStore = defineStore("games", () => {
             players: game.players
           }
         }
-      } as IGamesDoc,
+      },
       { merge: true }
     );
   };
@@ -90,28 +95,21 @@ export const useGamesStore = defineStore("games", () => {
       gamesDoc,
       {
         list: {
-          [id]: deleteField() as unknown
+          [id]: deleteField()
         }
-      } as IGamesDoc,
+      },
       { merge: true }
     );
   };
 
-  const update = async () => {
-    const doc = await getDoc(gamesDoc);
-    if (doc.exists()) {
-      data.value = doc.data() as IGamesDoc;
-    } else {
-      console.warn("No such document", gamesDoc.path);
-    }
-  };
-
+  // make sure to only have one subscription at any time
   const subscribe = () => {
     if (_unsubscribe === undefined) {
       _unsubscribe = onSnapshot(
         gamesDoc,
         (doc) => {
-          data.value = doc.data() as IGamesDoc;
+          isSubscribed.value = true;
+          data.value = doc.data();
         },
         (error) => {
           console.error(error);
@@ -124,6 +122,7 @@ export const useGamesStore = defineStore("games", () => {
     if (_unsubscribe) {
       _unsubscribe();
       _unsubscribe = undefined;
+      isSubscribed.value = false;
     }
   };
 
@@ -140,8 +139,8 @@ export const useGamesStore = defineStore("games", () => {
     createGame,
     editGame,
     deleteGame,
-    update,
     subscribe,
+    isSubscribed,
     unsubscribe,
     data,
     orderedGamesList

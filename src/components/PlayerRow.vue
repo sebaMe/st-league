@@ -23,10 +23,7 @@
 
 <script setup lang="ts">
 import { IPlayer } from "../stores/players.store";
-import {
-  DateFormats,
-  getFormattedFirestoreDate
-} from "../utils/firestore.utils";
+import { DateFormats, getFormattedFirestoreDate } from "../utils/date.utils";
 import PlayerAvatar from "./PlayerAvatar.vue";
 import PlayerEditor from "./PlayerEditor.vue";
 

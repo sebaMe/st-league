@@ -21,6 +21,8 @@ export type IconTypes =
   | "party"
   | "swords"
   | "arrow_up"
+  | "world"
+  | "add"
   | "arrow_left"
   | "arrow_right"
   | "arrow_lower"
@@ -42,6 +44,7 @@ export type IconTypes =
   | "expand"
   | "info"
   | "collapse"
+  | "logo"
   | "star"
   | "heart"
   | "heart_empty"
@@ -54,6 +57,7 @@ export type IconTypes =
 <script setup lang="ts">
 import { computed } from "vue";
 
+import iconAdd from "../assets/img/icons/add.png";
 import iconArrowLeft from "../assets/img/icons/arrow_left.png";
 import iconArrowLower from "../assets/img/icons/arrow_lower.png";
 import iconArrowRight from "../assets/img/icons/arrow_right.png";
@@ -87,10 +91,12 @@ import iconRecordAdd from "../assets/img/icons/script_add.png";
 import iconRecordEdit from "../assets/img/icons/script_edit.png";
 import iconSkull from "../assets/img/icons/skull.png";
 import iconStar from "../assets/img/icons/star.png";
+import iconLogo from "../assets/img/icons/sword_hit.png";
 import iconSwords from "../assets/img/icons/swords.png";
 import iconUndo from "../assets/img/icons/undo.png";
 import iconUser from "../assets/img/icons/user.png";
 import iconWarning from "../assets/img/icons/warning.png";
+import iconWorld from "../assets/img/icons/world.png";
 
 const props = withDefaults(
   defineProps<{
@@ -125,6 +131,8 @@ const iconPath = computed(() => {
       return iconArrowUp;
     case "arrow_left":
       return iconArrowLeft;
+    case "logo":
+      return iconLogo;
     case "arrow_right":
       return iconArrowRight;
     case "arrow_lower":
@@ -141,6 +149,10 @@ const iconPath = computed(() => {
       return iconRecordAdd;
     case "book":
       return iconBook;
+    case "world":
+      return iconWorld;
+    case "add":
+      return iconAdd;
     case "warn":
       return iconWarning;
     case "edit":

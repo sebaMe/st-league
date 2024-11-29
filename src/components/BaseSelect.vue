@@ -8,6 +8,7 @@
       v-model="model"
       class="size-full border-none outline-0"
       :options
+      :empty-message="emptyMessage"
       option-label="label"
       :pt="{
         listContainer: 'text-center font-content text-xl'
@@ -25,6 +26,9 @@
       <template #option="{ option }">
         <BaseIcon v-if="option?.icon" class="mr-2" :icon="option?.icon" />
         <span>{{ option?.label }}</span>
+      </template>
+      <template #footer>
+        <slot name="footer"></slot>
       </template>
     </Select>
     <label v-if="label" class="text-xl">{{ label }}</label>
@@ -47,10 +51,12 @@ import BaseIcon, { IconTypes } from "./BaseIcon.vue";
 withDefaults(
   defineProps<{
     label?: string;
+    emptyMessage?: string;
     options: IBaseSelectOption[];
   }>(),
   {
     label: undefined,
+    emptyMessage: undefined,
     options: () => []
   }
 );

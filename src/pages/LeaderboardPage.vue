@@ -1,16 +1,8 @@
 <template>
   <BaseClipCard class="mt-2" tl="12" tr="5" :pt="{ content: 'flex-col p-2' }">
     <div class="my-2 flex w-full justify-between">
-      <SeasonEditor />
-      <ButtonGroup class="flex items-center">
-        <RuleBook />
-        <BaseButton
-          :icon-right="openPanels?.length > 0 ? 'collapse' : 'expand'"
-          class="px-2"
-          variant="plain"
-          @click="toggleAllPanels"
-        />
-      </ButtonGroup>
+      <SeasonEditor @select="onSelectSeason" />
+      <RuleBook />
     </div>
     <div class="my-2 flex w-full justify-between">
       <ButtonGroup class="flex items-center">
@@ -29,6 +21,12 @@
           @click="sortBy = resultType"
         />
       </ButtonGroup>
+      <BaseButton
+        :icon-right="openPanels?.length > 0 ? 'collapse' : 'expand'"
+        class="px-2"
+        variant="plain"
+        @click="toggleAllPanels"
+      />
     </div>
     <Accordion
       v-model:value="openPanels"
@@ -81,9 +79,9 @@ import BaseClipCard from "../components/BaseClipCard.vue";
 import BaseIcon from "../components/BaseIcon.vue";
 import LeaderboardRowContent from "../components/LeaderboardRowContent.vue";
 import LeaderboardRowHeader from "../components/LeaderboardRowHeader.vue";
-import RuleBook from "../components/RuleBook.vue";
+import RuleBook from "../components/RuleInfo.vue";
 import SeasonEditor from "../components/SeasonEditor.vue";
-import { MAX_HEARTS_AMOUNT, ScoringValues } from "../constants/game.constants";
+import { ISeason, useConfigStore } from "../stores/config.store";
 import { ResultTypes, useGamesStore } from "../stores/games.store";
 import { IPlayer, usePlayersStore } from "../stores/players.store";
 import {
@@ -95,18 +93,29 @@ import {
 
 const gamesStore = useGamesStore();
 const playerStore = usePlayersStore();
-
-gamesStore.subscribe();
-playerStore.update();
+const configStore = useConfigStore();
 
 const openPanels = ref<string[]>([]);
 
 const sortBy = ref<ResultTypes>();
 
+const filteredGameList = computed(() =>
+  gamesStore.orderedGamesList.filter((game) => {
+    // if no season exists or 'all' is selected, show all games
+    if (selectedSeason.value?.id === undefined) {
+      return true;
+    }
+    return (
+      game.created.toDate() < selectedSeason.value.end.toDate() &&
+      game.created.toDate() > selectedSeason.value.start.toDate()
+    );
+  })
+);
+
 const resultList = computed<IPlayerTotalResult[]>(() =>
   playerStore.orderedPlayersList.map((player) => {
     // map player game history
-    const playerGameHistory = gamesStore.orderedGamesList.map((game) => {
+    const playerGameHistory = filteredGameList.value.map((game) => {
       const gamePlayer = game.players?.[player.id];
       if (gamePlayer) {
         return gamePlayer.result;
@@ -133,12 +142,13 @@ const resultList = computed<IPlayerTotalResult[]>(() =>
     // calculate score
     // The score here is calculated based on losses NOT wins.
     const lostStreaks = calculateLostStreaks(playerGameHistory);
-    const lostScore = calculateLostScore(lostStreaks);
+    const lostScore = calculateLostScore(lostStreaks, configStore.data.scoring);
 
-    const wonScore = won * ScoringValues.WON;
+    const wonScore = won * configStore.data.scoring.won;
 
     const heartScore =
-      Math.floor(missed / MAX_HEARTS_AMOUNT) * ScoringValues.LOST;
+      Math.floor(missed / configStore.data.maxLives) *
+      configStore.data.scoring.lost;
 
     const score = wonScore + lostScore + heartScore;
 
@@ -175,6 +185,14 @@ const orderedResultList = computed(() =>
     "desc"
   )
 );
+
+const selectedSeason = ref<ISeason>();
+
+const onSelectSeason = (selectedSeasonId?: string) => {
+  selectedSeason.value = selectedSeasonId
+    ? configStore.data.seasons[selectedSeasonId]
+    : undefined;
+};
 
 const toggleAllPanels = () => {
   if (openPanels.value?.length > 0) {

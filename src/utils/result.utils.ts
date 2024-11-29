@@ -1,8 +1,5 @@
 import { IconTypes } from "../components/BaseIcon.vue";
-import {
-  LostStreakPenaltiesValues,
-  ScoringValues
-} from "../constants/game.constants";
+import { IScoringValues } from "../stores/config.store";
 import { ResultTypes } from "../stores/games.store";
 
 export const mapResultToIcon = (
@@ -22,8 +19,9 @@ export const mapResultToIcon = (
   }
 };
 
-export const calculatePercentage = (value: number, max: number) =>
-  Math.round((value / max) * 100);
+export const calculatePercentage = (value: number, max: number) => {
+  return value > 0 && max > 0 ? Math.round((value / max) * 100) : 0;
+};
 
 export interface ILostStreaks {
   lost1: number;
@@ -78,23 +76,23 @@ export const calculateLostStreaks = (playerGameHistory: ResultTypes[]) => {
     );
 };
 
-export const calculateLostScore = (lostStreaks: ILostStreaks) => {
+export const calculateLostScore = (
+  lostStreaks: ILostStreaks,
+  scoringValues: IScoringValues
+) => {
   const lost1Score =
-    lostStreaks.lost1 > 0 ? lostStreaks.lost1 * ScoringValues.LOST : 0;
+    lostStreaks.lost1 > 0 ? lostStreaks.lost1 * scoringValues.lost : 0;
   const lost2Score =
     lostStreaks.lost2 > 0
-      ? lostStreaks.lost2 * ScoringValues.LOST * 2 +
-        LostStreakPenaltiesValues.STREAK_2
+      ? lostStreaks.lost2 * scoringValues.lost * 2 + scoringValues.streak2
       : 0;
   const lost3Score =
     lostStreaks.lost3 > 0
-      ? lostStreaks.lost3 * ScoringValues.LOST * 3 +
-        LostStreakPenaltiesValues.STREAK_3
+      ? lostStreaks.lost3 * scoringValues.lost * 3 + scoringValues.streak3
       : 0;
   const lostXScore =
     lostStreaks.lostX > 0
-      ? lostStreaks.lostX * ScoringValues.LOST * 3 +
-        LostStreakPenaltiesValues.STREAK_X
+      ? lostStreaks.lostX * scoringValues.lost * 3 + scoringValues.streakX
       : 0;
 
   return lost1Score + lost2Score + lost3Score + lostXScore;

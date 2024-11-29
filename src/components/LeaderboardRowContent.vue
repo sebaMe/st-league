@@ -6,7 +6,7 @@
         :value="totalResult.lost"
         icon="skull"
         :max="participatedGames"
-        :prominent="`${lostPercentage}%`"
+        :prominent="`${lostPercentage ?? '0'}%`"
       />
       <PlayerStat
         v-if="lostFromHearts > 0"
@@ -44,13 +44,13 @@
         :value="totalResult.won"
         icon="crown"
         :max="participatedGames"
-        :prominent="`${wonPercentage}%`"
+        :prominent="`${wonPercentage ?? '0'}%`"
       />
       <PlayerStat
         :value="participatedGames"
         icon="check_mark"
         :max="maxGames"
-        :prominent="`${participatedPercentage}%`"
+        :prominent="`${participatedPercentage ?? '0'}%`"
       />
     </div>
     <!-- right -->
@@ -61,8 +61,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { MAX_HEARTS_AMOUNT } from "../constants/game.constants";
 import { IPlayerTotalResult } from "../pages/LeaderboardPage.vue";
+import { useConfigStore } from "../stores/config.store";
 import { calculatePercentage } from "../utils/result.utils";
 import BaseIcon from "./BaseIcon.vue";
 import PlayerStat from "./elements/PlayerStat.vue";
@@ -73,6 +73,8 @@ const props = withDefaults(
   }>(),
   {}
 );
+
+const configStore = useConfigStore();
 
 const maxGames = computed(() => props.totalResult.history?.length);
 const participatedGames = computed(
@@ -92,7 +94,7 @@ const wonPercentage = computed(() =>
 );
 
 const lostFromHearts = computed(() =>
-  Math.floor(props.totalResult.missed / MAX_HEARTS_AMOUNT)
+  Math.floor(props.totalResult.missed / configStore.data.maxLives)
 );
 </script>
 

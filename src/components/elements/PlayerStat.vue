@@ -38,7 +38,6 @@ const props = withDefaults(
   {
     value: undefined,
     icon: undefined,
-    percentage: undefined,
     max: undefined,
     prominent: undefined,
     pt: () => ({ prominent: "bg-primary" })

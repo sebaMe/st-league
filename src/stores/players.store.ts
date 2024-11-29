@@ -1,7 +1,7 @@
 import {
   deleteField,
   doc,
-  getDoc,
+  DocumentReference,
   getFirestore,
   onSnapshot,
   serverTimestamp,
@@ -12,7 +12,7 @@ import {
 import { orderBy } from "lodash-es";
 import { nanoid } from "nanoid";
 import { defineStore } from "pinia";
-import { computed, shallowRef } from "vue";
+import { computed, ref, shallowRef } from "vue";
 
 import { useMainStore } from "./main.store";
 
@@ -28,7 +28,7 @@ export interface IPlayer extends ICreatePlayerPayload {
 }
 
 interface IPlayersDoc {
-  list: {
+  list?: {
     [id: string]: IPlayer;
   };
 }
@@ -37,8 +37,13 @@ export const usePlayersStore = defineStore("players", () => {
   const mainStore = useMainStore();
 
   const db = getFirestore(mainStore.app);
-  const playersDoc = doc(db, "Data", "Players");
+  const playersDoc: DocumentReference<IPlayersDoc, IPlayersDoc> = doc(
+    db,
+    "Data",
+    "Players"
+  );
   const data = shallowRef<IPlayersDoc>();
+  const isSubscribed = ref(false);
   let _unsubscribe: Unsubscribe | undefined = undefined;
 
   const createPlayer = async (player: ICreatePlayerPayload) => {
@@ -49,13 +54,13 @@ export const usePlayersStore = defineStore("players", () => {
         list: {
           [id]: {
             id,
-            created: serverTimestamp() as unknown,
+            created: serverTimestamp(),
             tag: player.tag,
             color: player.color,
             avatar: player.avatar ?? null
           }
         }
-      } as IPlayersDoc,
+      },
       { merge: true }
     );
   };
@@ -72,7 +77,7 @@ export const usePlayersStore = defineStore("players", () => {
             avatar: player.avatar ?? null
           }
         }
-      } as IPlayersDoc,
+      },
       { merge: true }
     );
   };
@@ -82,28 +87,21 @@ export const usePlayersStore = defineStore("players", () => {
       playersDoc,
       {
         list: {
-          [id]: deleteField() as unknown
+          [id]: deleteField()
         }
-      } as IPlayersDoc,
+      },
       { merge: true }
     );
   };
 
-  const update = async () => {
-    const doc = await getDoc(playersDoc);
-    if (doc.exists()) {
-      data.value = doc.data() as IPlayersDoc;
-    } else {
-      console.warn("No such document", playersDoc.path);
-    }
-  };
-
+  // make sure to only have one subscription at any time
   const subscribe = () => {
     if (_unsubscribe === undefined) {
       _unsubscribe = onSnapshot(
         playersDoc,
         (doc) => {
-          data.value = doc.data() as IPlayersDoc;
+          data.value = doc.data();
+          isSubscribed.value = true;
         },
         (error) => {
           console.error(error);
@@ -116,6 +114,7 @@ export const usePlayersStore = defineStore("players", () => {
     if (_unsubscribe) {
       _unsubscribe();
       _unsubscribe = undefined;
+      isSubscribed.value = false;
     }
   };
 
@@ -127,8 +126,8 @@ export const usePlayersStore = defineStore("players", () => {
     createPlayer,
     editPlayer,
     deletePlayer,
-    update,
     subscribe,
+    isSubscribed,
     unsubscribe,
     data,
     orderedPlayersList

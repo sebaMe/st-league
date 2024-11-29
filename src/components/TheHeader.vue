@@ -51,35 +51,69 @@
         </ButtonGroup>
       </div>
       <!-- end -->
-      <div class="h-full">
+      <div class="flex h-full">
+        <GithubLink class="hidden sm:flex" />
         <BattleThemePlayer minimal />
-        <BasePopover>
-          <template #actor="{ toggle }">
-            <BaseButton
-              class="h-full"
-              variant="plain"
-              icon-left="bag"
-              @click="toggle"
-            />
+        <BaseButton
+          font="header"
+          class="hidden h-full sm:inline-flex"
+          :disabled="!authStore.user"
+          icon-left="exit"
+          variant="plain"
+          @click="authStore.logout"
+        />
+        <BaseButton
+          class="h-full sm:hidden"
+          variant="plain"
+          icon-left="bag"
+          @click="showDrawer = true"
+        />
+        <Drawer
+          v-model:visible="showDrawer"
+          position="right"
+          class="font-content"
+          :pt="{
+            header: 'items-start'
+          }"
+        >
+          <template #header>
+            <div class="flex-col">
+              <div class="flex flex-wrap">
+                <BaseIcon class="mr-2" icon="logo" />
+                <span class="font-header text-highlight">S</span
+                ><span class="font-header text-primary">uch</span>
+                <span class="font-header text-highlight">T</span
+                ><span class="font-header text-primary">errific</span
+                ><span class="font-header text-primary">League</span>
+                <span class="ml-2 text-primary">
+                  {{ `v${version}` }}
+                </span>
+              </div>
+
+              <GithubLink class="mt-2" />
+            </div>
           </template>
-          <div class="mb-2 text-left text-primary">
-            {{ `v${version}` }}
-          </div>
-          <GithubLink class="mb-2" />
-          <div class="mb-2 flex items-center">
-            <BaseIcon class="mr-2" icon="user"></BaseIcon>
-            {{ authStore.user?.email }}
-          </div>
-          <BaseButton
-            font="header"
-            :disabled="!authStore.user"
-            icon-left="exit"
-            fluid
-            @click="authStore.logout"
-          >
-            <span>Quit</span>
-          </BaseButton>
-        </BasePopover>
+          <template #closeicon>
+            <BaseIcon icon="x_mark" />
+          </template>
+          MORE COMING SOON(ISH)
+          <template #footer>
+            <div class="flex items-center justify-evenly">
+              <div class="flex items-center text-xl">
+                <BaseIcon class="mr-2" icon="user"></BaseIcon>
+                {{ authStore.user?.email }}
+              </div>
+              <BaseButton
+                font="header"
+                :disabled="!authStore.user"
+                icon-left="exit"
+                @click="authStore.logout"
+              >
+                <span>Quit</span>
+              </BaseButton>
+            </div>
+          </template>
+        </Drawer>
       </div>
     </BaseClipCard>
   </header>
@@ -87,6 +121,8 @@
 
 <script setup lang="ts">
 import ButtonGroup from "primevue/buttongroup";
+import Drawer from "primevue/drawer";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 import { version } from "../../package.json";
@@ -100,12 +136,13 @@ import { useAuthStore } from "../stores/auth.store";
 import BaseButton from "./BaseButton.vue";
 import BaseClipCard from "./BaseClipCard.vue";
 import BaseIcon from "./BaseIcon.vue";
-import BasePopover from "./BasePopover.vue";
 import BattleThemePlayer from "./BattleThemePlayer.vue";
 import GithubLink from "./GithubLink.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
+
+const showDrawer = ref(false);
 </script>
 
 <style></style>

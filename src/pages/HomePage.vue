@@ -2,7 +2,7 @@
   <div>
     <TheHeader />
     <div class="mx-auto max-w-screen-md pt-14">
-      <router-view v-slot="{ Component }">
+      <router-view v-if="configStore.isSubscribed" v-slot="{ Component }">
         <transition name="slide-in-top" mode="out-in">
           <component :is="Component" />
         </transition>
@@ -13,6 +13,18 @@
 
 <script setup lang="ts">
 import TheHeader from "../components/TheHeader.vue";
+import { useConfigStore } from "../stores/config.store";
+import { useGamesStore } from "../stores/games.store";
+import { usePlayersStore } from "../stores/players.store";
+
+const configStore = useConfigStore();
+const playersStore = usePlayersStore();
+const gamesStore = useGamesStore();
+
+// subscribe to all relevant docs
+configStore.subscribe();
+playersStore.subscribe();
+gamesStore.subscribe();
 </script>
 
 <style lang="scss"></style>

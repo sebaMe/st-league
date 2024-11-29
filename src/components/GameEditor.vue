@@ -12,7 +12,7 @@
     :subtitle="`${edit ? 'Modify' : 'Enter'} the Result!`"
     :allow-confirm="allowSubmitGame"
     :busy-confirm="isSubmitting"
-    label-confirm="Save"
+    label-confirm="Record"
     @confirm="submitGame"
   >
     <BaseButton
@@ -90,7 +90,7 @@ const props = withDefaults(
 
 const gamesStore = useGamesStore();
 
-const isVisible = ref<boolean>(false);
+const isVisible = ref(false);
 
 const gameSnapshot = ref<ICreateGamePayload>();
 

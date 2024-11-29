@@ -12,7 +12,7 @@
     :subtitle="`${edit ? 'Modify' : 'Choose'} your Avatar!`"
     :allow-confirm="allowSubmitPlayer"
     :busy-confirm="isSubmitting"
-    label-confirm="Save"
+    label-confirm="Create"
     @confirm="submitPlayer"
   >
     <BaseInput

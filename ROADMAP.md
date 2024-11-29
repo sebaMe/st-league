@@ -12,7 +12,7 @@
 - ~~add scoring-rules information~~
 - add graph visualizing game-history of all players 
 - ~~handle late joining players~~
-- review data-subscription, central managed subscriptions?
+- ~~review data-subscription, central managed subscriptions?~~
 
 ## Minor Updates after 1.0.0
 - smooth out transitions / loading-times by using animations and spinner-overlays

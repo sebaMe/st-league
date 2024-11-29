@@ -42,10 +42,7 @@ import { computed } from "vue";
 import { useGamePlayerResults } from "../composables/game.composables";
 import { IGame, ResultTypes } from "../stores/games.store";
 import { IPlayer } from "../stores/players.store";
-import {
-  DateFormats,
-  getFormattedFirestoreDate
-} from "../utils/firestore.utils";
+import { DateFormats, getFormattedFirestoreDate } from "../utils/date.utils";
 import BaseIcon from "./BaseIcon.vue";
 import GameEditor from "./GameEditor.vue";
 import PlayerAvatar from "./PlayerAvatar.vue";
@@ -59,10 +56,7 @@ const props = withDefaults(
   {}
 );
 
-const formattedDate = getFormattedFirestoreDate(
-  props.game.created,
-  DateFormats.DATE
-);
+const formattedDate = getFormattedFirestoreDate(props.game.created);
 const formattedTime = getFormattedFirestoreDate(
   props.game.created,
   DateFormats.TIME

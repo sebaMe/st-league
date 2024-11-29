@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount } from "vue";
+import { computed } from "vue";
 
 import BaseClipCard from "../components/BaseClipCard.vue";
 import GameEditor from "../components/GameEditor.vue";
@@ -31,14 +31,7 @@ import { usePlayersStore } from "../stores/players.store";
 const gamesStore = useGamesStore();
 const playerStore = usePlayersStore();
 
-gamesStore.subscribe();
-playerStore.update();
-
 const battlesAmount = computed(() => gamesStore.orderedGamesList?.length);
-
-onBeforeUnmount(() => {
-  gamesStore.unsubscribe();
-});
 </script>
 
 <style></style>
