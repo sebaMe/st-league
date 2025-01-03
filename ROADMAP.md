@@ -6,6 +6,7 @@
 
 ## Features
 - review authentication and user-rules
+- persona-like button style variant
 - ~~use dropdown for leaderboard sortings~~
 - ~~add seasons~~
 - ~~add scoring-rules information~~
